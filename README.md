@@ -1,41 +1,28 @@
 # Bank_Final_Project
 
-## Needs
-### Checking account service
-### Savings account service
-### Ability to get a loan
+## Requirements
+- There should be two types of users of the bank 
+	1. Customer:
+		a. Must be able to create/delete checking, savings, trading, and loan accounts (what is the fee to be charged for account creation/deletion?)
+			i.   Checking accounts can be deposited into and withdrawn from (what are transactions that cost fees?)
+			ii.  Savings accounts can be deposited into and withdrawn from and high balance accounts accumulate interest (what should interest rates be?)
+			iii. Trading accounts can be used to buy and sell stock, see current stock portfolio, and see unrealized gains and losses
+			iv.  Loan accounts must be charged interest 
+		b. Must be able to manipulate each type of account
+	2. Manager:
+		a. Must be able see who the customers are
+		b. Must be able to see what transactions the customers have made
+		c. Must be able to maitain and manipulate the stock market
 
-## Upon logging in…
+- Persistence - if bank service goes down, their information/money should not go away (use database in backend to capture all necessary information)
 
-	# If I am a customer:
-		First, create account
-		Then, deposit into account and withdraw money from account
-		Or, if enough money in account, get a bank loan
-	
-	# If I am a bank manager:
-		See who the customers are
-		See what transactions the customers have made 
-
-### IMPORTANT: Persistence - if bank service goes down, their information/money should not go away
-
-## Stock Info
-
-### Rich people ($5000 in their savings account) can by stonks:
-	They will have the ability to transfer at least $1000 into a securities account
-	They must at least maintain a savings account of $2500 while trading stonks
-	In the securities account, they can:
-		Buy and sell stock
-		See current open positions
-		See both realized and unrealized profit
-
-### With stonks, bank manager must:
-	Maintain a list of stocks that his customers are able to trade
-	Update the current price of each stock
+## Summary of Questions:
+1. What is the fee to be charged for account creation/deletion?
+2. What are transactions that cost fees?
+3. What should interest rates be and what should the balance be to accumulate interest?
+4. Do we need a separate table for interest rates, or can it be a static interest determined by a randomized method upon giving the loan?
+5. Can the manager see how much money his customers have when he pulls the customer log?
 
 ## Notes:
-Charge fee every time an account is opened or closed
-Charge fee every time a checking account transaction or any withdrawal has been made
 Only pay interest on savings accounts with high balances
-Charge interest on loans
-F THE CUSTOMER WE BOUT THAT CASH!!! $$$$$$
-Don’t have to have SQL database, can just use files if we are having issues
+If we can't get the SQL database working we can use files instead
