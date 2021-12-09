@@ -10,9 +10,9 @@
 4. Loan accounts must be charged interest 
 ##### - Must be able to manipulate each type of account
 #### Manager:
-##### Must be able see who the customers are
-##### Must be able to see what transactions the customers have made
-##### Must be able to maitain and manipulate the stock market
+##### - Must be able see who the customers are
+##### - Must be able to see what transactions the customers have made
+##### - Must be able to maitain and manipulate the stock market
 
 ### Persistence 
 #### - if bank service goes down, their information/money should not go away (use database in backend to capture all necessary information)
