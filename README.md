@@ -2,9 +2,9 @@
 
 ## Requirements
 #### There should be two types of users of the bank:
-- 	Customer:
-- 		Must be able to create/delete checking, savings, trading, and loan accounts (what is the fee to be charged for account creation/deletion?)
-- 			Checking accounts can be deposited into and withdrawn from (what are transactions that cost fees?)
+1. Customer:
+    a. Must be able to create/delete checking, savings, trading, and loan accounts (what is the fee to be charged for account creation/deletion?)
+    Checking accounts can be deposited into and withdrawn from (what are transactions that cost fees?)
 - 			Savings accounts can be deposited into and withdrawn from and high balance accounts accumulate interest (what should interest rates be?)
 - 			Trading accounts can be used to buy and sell stock, see current stock portfolio, and see unrealized gains and losses
 - 			Loan accounts must be charged interest 
