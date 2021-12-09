@@ -1,7 +1,7 @@
 # Bank_Final_Project
 
 ## Requirements
-- There should be two types of users of the bank 
+#### There should be two types of users of the bank:
 - 	Customer:
 - 		Must be able to create/delete checking, savings, trading, and loan accounts (what is the fee to be charged for account creation/deletion?)
 - 			Checking accounts can be deposited into and withdrawn from (what are transactions that cost fees?)
