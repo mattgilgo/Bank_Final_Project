@@ -1,2 +1,4 @@
-package src;public class Manager {
+package src;
+
+public class Manager extends User {
 }

@@ -1,2 +1,11 @@
-package src;public class Bank {
+package src;
+
+public class Bank {
+    private Bank bank;
+
+    public Bank(){
+
+    }
+
+
 }

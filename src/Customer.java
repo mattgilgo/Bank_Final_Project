@@ -1,2 +1,10 @@
-package src;public class Customer {
+package src;
+
+public class Customer extends User {
+
+    public Customer(){
+
+    }
+
+    
 }

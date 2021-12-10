@@ -1,2 +1,5 @@
-package src;public class ATM {
+package src;
+
+public class ATM {
+
 }

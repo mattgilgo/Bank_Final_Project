@@ -25,3 +25,4 @@ hs_err_pid*
 # Editor files
 .vscode
 .idea
+*.iml

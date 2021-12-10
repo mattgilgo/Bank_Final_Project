@@ -1,2 +1,5 @@
-package src;public class User {
+package src;
+
+public abstract class User {
+
 }
