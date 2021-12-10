@@ -1,2 +1,5 @@
-package src;public class Checking {
+package src;
+
+public class Checking extends Account {
+
 }

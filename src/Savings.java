@@ -1,2 +1,4 @@
-package src;public class Savings {
+package src;
+
+public class Savings extends Account {
 }

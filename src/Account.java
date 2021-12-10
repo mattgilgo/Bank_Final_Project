@@ -1,2 +1,5 @@
-package src;public class Account {
+package src;
+
+public abstract class Account {
+
 }
