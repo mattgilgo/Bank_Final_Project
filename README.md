@@ -25,7 +25,7 @@
 5. Can the manager see how much money his customers have when he pulls the customer log?
 6. How are we handling different currencies? - Interface for each currency?
    1. Should we have different account types for each currency? 
-7. Should we use a Factory for each 
+7. Should we use a Factory for each account type? 
 ## Notes:
 Only pay interest on savings accounts with high balances
 If we can't get the SQL database working we can use files instead
