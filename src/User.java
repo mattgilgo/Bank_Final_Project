@@ -1,4 +1,5 @@
 
-public abstract class User {
+public interface User {
 
+    public void createAccount(String accountType);
 }

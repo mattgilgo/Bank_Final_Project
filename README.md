@@ -43,3 +43,27 @@ If we can't get the SQL database working we can use files instead
    - Who did what?
    - Setup demo:
       - These are the important features
+
+# Gui Definition 
+## Login Screen
+- Ribbon: Login 
+- Input: Username and Password
+- Button: Login 
+- Ribbon: Create User
+- Input: Username and Password
+- Button: Create User 
+## Customer Screen
+- Button: Create new account 
+- Dropdown: Select account
+### Checking and Savings
+- Button: Withdraw - pull money out of savings/checking 
+- Button: Deposit - put money in savings/checking 
+### Stock Account 
+- Button: Buy Stock - Dropdown of current stocks
+- Button: Sell Stock 
+- Button: Withdraw - pull money out of trading account 
+- Button: Deposit - put money in your trading account 
+## Manger Screen
+- Button: View all customers 
+- Button: See all transactions 
+- Button: Update stock market
