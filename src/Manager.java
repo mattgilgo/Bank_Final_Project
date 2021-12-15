@@ -1,15 +1,17 @@
 
-public class Manager implements User {
+public class Manager extends User {
 
     private Report report;
 
-    public Manager() {
-
+    public Manager(String user_id, String user_type, String username, String password){
+        super(user_id, user_type, username, password);
     }
 
     public void createAccount(String accountType) {
         
     }
+
+    public void createReport(){}
 
 
 }
