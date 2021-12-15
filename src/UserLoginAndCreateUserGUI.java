@@ -12,8 +12,11 @@ public class UserLoginAndCreateUserGUI implements ActionListener {
     private static JPasswordField pwrdText;
     private static JButton button;
     private static JLabel sucJLabel;
+    private Bank bank;
 
     public UserLoginAndCreateUserGUI() {
+
+        this.bank = new Bank();
 
         panel = new JPanel();
         frame = new JFrame();
