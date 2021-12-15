@@ -42,7 +42,7 @@ public class UserLoginAndCreateUserGUI implements ActionListener {
 
         button = new JButton("Login");
         button.setBounds(10, 80, 80, 25);
-        button.addActionListener(new Login_GUI());
+        button.addActionListener(this);
         panel.add(button);
 
         sucJLabel = new JLabel("");
@@ -56,11 +56,11 @@ public class UserLoginAndCreateUserGUI implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
-        String user = userText.getText();
+        String username = userText.getText();
         String password = pwrdText.getText();
         //System.out.println(user + ", " + password);
 
-        if (user.equals("Matt") && password.equals("yeet")) {
+        if (Bank.userLogin(username, password)) {
             sucJLabel.setText("");
             sucJLabel.setText("Login successful!");
         } else {

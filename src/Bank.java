@@ -17,11 +17,10 @@ public class Bank {
 
     }
 
-    public void userLogin(String username, String password) {
+    public static boolean userLogin(String username, String password) {
         // Check that user exists in db
         // Determine from db if the user is a manager or customer
-
-        
+        return true;
     }
 
     //getters
