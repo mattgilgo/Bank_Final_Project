@@ -4,7 +4,7 @@ public class Bank {
     public static Database db;
 
     public Bank(){
-        //this.db = new Database();
+        db = new Database();
     }
 
 
