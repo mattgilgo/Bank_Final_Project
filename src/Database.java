@@ -7,8 +7,10 @@ import java.nio.file.Paths;
 public class Database {
     
     Connection conn;
+    private Factory factory;
     
     public Database(){
+        this.factory = new Factory();
         getConnection();
         
         
@@ -221,6 +223,38 @@ public class Database {
         }
         return report;
     }
+    public Report getUserReport(int user_id) {
+        Report report =  new Report();
+        String sql = "SELECT u.user_id as user_id, u.user_type, u.username, u.password, a.user_id as acc_user_id, a.account_id, a.account_type, a.balance, a.currency_name, a.currency_symbol FROM accounts as a, users as u WHERE u.user_id = a.user_id AND u.user_id = ?";
+        try (
+                PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            //Set user_id
+            pstmt.setInt(1,user_id);
+            ResultSet rs  = pstmt.executeQuery();
+
+            // loop through the result set
+            while(rs.next()) {
+                int query_user_id= rs.getInt("user_id");
+                String user_type = rs.getString("user_type");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                int acc_user_id = rs.getInt("acc_user_id");
+                int accountId = rs.getInt("account_id");
+                String accountType = rs.getString("account_type");
+                double balanceCheck = rs.getDouble("balance");
+                String currency_name = rs.getString("currency_name");
+                String currency_symbol = rs.getString("currency_symbol");
+                ReportTuple reportTuple = new ReportTuple( query_user_id, user_type, username, password, accountId, accountType, balanceCheck, currency_name, currency_symbol);
+                report.getReportTuples().add(reportTuple);
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+        return report;
+    }
 
     public void createTransaction(String transType, double transAmount, int accountId) {
         String sql = "INSERT INTO transactions(transaction_type,transaction_amount,account_id) VALUES(?,?,?)";
@@ -265,7 +299,34 @@ public class Database {
         }
         return allTransactions;
     }
+    // query transaction log for bank, do by date later
+    public ArrayList<Transaction> queryAllTransactions() {
+        ArrayList<Transaction> allTransactions =  new ArrayList<Transaction>();
 
+        String sql = "SELECT T.transaction_id, T.transaction_type, T.transaction_amount, T.transaction_time, T.account_id as account_id FROM transactions T, accounts A WHERE T.account_id = A.account_id";
+
+        try (
+                PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            ResultSet rs  = pstmt.executeQuery();
+
+            // loop through the result set
+            while(rs.next()) {
+                int transId = rs.getInt("transaction_id");
+                String transType = rs.getString("transaction_type");
+                double transAmount = rs.getDouble("transaction_amount"); // is this a new column?
+                Timestamp timestamp = rs.getTimestamp("transaction_time"); // not sure this one is in current db either
+                int accountId = rs.getInt("account_id");
+                Transaction trans = new Transaction(transId, transType, transAmount, timestamp, accountId);
+                allTransactions.add(trans);
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+        return allTransactions;
+    }
     public void createStock(String ticker, double price) {
         String sql = "INSERT INTO stocks(stock_ticker,stock_price) VALUES(?,?)";
 
@@ -328,6 +389,7 @@ public class Database {
         String sql = "SELECT * FROM stocks s LEFT JOIN stocks_owned so on s.stock_id=so.stock_id WHERE account_id=?";
 
         try (
+
                 PreparedStatement pstmt  = conn.prepareStatement(sql)){
 
             // set the value
@@ -450,6 +512,28 @@ public class Database {
         }
 
     }
+    public ArrayList<User> getAllUsers(){
+        String sql = "SELECT * FROM users";
+        ArrayList<User> allUsers = new ArrayList<>();
+        try (
+                PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            ResultSet rs  = pstmt.executeQuery();
+
+            // loop through the result set
+            while(rs.next()) {
+                int user_id = rs.getInt("user_id");
+                String user_type = rs.getString("user_type");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                User tempUser = factory.createUser(user_id, user_type, username, password);
+                allUsers.add(tempUser);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+        return allUsers;
+    }
 
     // Everything below here is for testing 
     public void printAllUsers(){
@@ -467,8 +551,6 @@ public class Database {
             System.out.println(e.getMessage());
             
         }
-            
-            
     }
 
     public void printAllAccounts(){

@@ -14,6 +14,7 @@ public class ManagerUI extends JFrame {
     private JButton seeUserInformationButton;
     private JButton seeAllUsersInformationButton;
 
+
     private ATM atm;
 
     public ManagerUI(ATM atm) {
@@ -35,8 +36,10 @@ public class ManagerUI extends JFrame {
         seeUserTransactionsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int account_id = (Integer.parseInt(((String) userDrop.getSelectedItem()).replaceAll("[\\D]", "")));
+                int user_id = (Integer.parseInt(((String) userDrop.getSelectedItem()).replaceAll("[\\D]", "")));
                 // TODO get transactions for this user and send to table UI
+                TableUICreator table = new TableUICreator(Transaction.fieldNames, atm.viewTransactions(user_id));
+                table.showTable();
             }
         });
         seeUserStocksButton.addActionListener(new ActionListener() {
@@ -50,6 +53,8 @@ public class ManagerUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO get all user transactions and send to table UI
+                TableUICreator table = new TableUICreator(Transaction.fieldNames, atm.viewAllTransactions());
+                table.showTable();
             }
         });
         seeAllStockHoldingsButton.addActionListener(new ActionListener() {
@@ -62,12 +67,18 @@ public class ManagerUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO get user information for specified user and send to table
+                int user_id = (Integer.parseInt(((String) userDrop.getSelectedItem()).replaceAll("[\\D]", "")));
+                // TODO get transactions for this user and send to table UI
+                TableUICreator table = new TableUICreator(ReportTuple.fieldNames, atm.viewUserReport(user_id));
+                table.showTable();
             }
         });
         seeAllUsersInformationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO get al user information and send to tableUI
+                // TODO get all user information and send to tableUI
+                TableUICreator table = new TableUICreator(ReportTuple.fieldNames, atm.viewReport());
+                table.showTable();
             }
         });
     }
