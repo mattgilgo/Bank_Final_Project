@@ -14,9 +14,14 @@ public class Database {
     private void getConnection(){
         try
             {
-            String myDriver = "com.mysql.cj.jdbc.Driver";
-            Class.forName(myDriver);
-            String myUrl = "jdbc:mysql://localhost:3306/bank";
+            // String myDriver = "com.mysql.cj.jdbc.Driver";
+            // Class.forName(myDriver);
+            // String myUrl = "jdbc:mysql://localhost:3306/bank";
+            // conn = DriverManager.getConnection(myUrl, "root", "GeorgeKolliosClass660");
+            
+            // String myDriver = "com.mysql.cj.jdbc.Driver";
+            // Class.forName(myDriver);
+            String myUrl = "jdbc:sqlite:C:/Users/GeorgeE/Documents/BU/CS_611/final_project/Bank_Final_Project/Bank.db";
             conn = DriverManager.getConnection(myUrl, "root", "GeorgeKolliosClass660");
             
             }
@@ -55,9 +60,9 @@ public class Database {
             // loop through the result set
             rs.next();
             String userType = rs.getString("user_type");
-            if (userType.equals("customer")){
+            if (userType.equals("C")){
                 return new Customer(userId, rs.getString("username"), rs.getString("username"), rs.getString("password"));
-            } else if (userType.equals("manager")) {
+            } else if (userType.equals("M")) {
                 return new Manager(userId, rs.getString("username"), rs.getString("username"), rs.getString("password"));
             }
 
@@ -67,6 +72,32 @@ public class Database {
             
         }
         return null;
+        
+    }
+
+    public void test(){
+        String sql = "SELECT * FROM users";
+        
+        try (
+             PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            
+            // set the value
+            
+            //
+            ResultSet rs  = pstmt.executeQuery();
+            
+            // loop through the result set
+            while(rs.next()) {
+                System.out.println(rs.getString("username"));
+            }
+            
+    
+        
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            
+        }
+        
         
     }
 
@@ -86,10 +117,10 @@ public class Database {
                 String userType = rs.getString("user_type");
                 String passwordCheck = rs.getString("password");
                 if (password.equals(passwordCheck)){
-                    if (userType.equals("customer")){
-                        return new Customer(rs.getInt("user_id"), rs.getString("username"), rs.getString("username"), rs.getString("password"));
-                    } else if (userType.equals("manager")) {
-                        return new Manager(rs.getInt("user_id"), rs.getString("username"), rs.getString("username"), rs.getString("password"));
+                    if (userType.equals("C")){
+                        return new Customer(rs.getInt("user_id"), rs.getString("user_type"), rs.getString("username"), rs.getString("password"));
+                    } else if (userType.equals("M")) {
+                        return new Manager(rs.getInt("user_id"), rs.getString("user_type"), rs.getString("username"), rs.getString("password"));
                     }
                 }
                 
@@ -108,8 +139,11 @@ public class Database {
 
     public static void main(String[] args) {
         Database db = new Database();
-        // db.insertUser("customer", "Mark Zucc", "password");
+        db.test();
+        db.insertUser("C", "Mark Zucc", "password");
         User user = db.getUser(1);
         System.out.println(user);
+        User loginCheck = db.checkLogin("Mark Zucc", "password");
+        System.out.println(loginCheck);
     }
 }

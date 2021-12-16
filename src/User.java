@@ -51,6 +51,6 @@ public abstract class User {
 
     @Override
     public String toString(){
-        return username;
+        return user_id + " " + username + " " + user_type + " " + password;
     }
 }
