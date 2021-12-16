@@ -11,6 +11,7 @@ public class LoginUI extends JFrame{
     private JLabel userName;
     private JLabel password;
     private JLabel textShown;
+
     private Bank bank;
 
     public LoginUI(Bank bank) {
@@ -26,6 +27,7 @@ public class LoginUI extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 String user = userTextField.getText();
                 String pass = userTextField.getText();
+
                 if (Bank.userLogin(user, pass)) {
                     textShown.setText(String.format("Login Successful! Welcome, %s!", user));
                 } else {
@@ -45,6 +47,7 @@ public class LoginUI extends JFrame{
     }
 
     public static void main(String[] args) {
+
         Bank bank = new Bank();
         LoginUI login = new LoginUI(bank);
     }
