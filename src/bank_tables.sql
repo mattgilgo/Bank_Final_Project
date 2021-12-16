@@ -1,4 +1,7 @@
-CREATE TABLE stock_accounts(stock_instance_owned_id INTEGER PRIMARY KEY AUTOINCREMENT, account_id INTEGER NOT NULL, stock_id INTEGER NOT NULL, cash_balance REAL NOT NULL, stock_buy_price REAL NOT NULL, num_shares REAL NOT NULL, FOREIGN KEY (account_id) REFERENCES accounts(account_id), FOREIGN KEY (stock_id) REFERENCES stocks(stock_id));
+CREATE TABLE stock_ownedd(stock_instance_owned_id INTEGER PRIMARY KEY AUTOINCREMENT, account_id INTEGER NOT NULL, stock_id INTEGER NOT NULL, cash_balance REAL NOT NULL, stock_buy_price REAL NOT NULL, num_shares REAL NOT NULL, FOREIGN KEY (account_id) REFERENCES accounts(account_id), FOREIGN KEY (stock_id) REFERENCES stocks(stock_id));
+
+CREATE TABLE stock_ownedd(stock_instance_owned_id INTEGER PRIMARY KEY AUTOINCREMENT, account_id INTEGER NOT NULL, stock_id INTEGER NOT NULL, stock_buy_price REAL NOT NULL, num_shares REAL NOT NULL, FOREIGN KEY (account_id) REFERENCES accounts(account_id), FOREIGN KEY (stock_id) REFERENCES stocks(stock_id));
+
 
 CREATE TABLE stocks( stock_id INTEGER PRIMARY KEY AUTOINCREMENT, stock_ticker TEXT NOT NULL, stock_price REAL NOT NULL);
 
