@@ -44,6 +44,11 @@ public class Transaction { // matt removed abstract b/c it wasn't able to make a
         return account_id;
     }
 
+    public String[] getStringArray() {
+        String [] arrayString = {Integer.toString(getTransaction_id()), getTransaction_type(), Double.toString(getTransaction_amount()), getTimestamp().toString()}; 
+        return arrayString;
+    }
+
     //Setters
 
     public void setTransaction_id(int transaction_id) {
