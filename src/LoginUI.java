@@ -11,8 +11,10 @@ public class LoginUI extends JFrame{
     private JLabel userName;
     private JLabel password;
     private JLabel textShown;
+    private Bank bank;
 
-    public LoginUI() {
+    public LoginUI(Bank bank) {
+        this.bank = bank;
         setContentPane(mainPanel);
         setTitle("Welcome");
         setSize(450, 300);
@@ -24,7 +26,11 @@ public class LoginUI extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 String user = userTextField.getText();
                 String pass = userTextField.getText();
-                textShown.setText(String.format("Welcome, %s!", user));
+                userTextField.setText("");
+                passTextField.setText("");
+//                if (!bank.userLogin(user, pass)) {
+//                    textShown.setText(String.format("Account not found! Please create account."));
+//                }
             }
         });
 
@@ -33,7 +39,7 @@ public class LoginUI extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 userTextField.setText("");
                 passTextField.setText("");
-                textShown.setText("Creating account...");
+//                bank.createUserAccount(user, pass);
             }
         });
     }
