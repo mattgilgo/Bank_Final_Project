@@ -22,6 +22,7 @@ public class ATM {
     public ATM(User user){
         this.currentUser = user;
         this.allAccounts = new ArrayList<Account>();
+        this.factory = new Factory();
 
         if(user.getUser_type().equalsIgnoreCase("C")){
             currentCustomer = new Customer(user.getUser_id(), user.getUser_type(), user.getUsername(), user.getPassword());
@@ -43,8 +44,9 @@ public class ATM {
     }
     public void openManager(){
         //TODO Add Manager Report UI
-        System.out.println(currentManager.getUsername());
-        System.out.println(currentManager.getReport());
+        //System.out.println(currentManager.getUsername());
+        //System.out.println(currentManager.getReport());
+        createManagerUI();
     }
 
     public void createAccountUI() {
@@ -65,6 +67,12 @@ public class ATM {
         updateUserAccounts();
         createCustomerUI();
     }
+
+    public void createManagerUI() {
+        ManagerUI managerUI = new ManagerUI(this);
+        managerUI.showUI();
+    }
+
     public void createCustomerUI(){
         CustomerUI customerUI = new CustomerUI(this);
         customerUI.showUI();
@@ -113,11 +121,31 @@ public class ATM {
 
     public Object[][] viewTransactions(int userId) {
         // Could be overloaded for managers and customers
-        ArrayList<Transaction> transactions = Bank.db.queryTransactions(userId);
+        ArrayList<Transaction> transactions = Bank.db.queryUserTransactions(userId);
         Object[][] data = new Object[transactions.size()][];
 
         for (int i=0; i<transactions.size(); i++) {
             data[i] = transactions.get(i).getStringArray();
+        }
+        return data;
+    }
+    public Object[][] viewAllTransactions() {
+        // Could be overloaded for managers and customers
+        ArrayList<Transaction> transactions = Bank.db.queryAllTransactions();
+        Object[][] data = new Object[transactions.size()][];
+
+        for (int i=0; i<transactions.size(); i++) {
+            data[i] = transactions.get(i).getStringArray();
+        }
+        return data;
+    }
+    public Object[][] viewUserReport(int user_id) {
+        // Could be overloaded for managers and customers
+        ArrayList<ReportTuple> reportTuples = currentManager.createUserReport(user_id).getReportTuples();
+        Object[][] data = new Object[reportTuples.size()][];
+
+        for (int i=0; i<reportTuples.size(); i++) {
+            data[i] = reportTuples.get(i).getStringArray();
         }
         return data;
     }
@@ -139,12 +167,55 @@ public class ATM {
 
     }
 
-    public void buyStock(){
-
+    public void buyStock(int accountId, String ticker, double num_shares){
+        for (Account act: allAccounts) {
+            if (act.getAccount_id() == accountId) {
+                int stockInstance = Bank.db.getStockInstance(accountId, ticker);
+                double accBal = Bank.db.getAccountBalance(accountId);
+                double stockPrice = Bank.db.getStockPrice(ticker);
+                double cost = num_shares*stockPrice;
+                double newAccBal = accBal-cost;
+                if (newAccBal > 0) {
+                    if (stockInstance > 0) {
+                        Bank.db.transactOwnedStock(accountId, ticker, num_shares, stockInstance);
+                        Bank.db.setAccountBalance(accountId, newAccBal);
+                        Bank.db.createTransaction("buy stock", cost, accountId);
+                    } else {
+                        int stockId = Bank.db.getStockId(ticker);
+                        Bank.db.createStockOwned(accountId, stockId, stockPrice, num_shares);
+                        Bank.db.setAccountBalance(accountId, newAccBal);
+                        Bank.db.createTransaction("buy stock", cost, accountId);                
+                    }
+                } else {
+                    System.out.println("You need more money to purchase!");
+                }
+            }
+        }
     }
 
-    public void sellStock(){
-
+    public void sellStock(int accountId, String ticker, double num_shares){
+        for (Account act: allAccounts) {
+            if (act.getAccount_id() == accountId) {
+                int stockInstance = Bank.db.getStockInstance(accountId, ticker);
+                double accBal = Bank.db.getAccountBalance(accountId);
+                double stockPrice = Bank.db.getStockPrice(ticker);
+                double currentShares = Bank.db.getCurrentNumShares(stockInstance);
+                double newShares = currentShares-num_shares;
+                double saleValue = num_shares*stockPrice;
+                double newAccBal = accBal+saleValue;
+                if (currentShares > 0) {
+                    if (stockInstance > 0) {
+                        Bank.db.transactOwnedStock(accountId, ticker, newShares, stockInstance);
+                        Bank.db.setAccountBalance(accountId, newAccBal);
+                        Bank.db.createTransaction("sell stock", saleValue, accountId);
+                    } 
+                } else if (newShares < 0) {
+                    System.out.println("You do not have enough shares to sell.");
+                } else {
+                    System.out.println("You do not own this stock!");
+                }
+            }
+        }
     }
 
     public void getTrades(){
@@ -197,10 +268,29 @@ public class ATM {
         }
         return allAccountInfo;
     }
+    public String[] getStringListOfStockAccounts() {
+        return new String[]{"ex user 1", "ex user 2"};
+    }
+
+    public String[] getStringListOfAllUsers() {
+        ArrayList<User> allUsers =Bank.db.getAllUsers();
+        String[] allUserInfo = new String[allUsers.size()];
+        for (int i = 0; i < allUsers.size(); i++) {
+            User a = allUsers.get(i);
+            allUserInfo[i] = a.getUser_id() + " " + a.getUser_type() +" "+ a.getUsername();
+        }
+        return allUserInfo;
+    }
+
 
     public User getCurrentUser() {
         return currentUser;
     }
+
+    public Factory getFactory() {
+        return factory;
+    }
+
     //Setters
 
     public void setCurrentCustomer(Customer currentCustomer) {
