@@ -13,9 +13,9 @@ public class ATM {
     //Lists of all users and accounts
     private ArrayList<Account> allAccounts;
     
-    // public ATM(){
-    //     this.allAccounts = Bank.db.queryUsersAccounts(this.currentUser.user_id);
-    // }
+    /*public ATM(){
+         this.allAccounts = Bank.db.queryUsersAccounts(this.currentUser.user_id);
+    }*/
 
     public ATM(User user){
         this.currentUser = user;
@@ -80,5 +80,9 @@ public class ATM {
 
     public void setCurrentManager(Manager currentManager) {
         this.currentManager = currentManager;
+    }
+
+    public void setAllAccounts(ArrayList<Account> allAccounts){
+        this.allAccounts = allAccounts;
     }
 }
