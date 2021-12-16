@@ -1,15 +1,16 @@
 import java.util.Objects;
 
-public abstract class Account {
+public class Account {  // matt removed abstract b/c it wasn't able to make an Account object when querying them in Database
 
     protected int account_id;
-    protected String user_id;
+    protected int user_id;
     protected String account_type;
     protected double balance;
     protected Currency currency;
 
+
     //Create account with zero balance
-    public Account( String user_id,String account_type, String currency_name, String currency_symbol){
+    public Account( int user_id,String account_type, String currency_name, String currency_symbol){
         //this.account_id=account_id;
         this.account_type = account_type;
         this.user_id = user_id;
@@ -17,7 +18,7 @@ public abstract class Account {
         this.currency = new Currency(currency_name, currency_symbol);
     }
 
-    public Account(int account_id, String user_id,String account_type, double balance, String currency_name, String currency_symbol){
+    public Account(int account_id, int user_id,String account_type, double balance, String currency_name, String currency_symbol){
         this.account_id=account_id;
         this.account_type = account_type;
         this.user_id = user_id;

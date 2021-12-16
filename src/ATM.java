@@ -13,8 +13,13 @@ public class ATM {
     //Lists of all users and accounts
     private ArrayList<Account> allAccounts;
     
-    public ATM(){
-        this.allAccounts = this.queryAllAccounts();
+    // public ATM(){
+    //     this.allAccounts = Bank.db.queryUsersAccounts(this.currentUser.user_id);
+    // }
+
+    public ATM(User user){
+        this.currentUser = user;
+        this.allAccounts = Bank.db.queryUsersAccounts(user.user_id);
     }
 
     public void logout() {
@@ -51,9 +56,7 @@ public class ATM {
 
     }
 
-    public ArrayList<Account> queryAllAccounts(){
-        return new ArrayList<Account>();
-    }
+
 
     //Getters
 
