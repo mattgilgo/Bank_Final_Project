@@ -15,12 +15,12 @@ public class Bank {
     //Create the new user account and add to database
     public void createUserAccount(String user_type, String username, String password) {
         if(user_type.equals("C")){
-            Customer customer = new Customer(user_type, username, password);
-            db.insertUser(customer.getUser_type(), customer.getUsername(), customer.getPassword());
+            //Customer customer = new Customer(user_type, username, password);
+            db.insertUser(user_type, username, password);
         }
         else{
-            Manager manager = new Manager(user_type, username, password);
-            db.insertUser(manager.getUser_type(), manager.getUsername(), manager.getPassword());
+            //Manager manager = new Manager(user_type, username, password);
+            db.insertUser(user_type,username, password);
         }
     }
 
