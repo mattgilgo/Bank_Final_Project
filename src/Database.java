@@ -353,6 +353,37 @@ public class Database {
         return allAccountsStocks;
     }
 
+    public void buyStock(int account_id, String ticker, int num_shares) {
+        String sql = "UPDATE stocks_owned SET cash_balance = ? WHERE account_id = ?";
+
+        try (
+                PreparedStatement pstmt  = conn.prepareStatement(sql)){
+
+            // set the value
+            pstmt.setInt(1,account_id);
+            //
+            ResultSet rs  = pstmt.executeQuery();
+
+            // loop through the result set
+            while(rs.next()) {
+                int stockId = rs.getInt("stock_id");
+                String ticker = rs.getString("stock_ticker");
+                double currentPrice = rs.getDouble("stock_price");
+                double cashBalance = rs.getDouble("cash_balance");
+                double buyPrice = rs.getDouble("buy_price");
+                double numShares = rs.getDouble("num_shares");
+                OwnedStock ownedStock = new OwnedStock(stockId, ticker, currentPrice, account_id, cashBalance, buyPrice, numShares)
+                allAccountsStocks.add(ownedStock);
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+        return allAccountsStocks;
+    }
+
 
 }
 
