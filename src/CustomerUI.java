@@ -9,10 +9,11 @@ public class CustomerUI extends JFrame {
     private JLabel infoLabel;
     private JLabel accountLabel;
     private JPanel panel;
+    private JButton transactionsButton;
 
 
     public CustomerUI(String[] accounts) {
-        DefaultComboBoxModel model = new DefaultComboBoxModel<String>(accounts);
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(accounts);
         dropDown.setModel(model);
         dropDown.setForeground(new Color(0).BLACK);
         dropDown.setBackground(new Color(0).LIGHT_GRAY);
@@ -28,6 +29,12 @@ public class CustomerUI extends JFrame {
             }
         });
 
+        transactionsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // set off a table UI
+            }
+        });
     }
 
     public void showUI() {
