@@ -378,6 +378,7 @@ public class Database {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return 0.0;
     }
 
     public int getStockId(String ticker) {
@@ -390,6 +391,7 @@ public class Database {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return 1;
     }
 
     public void createStockOwned(int accountId, int stockId, double buyPrice, double numShares) {
@@ -481,6 +483,7 @@ public class Database {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return 0.0;
     }
 
     public void transactOwnedStock(int accountId, String ticker, double num_shares, int stockInstance) {
@@ -673,6 +676,10 @@ public class Database {
         db.printAllStocksOwned();
         ArrayList<Transaction> user_transactions = db.queryUserTransactions(1);
 
+    }
+
+    public int getCurrentNumShares(int stockInstance) {
+        return 1;
     }
 }
 
