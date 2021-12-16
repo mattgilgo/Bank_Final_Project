@@ -1,4 +1,5 @@
 import java.beans.Customizer;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class ATM {
@@ -21,7 +22,15 @@ public class ATM {
     public ATM(User user){
         this.currentUser = user;
         this.allAccounts = new ArrayList<Account>();
-        openUser();
+
+        if(user.getUser_type().equalsIgnoreCase("C")){
+            currentCustomer = new Customer(user.getUser_id(), user.getUser_type(), user.getUsername(), user.getPassword());
+            openUser();
+        }
+        else{
+            currentManager = new Manager(user.getUser_id(), user.getUser_type(), user.getUsername(), user.getPassword());
+            openManager();
+        }
     }
 
     public void logout() {
@@ -31,6 +40,11 @@ public class ATM {
     public void openUser(){
         this.allAccounts.addAll(Bank.db.queryUsersAccounts(getCurrentUser().getUser_id()));
         createCustomerUI();
+    }
+    public void openManager(){
+        //TODO Add Manager Report UI
+        System.out.println(currentManager.getUsername());
+        System.out.println(currentManager.getReport());
     }
 
     public void createAccountUI() {
@@ -47,6 +61,8 @@ public class ATM {
         // Use a factory for generating accounts?
         // accountFactory.createAccount(User user, )
         Bank.db.createAccount(currentUser.getUser_id(), accountType, balance, currency_name);
+        updateUserAccounts();
+        createCustomerUI();
     }
     public void createCustomerUI(){
         CustomerUI customerUI = new CustomerUI(this);
@@ -78,6 +94,7 @@ public class ATM {
             if (act.getAccount_id() == accountId) {
                 Bank.db.setAccountBalance(act.getAccount_id(), act.getBalance()-amount);
                 Bank.db.createTransaction("withdraw", amount, accountId);
+                updateUserAccounts();
             }
         }
         
@@ -88,23 +105,35 @@ public class ATM {
             if (act.getAccount_id() == accountId) {
                 Bank.db.setAccountBalance(act.getAccount_id(), act.getBalance()+amount);
                 Bank.db.createTransaction("deposit", amount, accountId);
+                updateUserAccounts();
             }
         }
     }
 
-    public Object[] viewTransactions(int userId) {
+    public Object[][] viewTransactions(int userId) {
         // Could be overloaded for managers and customers
-        ArrayList<String[]> data = new ArrayList<>();
+        ArrayList<Transaction> transactions = Bank.db.queryTransactions(userId);
+        Object[][] data = new Object[transactions.size()][];
 
-        /*ArrayList<Transaction> transactions = Bank.getDb().queryTransactions(userId);
-        for (Transaction txn : transactions) {
-            data.add(txn.getStringArray());
-        }*/
+        for (int i=0; i<transactions.size(); i++) {
+            data[i] = transactions.get(i).getStringArray();
+        }
+        return data;
+    }
+    public Object[][] viewReport() {
+        // Could be overloaded for managers and customers
+        ArrayList<ReportTuple> reportTuples = currentManager.getReport().getReportTuples();
+        Object[][] data = new Object[reportTuples.size()][];
 
-        return data.toArray();
-
+        for (int i=0; i<reportTuples.size(); i++) {
+            data[i] = reportTuples.get(i).getStringArray();
+        }
+        return data;
     }
 
+    public void updateUserAccounts(){
+        this.setAllAccounts(Bank.db.queryUsersAccounts(getCurrentUser().getUser_id()));
+    }
     public void generateDailyReport() {
 
     }
