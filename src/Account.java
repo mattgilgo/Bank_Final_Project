@@ -45,7 +45,7 @@ public class Account {  // matt removed abstract b/c it wasn't able to make an A
         return account_id;
     }
 
-    public String getUser_id() {
+    public int getUser_id() {
         return user_id;
     }
 
@@ -71,7 +71,7 @@ public class Account {  // matt removed abstract b/c it wasn't able to make an A
         this.account_type = account_type;
     }
 
-    public void setUser_id(String user_id) {
+    public void setUser_id(int user_id) {
         this.user_id = user_id;
     }
 

@@ -28,6 +28,7 @@ public class LoginUI extends JFrame{
                 String pass = passTextField.getText();
                 if (bank.userLogin(user, pass)) {
                     textShown.setText(String.format("Login Successful! Welcome, %s!", user));
+                    bank.launchAtm(bank.db.checkLogin(user, pass));
                 } else {
                     textShown.setText(String.format("Invalid User, %s does not exist!", user));
                 }
