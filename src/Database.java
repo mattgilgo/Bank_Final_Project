@@ -190,8 +190,37 @@ public class Database {
         }
         return allAccounts;
     }
+    public Report getAllAccountsReport() {
+        Report report =  new Report();
+        String sql = "SELECT u.user_id as user_id, u.user_type, u.username, u.password, a.user_id as acc_user_id, a.account_id, a.account_type, a.balance, a.currency_name, a.currency_symbol FROM accounts as a, users as u WHERE u.user_id = a.user_id";
+        try (
+                PreparedStatement pstmt  = conn.prepareStatement(sql)){
 
-    
+            ResultSet rs  = pstmt.executeQuery();
+
+            // loop through the result set
+            while(rs.next()) {
+                int user_id = rs.getInt("user_id");
+                String user_type = rs.getString("user_type");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                int acc_user_id = rs.getInt("acc_user_id");
+                int accountId = rs.getInt("account_id");
+                String accountType = rs.getString("account_type");
+                double balanceCheck = rs.getDouble("balance");
+                String currency_name = rs.getString("currency_name");
+                String currency_symbol = rs.getString("currency_symbol");
+                ReportTuple reportTuple = new ReportTuple( user_id, user_type, username, password, accountId, accountType, balanceCheck, currency_name, currency_symbol);
+                report.getReportTuples().add(reportTuple);
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+        return report;
+    }
 
     public void createTransaction(String transType, double transAmount, int accountId) {
         String sql = "INSERT INTO transactions(transaction_type,transaction_amount,account_id) VALUES(?,?,?)";

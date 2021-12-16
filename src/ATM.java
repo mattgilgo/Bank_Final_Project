@@ -22,7 +22,15 @@ public class ATM {
     public ATM(User user){
         this.currentUser = user;
         this.allAccounts = new ArrayList<Account>();
-        openUser();
+
+        if(user.getUser_type().equalsIgnoreCase("C")){
+            currentCustomer = new Customer(user.getUser_id(), user.getUser_type(), user.getUsername(), user.getPassword());
+            openUser();
+        }
+        else{
+            currentManager = new Manager(user.getUser_id(), user.getUser_type(), user.getUsername(), user.getPassword());
+            openManager();
+        }
     }
 
     public void logout() {
@@ -32,6 +40,11 @@ public class ATM {
     public void openUser(){
         this.allAccounts.addAll(Bank.db.queryUsersAccounts(getCurrentUser().getUser_id()));
         createCustomerUI();
+    }
+    public void openManager(){
+        //TODO Add Manager Report UI
+        System.out.println(currentManager.getUsername());
+        System.out.println(currentManager.getReport());
     }
 
     public void createAccountUI() {
