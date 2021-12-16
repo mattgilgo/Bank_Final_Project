@@ -638,7 +638,7 @@ public class Database {
         db.printAllTransactions();
         db.printAllStocks();
         db.printAllStocksOwned();
-        ArrayList<Transaction> user_transactions = db.queryTransactions(1);
+        ArrayList<Transaction> user_transactions = db.queryUserTransactions(1);
 
     }
 }
