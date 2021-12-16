@@ -62,7 +62,10 @@ public class AccountCreationUI extends JFrame {
     public static void main(String[] args) {
         String[] userAccounts = {"checking USD", "savings BTC"};
         double fee = 3;
-        ATM atm = new ATM(new Customer(1, "C", "test", "test"));
+        Bank bank = new Bank();
+        User user  = new Customer(0, "C", "mattg", "almostdone");
+        bank.launchAtm(user);
+        ATM atm = bank.getAtm();
         AccountCreationUI accountCreationUI = new AccountCreationUI(atm, userAccounts, fee);
         accountCreationUI.showUI();
     }

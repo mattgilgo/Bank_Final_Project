@@ -184,7 +184,7 @@ public class Database {
 
     public ArrayList<Account> queryUsersAccounts(int user_id) {
         ArrayList<Account> allAccounts =  new ArrayList<Account>();
-
+        allAccounts.add(new Account());
         String sql = "SELECT * FROM accounts WHERE user_id = ?";
 
         try (
