@@ -47,6 +47,7 @@ public class ATM {
         // Use a factory for generating accounts?
         // accountFactory.createAccount(User user, )
         Bank.db.createAccount(currentUser.getUser_id(), accountType, balance, currency_name);
+        createCustomerUI();
     }
     public void createCustomerUI(){
         CustomerUI customerUI = new CustomerUI(this);
