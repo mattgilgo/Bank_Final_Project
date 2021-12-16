@@ -1,6 +1,7 @@
 public class Bank {
     private ATM atm;
     private LoginUI userLoginAndCreateUserGui;
+    private double totalFeesCharged;
     public static Database db;
 
     public Bank(){
@@ -39,6 +40,10 @@ public class Bank {
             atm.setCurrentManager(new Manager(user.getUser_id(), user.getUser_type(), user.getUsername(), user.getPassword()));
         }
     }
+
+    public void addFees(double fee){
+        this.totalFeesCharged = this.totalFeesCharged+fee;
+    }
     //getters
 
     public ATM getAtm() {
@@ -49,6 +54,10 @@ public class Bank {
         return db;
     }
 
+    public double getTotalFeesCharged() {
+        return totalFeesCharged;
+    }
+
     //Setters
 
     public void setAtm(ATM atm) {
@@ -57,5 +66,9 @@ public class Bank {
 
     public static void setDb(Database db) {
         Bank.db = db;
+    }
+
+    public void setTotalFeesCharged(double totalFeesCharged) {
+        this.totalFeesCharged = totalFeesCharged;
     }
 }
