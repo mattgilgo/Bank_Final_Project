@@ -67,8 +67,16 @@ public class ATM {
 
     }
 
-    public void viewTransactions() {
+    public Object[] viewTransactions(int userId) {
         // Could be overloaded for managers and customers
+        ArrayList<String[]> data = new ArrayList<>();
+
+        ArrayList<Transaction> transactions = Bank.getDb().queryTransactions(userId);
+        for (Transaction txn : transactions) {
+            data.add(txn.getStringArray());
+        }
+
+        return data.toArray();
     }
 
     public void generateDailyReport() {

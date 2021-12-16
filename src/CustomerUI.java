@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 // TODO add account balance field
 // TODO withdraw/deposit
+// TODO when you click dropdown refresh the accounts
 
 public class CustomerUI extends JFrame {
     private JComboBox dropDown;
