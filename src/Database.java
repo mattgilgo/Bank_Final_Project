@@ -309,7 +309,7 @@ public class Database {
                 String ticker = rs.getString("stock_ticker");
                 double currentPrice = rs.getDouble("stock_price");
                 double cashBalance = rs.getDouble("cash_balance");
-                double buyPrice = rs.getDouble("buy_price");
+                double buyPrice = rs.getDouble("stock_buy_price");
                 double numShares = rs.getDouble("num_shares");
                 OwnedStock ownedStock = new OwnedStock(stockId, ticker, currentPrice, account_id, cashBalance, buyPrice, numShares);
                 allAccountsStocks.add(ownedStock);
@@ -466,8 +466,7 @@ public class Database {
         try (
             PreparedStatement pstmt  = conn.prepareStatement(sql)){
             ResultSet rs  = pstmt.executeQuery();
-            double transAmount = rs.getDouble("transaction_amount"); 
-            Timestamp timestamp = rs.getTimestamp("transaction_time");
+          
             // loop through the result set
             while(rs.next()) {
                 System.out.println(rs.getInt("transaction_id") + " " + rs.getString("transaction_type") + " " + rs.getInt("account_id") + " " + rs.getDouble("transaction_amount") + " " + rs.getTimestamp("transaction_time"));
@@ -480,6 +479,41 @@ public class Database {
             
     }
 
+    public void printAllStocks(){
+        String sql = "SELECT * FROM stocks";
+        
+        try (
+            PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            ResultSet rs  = pstmt.executeQuery();
+            
+            // loop through the result set
+            while(rs.next()) {
+                System.out.println(rs.getInt("stock_id") + " " + rs.getString("stock_ticker") + " " + rs.getDouble("stock_price"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            
+        }
+             
+    }
+
+    public void printAllStocksOwned(){
+        String sql = "SELECT * FROM stocks_owned";
+        
+        try (
+            PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            ResultSet rs  = pstmt.executeQuery();
+        
+            // loop through the result set
+            while(rs.next()) {
+                System.out.println(rs.getInt("account_id") + " " + rs.getInt("stock_id") + " " + rs.getDouble("cash_balance") + " " + rs.getDouble("stock_buy_price") + " " + rs.getDouble("num_shares"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            
+        }
+             
+    }
     
 
     public static void main(String[] args) {
@@ -487,6 +521,8 @@ public class Database {
         db.printAllUsers();
         db.printAllAccounts();
         db.printAllTransactions();
+        db.printAllStocks();
+        db.printAllStocksOwned();
     }
 }
 
