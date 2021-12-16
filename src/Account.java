@@ -46,7 +46,17 @@ public class Account {  // matt removed abstract b/c it wasn't able to make an A
         return Objects.hash(account_id);
     }
 
-//Getters
+    @Override
+    public String toString() {
+        return "Account{" +
+                "account_id=" + account_id +
+                ", account_type='" + account_type + '\'' +
+                ", balance=" + balance +
+                ", currency=" + currency +
+                '}';
+    }
+
+    //Getters
 
     public int getAccount_id() {
         return account_id;

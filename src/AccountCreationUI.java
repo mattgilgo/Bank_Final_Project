@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class AccountCreationUI extends JFrame {
     // TODO this should be static somewhere else in classes that make sense
@@ -20,13 +21,13 @@ public class AccountCreationUI extends JFrame {
     private JPanel panel;
     private ATM atm;
 
-    public AccountCreationUI(ATM atm, String[] userAccounts, double fee) {
+    public AccountCreationUI(ATM atm, double fee) {
 
         this.atm = atm;
 
         DefaultComboBoxModel<String> modelCurrency = new DefaultComboBoxModel<String>(SUPPORTED_CURRENCIES);
         DefaultComboBoxModel<String> modelTypes = new DefaultComboBoxModel<String>(SUPPORTED_TYPES);
-        DefaultComboBoxModel<String> modelAccounts = new DefaultComboBoxModel<String>(userAccounts);
+        DefaultComboBoxModel<String> modelAccounts = new DefaultComboBoxModel<String>(atm.getStringListOfAccounts());
         currencyDrop.setModel(modelCurrency);
         currencyDrop.setForeground(new Color(0).BLACK);
         currencyDrop.setBackground(new Color(0).LIGHT_GRAY);
@@ -48,8 +49,10 @@ public class AccountCreationUI extends JFrame {
                 String currency = (String) currencyDrop.getSelectedItem();
                 String acctType = (String) typeDrop.getSelectedItem();
                 String acctToCharge = (String) acctDrop.getSelectedItem();
+                //TODO Charge the appropriate account for the balance
+
                 // create account method called here
-                //atm.createAccount(acctType); // TODO probably need more things passed
+                atm.createAccount(acctType, currency); // TODO probably need more things passed
                 dispose(); // close window when done
             }
         });
@@ -66,7 +69,7 @@ public class AccountCreationUI extends JFrame {
         User user  = new Customer(0, "C", "mattg", "almostdone");
         bank.launchAtm(user);
         ATM atm = bank.getAtm();
-        AccountCreationUI accountCreationUI = new AccountCreationUI(atm, userAccounts, fee);
+        AccountCreationUI accountCreationUI = new AccountCreationUI(atm, fee);
         accountCreationUI.showUI();
     }
 

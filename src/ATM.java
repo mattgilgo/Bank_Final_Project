@@ -34,9 +34,18 @@ public class ATM {
         customerUI.showUI();
     }
 
-    public void createAccount(String accountType, double balance, String currency_name) {
+    public void createAccountUI() {
         // Charge a fee for account creation 
         // Use a factory for generating accounts? 
+        // accountFactory.createAccount(User user, )
+        //Bank.db.createAccount(currentUser.getUser_id(), accountType, balance, currency_name);
+        AccountCreationUI accountCreationUI = new AccountCreationUI(this, this.getCurrentUser().getFee());
+        accountCreationUI.showUI();
+
+    }
+    public void createAccount(String accountType, String currency_name) {
+        // Charge a fee for account creation
+        // Use a factory for generating accounts?
         // accountFactory.createAccount(User user, )
         //Bank.db.createAccount(currentUser.getUser_id(), accountType, balance, currency_name);
 

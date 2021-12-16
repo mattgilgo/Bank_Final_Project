@@ -2,7 +2,12 @@ CREATE TABLE stock_accounts(stock_instance_owned_id INTEGER PRIMARY KEY AUTOINCR
 
 CREATE TABLE stocks( stock_id INTEGER PRIMARY KEY AUTOINCREMENT, stock_ticker TEXT NOT NULL, stock_price REAL NOT NULL);
 
-CREATE TABLE transactions( transaction_id INTEGER PRIMARY KEY AUTOINCREMENT, transaction_type TEXT NOT NULL, transaction_amount REAL NOT NULL, transaction_time DATETIME DEFAULT CURRENT_TIMESTAMP, account_id INTEGER NOT NULL, FOREIGN KEY (account_id) REFERENCES accounts(account_id));
+CREATE TABLE transactions( transaction_id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                            transaction_type TEXT NOT NULL, 
+                            transaction_amount REAL NOT NULL, 
+                            transaction_time DATETIME DEFAULT CURRENT_TIMESTAMP, 
+                            account_id INTEGER NOT NULL, 
+                            FOREIGN KEY (account_id) REFERENCES accounts(account_id));
 
 CREATE TABLE accounts( account_id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, account_type TEXT NOT NULL, balance REAL NOT NULL, FOREIGN KEY (user_id) REFERENCES users(user_id));
 
@@ -42,13 +47,14 @@ INSERT INTO stocks (stock_ticker, stock_price) VALUES (?, ?);
 -- Buy shares of new stock that a person's account hadn't had before (pass it account_id and stock_id)
 INSERT INTO stocks_owned (account_id, stock_id, cash_balance, stock_buy_price, num_shares) VALUES (?,?,?,?,?);
 
-
 -- Buy/Sell shares of already owned stock
-UPDATE stocks_owned SET cash_balance = ? WHERE account_id = ?;
+UPDATE accounts SET balance = ? WHERE account_id = ?;
 UPDATE stocks_owned SET num_shares = ? WHERE stock_instance_owned_id = ?;
 
 -- Check if stock has been owned previously by person
 SELECT stock_id from stocks_owned WHERE account_id = ? and stock_ticker = ?;
+
+
 
 
 
