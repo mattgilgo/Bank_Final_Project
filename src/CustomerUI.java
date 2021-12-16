@@ -28,7 +28,8 @@ public class CustomerUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO this is an example, but need to pull balance for that account
-                infoDisplay.setText((String) dropDown.getSelectedItem());
+                infoDisplay.setText(Double.toString(atm.getAllAccounts().get(Integer.parseInt(((String) dropDown.getSelectedItem()).replaceAll("[\\D]", ""))).getBalance()));
+                //System.out.println(atm.getAllAccounts().get(Integer.parseInt(((String) dropDown.getSelectedItem()).replaceAll("[\\D]", ""))).getBalance();
             }
         });
 
@@ -42,6 +43,7 @@ public class CustomerUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO go to create account function, open create account UI
+                atm.createAccountUI();
             }
         });
     }
@@ -51,10 +53,13 @@ public class CustomerUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        ATM atm = new ATM(new Customer(1, "C", "test", "test"));
         String[] accountsTypes = {"checking", "savings", "checking", "savings"};
         String[] accountsCurrencyNames = {"Dollars", "Ethereum", "Bit Coin", "Doge Coin"};
         String[] accountsCurrencySymbols = {"USD", "ETH", "BTC", "DOGE"};
+        Bank bank = new Bank();
+        User user  = new Customer(0, "C", "mattg", "almostdone");
+        bank.launchAtm(user);
+        ATM atm = bank.getAtm();
         ArrayList<Account> accountArrayList = new ArrayList<>();
         for (int i = 0; i < accountsTypes.length; i++) {
             accountArrayList.add(new Account( i, i+1, accountsTypes[i], 1000, accountsCurrencyNames[i], accountsCurrencySymbols[i]));
