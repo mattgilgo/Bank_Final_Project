@@ -59,12 +59,21 @@ public class ATM {
 
     }
 
-    public void withdrawMoney() {
-
+    public void withdrawMoney(int accountId, double amount) {
+        for (Account act: allAccounts) {
+            if (act.getAccount_id() == accountId) {
+                Bank.db.setAccountBalance(act.getAccount_id(), act.getBalance()-amount);;
+            }
+        }
+        
     }
 
-    public void depositMoney() {
-
+    public void depositMoney(int accountId, double amount) {
+        for (Account act: allAccounts) {
+            if (act.getAccount_id() == accountId) {
+                Bank.db.setAccountBalance(act.getAccount_id(), act.getBalance()+amount);;
+            }
+        }
     }
 
     public void viewTransactions() {

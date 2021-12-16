@@ -191,7 +191,16 @@ public class Database {
     }
 
     public void updateAccount(Account act){
+        String sql = "UPDATE accounts SET balance = ? WHERE account_id = ?";
 
+        try (
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setDouble(1, cashBalance);
+            pstmt.setInt(2, account_id);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void createTransaction(String transType, double transAmount, int accountId) {
