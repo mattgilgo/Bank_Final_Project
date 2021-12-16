@@ -2,7 +2,12 @@ CREATE TABLE stock_accounts(stock_instance_owned_id INTEGER PRIMARY KEY AUTOINCR
 
 CREATE TABLE stocks( stock_id INTEGER PRIMARY KEY AUTOINCREMENT, stock_ticker TEXT NOT NULL, stock_price REAL NOT NULL);
 
-CREATE TABLE transactions( transaction_id INTEGER PRIMARY KEY AUTOINCREMENT, transaction_type TEXT NOT NULL, transaction_amount REAL NOT NULL, transaction_time DATETIME DEFAULT CURRENT_TIMESTAMP, account_id INTEGER NOT NULL, FOREIGN KEY (account_id) REFERENCES accounts(account_id));
+CREATE TABLE transactions( transaction_id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                            transaction_type TEXT NOT NULL, 
+                            transaction_amount REAL NOT NULL, 
+                            transaction_time DATETIME DEFAULT CURRENT_TIMESTAMP, 
+                            account_id INTEGER NOT NULL, 
+                            FOREIGN KEY (account_id) REFERENCES accounts(account_id));
 
 CREATE TABLE accounts( account_id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, account_type TEXT NOT NULL, balance REAL NOT NULL, FOREIGN KEY (user_id) REFERENCES users(user_id));
 
