@@ -45,6 +45,6 @@ public class LoginUI extends JFrame{
     }
 
     public static void main(String[] args) {
-        LoginUI login = new LoginUI();
+        LoginUI login = new LoginUI(new Bank());
     }
 }
