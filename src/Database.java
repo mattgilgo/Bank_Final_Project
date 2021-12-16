@@ -219,8 +219,8 @@ public class Database {
             while(rs.next()) {
                 int transId = rs.getInt("transaction_id");
                 String transType = rs.getString("transaction_type");
-                double transAmount = rs.getDouble("balance"); // is this a new column? 
-                Timestamp timestamp = rs.getTimestamp("timestamp"); // not sure this one is in current db either
+                double transAmount = rs.getDouble("transaction_amount"); // is this a new column? 
+                Timestamp timestamp = rs.getTimestamp("transaction_time"); // not sure this one is in current db either
                 int accountId = rs.getInt("account_id");
                 Transaction trans = new Transaction(transId, transType, transAmount, timestamp, accountId);
                 allTransactions.add(trans);
@@ -466,11 +466,11 @@ public class Database {
         try (
             PreparedStatement pstmt  = conn.prepareStatement(sql)){
             ResultSet rs  = pstmt.executeQuery();
-            double transAmount = rs.getDouble("balance"); 
-            Timestamp timestamp = rs.getTimestamp("timestamp");
+            double transAmount = rs.getDouble("transaction_amount"); 
+            Timestamp timestamp = rs.getTimestamp("transaction_time");
             // loop through the result set
             while(rs.next()) {
-                System.out.println(rs.getInt("transaction_id") + " " + rs.getString("transaction_type") + " " + rs.getInt("account_id"));
+                System.out.println(rs.getInt("transaction_id") + " " + rs.getString("transaction_type") + " " + rs.getInt("account_id") + " " + rs.getDouble("transaction_amount") + " " + rs.getTimestamp("transaction_time"));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
