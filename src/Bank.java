@@ -33,12 +33,6 @@ public class Bank {
 
     public void launchAtm(User user){
         this.atm = new ATM(user);
-        if(user.getUser_type().equals("C")){
-            atm.setCurrentCustomer(new Customer(user.getUser_id(), user.getUser_type(), user.getUsername(), user.getPassword()));
-        }
-        else{
-            atm.setCurrentManager(new Manager(user.getUser_id(), user.getUser_type(), user.getUsername(), user.getPassword()));
-        }
     }
 
     public void addFees(double fee){

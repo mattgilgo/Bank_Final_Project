@@ -1,8 +1,18 @@
 import java.sql.Timestamp;
+import java.util.*;
 
 public class Transaction { // matt removed abstract b/c it wasn't able to make an Account object when querying them in Database
 
     public static final String[] fieldNames = {"transaction_id", "transaction_type", "transaction_amount", "transaction_time", "account_id"};
+    // Could use this hash map for different naming but not completely necessary
+    public static HashMap<String, String> transactionNames = new HashMap<String, String>();
+    static {
+        transactionNames.put("withdraw", "withdraw");
+        transactionNames.put("deposit", "deposit");
+    }
+    
+
+
     protected int transaction_id;
     protected String transaction_type;
     protected double transaction_amount;

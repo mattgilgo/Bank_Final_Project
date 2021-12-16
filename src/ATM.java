@@ -22,7 +22,15 @@ public class ATM {
     public ATM(User user){
         this.currentUser = user;
         this.allAccounts = new ArrayList<Account>();
-        openUser();
+
+        if(user.getUser_type().equalsIgnoreCase("C")){
+            currentCustomer = new Customer(user.getUser_id(), user.getUser_type(), user.getUsername(), user.getPassword());
+            openUser();
+        }
+        else{
+            currentManager = new Manager(user.getUser_id(), user.getUser_type(), user.getUsername(), user.getPassword());
+            openManager();
+        }
     }
 
     public void logout() {
@@ -32,6 +40,11 @@ public class ATM {
     public void openUser(){
         this.allAccounts.addAll(Bank.db.queryUsersAccounts(getCurrentUser().getUser_id()));
         createCustomerUI();
+    }
+    public void openManager(){
+        //TODO Add Manager Report UI
+        System.out.println(currentManager.getUsername());
+        System.out.println(currentManager.getReport());
     }
 
     public void createAccountUI() {
@@ -79,7 +92,8 @@ public class ATM {
     public void withdrawMoney(int accountId, double amount) {
         for (Account act: allAccounts) {
             if (act.getAccount_id() == accountId) {
-                Bank.db.setAccountBalance(act.getAccount_id(), act.getBalance()-amount);;
+                Bank.db.setAccountBalance(act.getAccount_id(), act.getBalance()-amount);
+                Bank.db.createTransaction("withdraw", amount, accountId);
             }
         }
         
@@ -88,7 +102,8 @@ public class ATM {
     public void depositMoney(int accountId, double amount) {
         for (Account act: allAccounts) {
             if (act.getAccount_id() == accountId) {
-                Bank.db.setAccountBalance(act.getAccount_id(), act.getBalance()+amount);;
+                Bank.db.setAccountBalance(act.getAccount_id(), act.getBalance()+amount);
+                Bank.db.createTransaction("deposit", amount, accountId);
             }
         }
     }
@@ -103,6 +118,16 @@ public class ATM {
         }
         return data;
     }
+    public Object[][] viewReport() {
+        // Could be overloaded for managers and customers
+        ArrayList<ReportTuple> reportTuples = currentManager.getReport().getReportTuples();
+        Object[][] data = new Object[reportTuples.size()][];
+
+        for (int i=0; i<reportTuples.size(); i++) {
+            data[i] = reportTuples.get(i).getStringArray();
+        }
+        return data;
+    }
 
     public void updateUserAccounts(){
         this.setAllAccounts(Bank.db.queryUsersAccounts(getCurrentUser().getUser_id()));
@@ -110,6 +135,26 @@ public class ATM {
     public void generateDailyReport() {
 
     }
+
+    public void buyStock(){
+
+    }
+
+    public void sellStock(){
+
+    }
+
+    public void getTrades(){
+
+    }
+
+    public void getPortfolio(){
+
+    }
+
+    // buys and sells - like see all transactions
+    // see portfolio - each stock, how much you own 
+
 
 
 
