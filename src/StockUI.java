@@ -19,14 +19,18 @@ public class StockUI extends JFrame {
     private JLabel equityLabel;
     private JPanel panel;
 
-    public StockUI(String[] userAccounts) {
+    private ATM atm;
+
+    public StockUI(ATM atm) {
+
+        this.atm = atm;
 
         DefaultComboBoxModel<String> modelStockDrop = new DefaultComboBoxModel<String>(SUPPORTED_STOCKS);
         stockDrop.setModel(modelStockDrop);
         stockDrop.setForeground(new Color(0).BLACK);
         stockDrop.setBackground(new Color(0).LIGHT_GRAY);
 
-        DefaultComboBoxModel<String> modelBankDrop = new DefaultComboBoxModel<String>(userAccounts);
+        DefaultComboBoxModel<String> modelBankDrop = new DefaultComboBoxModel<String>(atm.getStringListOfStockAccounts());
         bankDrop.setModel(modelBankDrop);
         bankDrop.setForeground(new Color(0).BLACK);
         bankDrop.setBackground(new Color(0).LIGHT_GRAY);
@@ -76,8 +80,8 @@ public class StockUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        String[] userAccounts = {"checking USD", "savings BTC"};
-        StockUI ui = new StockUI(userAccounts);
-        ui.showUI();
+//        String[] userAccounts = {"checking USD", "savings BTC"};
+//        StockUI ui = new StockUI(userAccounts);
+//        ui.showUI();
     }
 }
