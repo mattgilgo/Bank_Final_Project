@@ -30,6 +30,7 @@ public class ATM {
 
     public void openUser(){
         CustomerUI customerUI = new CustomerUI(this);
+        customerUI.showUI();
     }
 
     public void createAccount(String accountType) {

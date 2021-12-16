@@ -42,6 +42,7 @@ public class LoginUI extends JFrame{
                 String user = userTextField.getText();
                 String pass = String.valueOf(passTextField.getPassword());
                 // TODO create user account
+                bank.createUserAccount("C", user, pass);
             }
         });
         createMgrButton.addActionListener(new ActionListener() {
@@ -50,6 +51,7 @@ public class LoginUI extends JFrame{
                 String user = userTextField.getText();
                 String pass = String.valueOf(passTextField.getPassword());
                 // TODO create manager account
+                bank.createUserAccount("M", user, pass);
             }
         });
     }
