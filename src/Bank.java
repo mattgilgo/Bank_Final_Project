@@ -1,5 +1,6 @@
 public class Bank {
     private ATM atm;
+    private LoginUI userLoginAndCreateUserGui;
 
     public Bank(){
 
@@ -8,6 +9,7 @@ public class Bank {
 
     public void startBankSession(){
         this.atm = new ATM();
+        this.userLoginAndCreateUserGui = new LoginUI(this);
     }
 
     //Create the new user account and add to database
