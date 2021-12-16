@@ -116,6 +116,16 @@ public class ATM {
         }
         return data;
     }
+    public Object[][] viewReport() {
+        // Could be overloaded for managers and customers
+        ArrayList<ReportTuple> reportTuples = currentManager.getReport().getReportTuples();
+        Object[][] data = new Object[reportTuples.size()][];
+
+        for (int i=0; i<reportTuples.size(); i++) {
+            data[i] = reportTuples.get(i).getStringArray();
+        }
+        return data;
+    }
 
     public void updateUserAccounts(){
         this.setAllAccounts(Bank.db.queryUsersAccounts(getCurrentUser().getUser_id()));

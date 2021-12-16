@@ -1,6 +1,7 @@
 import java.util.Objects;
 
 public class ReportTuple {
+    private static final String[] fieldNames = {"user_id", "user_type", "username", "password", "account_id", "account_type", "balance", "currency_name"};
     private int user_id;
     private String user_type;
     private String username;
@@ -21,6 +22,14 @@ public class ReportTuple {
         this.currency = new Currency(currency_name, currency_symbol);
     }
 
+    public String[] getStringArray() {
+        String [] arrayString = {Integer.toString(getUser_id()), getUser_type(), getUsername(), getPassword(), Integer.toString(getAccount_id()), getAccount_type(), Double.toString(getBalance()), getCurrency().getCurrency_type()};
+        return arrayString;
+    }
+
+    public String[] getFieldNames() {
+        return fieldNames;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
