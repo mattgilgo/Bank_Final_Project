@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class CustomerUI extends JFrame {
     private JComboBox dropDown;
@@ -13,8 +14,8 @@ public class CustomerUI extends JFrame {
     private JButton createAcctButton;
 
 
-    public CustomerUI(String[] accounts) {
-        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(accounts);
+    public CustomerUI(ATM atm) {
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(atm.getStringListOfAccounts());
         dropDown.setModel(model);
         dropDown.setForeground(new Color(0).BLACK);
         dropDown.setBackground(new Color(0).LIGHT_GRAY);
@@ -50,8 +51,16 @@ public class CustomerUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        String[] accounts = {"", "checking USD", "savings BTC"};
-        CustomerUI custUI = new CustomerUI(accounts);
+        ATM atm = new ATM(new Customer(1, "C", "test", "test"));
+        String[] accountsTypes = {"checking", "savings", "checking", "savings"};
+        String[] accountsCurrencyNames = {"Dollars", "Ethereum", "Bit Coin", "Doge Coin"};
+        String[] accountsCurrencySymbols = {"USD", "ETH", "BTC", "DOGE"};
+        ArrayList<Account> accountArrayList = new ArrayList<>();
+        for (int i = 0; i < accountsTypes.length; i++) {
+            accountArrayList.add(new Account( i, i+1, accountsTypes[i], 1000, accountsCurrencyNames[i], accountsCurrencySymbols[i]));
+        }
+        atm.setAllAccounts(accountArrayList);
+        CustomerUI custUI = new CustomerUI(atm);
         custUI.showUI();
     }
 
