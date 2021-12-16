@@ -2,6 +2,7 @@ import java.beans.Customizer;
 import java.util.*;
 
 public class ATM {
+    private Factory factory;
 
     // Could have one user (that can be both a customer or manager)
     private User currentUser;
@@ -19,8 +20,7 @@ public class ATM {
 
     public ATM(User user){
         this.currentUser = user;
-        this.allAccounts = Bank.db.queryUsersAccounts(user.user_id);
-        System.out.println(allAccounts.size());
+        this.allAccounts = new ArrayList<Account>();
         openUser();
     }
 
@@ -29,14 +29,17 @@ public class ATM {
     }
 
     public void openUser(){
+        this.allAccounts.addAll(Bank.db.queryUsersAccounts(getCurrentUser().getUser_id()));
         CustomerUI customerUI = new CustomerUI(this);
         customerUI.showUI();
     }
 
-    public void createAccount(String accountType) {
+    public void createAccount(String accountType, double balance, String currency_name) {
         // Charge a fee for account creation 
         // Use a factory for generating accounts? 
         // accountFactory.createAccount(User user, )
+        //Bank.db.createAccount(currentUser.getUser_id(), accountType, balance, currency_name);
+
     }
 
     public void closeAccount() {
@@ -80,13 +83,16 @@ public class ATM {
     }
 
     public String[] getStringListOfAccounts(){
-        String[] allAccountInfo = new String[allAccounts.size()+1];
-        allAccountInfo[0] = "";
+        String[] allAccountInfo = new String[allAccounts.size()];
         for (int i = 0; i < allAccounts.size(); i++) {
             Account a = allAccounts.get(i);
             allAccountInfo[i] = a.getAccount_id() + " " + a.getAccount_type() +" "+ a.getCurrency().getCurrency_symbol();
         }
         return allAccountInfo;
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
     }
     //Setters
 

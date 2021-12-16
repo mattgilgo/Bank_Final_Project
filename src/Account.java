@@ -9,6 +9,13 @@ public class Account {  // matt removed abstract b/c it wasn't able to make an A
     protected Currency currency;
 
 
+    public Account(){
+        //this.account_id=account_id;
+        this.account_type = "";
+        this.user_id = Integer.MAX_VALUE;
+        this.balance = 0;
+        this.currency = new Currency("", "");
+    }
     //Create account with zero balance
     public Account( int user_id,String account_type, String currency_name, String currency_symbol){
         //this.account_id=account_id;
