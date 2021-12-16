@@ -33,7 +33,7 @@ public class tableUI extends JFrame {
 
     public static void main(String[] args) {
 
-        String[] colNames = new String[]{"Account", "Transaction Type", "Ammount"};
+        String[] colNames = new String[]{"Account", "Transaction Type", "Amount"};
         Object[][] data = new Object[][]{
                 {"Checking", "Credit", "500"},
                 {"Checking", "Debit", "350"},
