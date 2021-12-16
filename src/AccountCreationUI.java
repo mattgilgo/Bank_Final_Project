@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 public class AccountCreationUI extends JFrame {
     // TODO this should be static somewhere else in classes that make sense
     public static final String[] SUPPORTED_CURRENCIES = {"USD", "BTC", "ETH"};
-    public static final String[] SUPPORTED_TYPES = {"Saving", "Checking"};
+    public static final String[] SUPPORTED_TYPES = {"Checking", "Saving", "Loan", "Trading"};
 
     private JLabel currencyLabel;
     private JComboBox currencyDrop;
@@ -49,7 +49,7 @@ public class AccountCreationUI extends JFrame {
                 String acctType = (String) typeDrop.getSelectedItem();
                 String acctToCharge = (String) acctDrop.getSelectedItem();
                 // create account method called here
-                atm.createAccount(acctType); // TODO probably need more things passed
+                //atm.createAccount(acctType); // TODO probably need more things passed
                 dispose(); // close window when done
             }
         });
@@ -62,7 +62,10 @@ public class AccountCreationUI extends JFrame {
     public static void main(String[] args) {
         String[] userAccounts = {"checking USD", "savings BTC"};
         double fee = 3;
-        ATM atm = new ATM(new Customer(1, "C", "test", "test"));
+        Bank bank = new Bank();
+        User user  = new Customer(0, "C", "mattg", "almostdone");
+        bank.launchAtm(user);
+        ATM atm = bank.getAtm();
         AccountCreationUI accountCreationUI = new AccountCreationUI(atm, userAccounts, fee);
         accountCreationUI.showUI();
     }
