@@ -38,7 +38,7 @@ public class StockUI extends JFrame {
         setContentPane(panel);
         setTitle("Stock Market Interface");
         setSize(600, 300);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         buyButton.addActionListener(new ActionListener() {
             @Override
