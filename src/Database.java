@@ -167,14 +167,14 @@ public class Database {
     }
 
 
-    public void createAccount(int user_id, String account_type, String currency_type) {
+    public void createAccount(int user_id, String account_type, double balance, String currency_type) {
         String sql = "INSERT INTO accounts(user_id,username,balance,currency) VALUES(?,?,?,?)";
 
         try (
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, user_id);
             pstmt.setString(2, account_type);
-            pstmt.setInt(3, 0); // initial balance at $0, add fee later
+            pstmt.setDouble(3, balance); // initial balance at $0, add fee later
             pstmt.setString(4, currency_type);
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -237,9 +237,6 @@ public class Database {
         try (
                 PreparedStatement pstmt  = conn.prepareStatement(sql)){
 
-            // set the value
-            // pstmt.setInt(1,user_id);
-            //
             ResultSet rs  = pstmt.executeQuery();
 
             // loop through the result set
@@ -282,9 +279,6 @@ public class Database {
         try (
                 PreparedStatement pstmt  = conn.prepareStatement(sql)){
 
-            // set the value
-            // pstmt.setInt(1,user_id);
-            //
             ResultSet rs  = pstmt.executeQuery();
 
             // loop through the result set
@@ -361,6 +355,7 @@ public class Database {
 
         // set the value
         pstmt.setInt(1,account_id);
+        pstmt.setString(2,ticker);
         //
         ResultSet rs  = pstmt.executeQuery();
 
@@ -370,19 +365,20 @@ public class Database {
         }
 
 
-    } catch (SQLException e) {
-        System.out.println(e.getMessage());
-    }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        if (stockInstance > 0) {
+            return stockInstance;
+        } else {
+            System.out.println("User does not own this stock!");
+            return stockInstance;
+        }
     
-    if (stockInstance > 0) {
-        return stockInstance;
-    } else {
-        System.out.println("User does not own this stock!");
-        return stockInstance;
-    }
     }
 
-    public void transactStock(int account_id, String ticker, double cashBalance, double num_shares, int stockInstance) {
+    public void transactOwnedStock(int account_id, String ticker, double cashBalance, double num_shares, int stockInstance) {
         String sql = "UPDATE stocks_owned SET cash_balance = ? WHERE account_id = ?";
 
         try (
@@ -409,47 +405,6 @@ public class Database {
 
 }
 
-    // public boolean createAccount(int user_id){
-    //     String sql = "SELECT * FROM accounts WHERE user_id = ?";
 
-    //     try (
-    //             PreparedStatement pstmt  = conn.prepareStatement(sql)){
-
-    //         // set the value
-    //         pstmt.setString(1,user_id);
-    //         //
-    //         ResultSet rs  = pstmt.executeQuery();
-
-    //         // loop through the result set
-    //         while(rs.next()) {
-    //             String userType = rs.getString("user_type");
-    //             String passwordCheck = rs.getString("password");
-    //             if (password.equals(passwordCheck)){
-    //                 return true;
-    //             }
-
-    //         }
-
-
-    //     } catch (SQLException e) {
-    //         System.out.println(e.getMessage());
-
-    //     }
-    //     return false;
-
-    //}
-
-
-    // public static void main(String[] args) {
-    //     Database db = new Database();
-    //     db.test();
-    //     db.insertUser("C", "Mark Zucc", "password");
-    //     User user = db.getUser(1);
-    //     System.out.println(user);
-    //     User loginCheck = db.checkLogin("Mark Zucc", "password");
-    //     System.out.println(loginCheck);
-    // }
-
-    // 
 
 
