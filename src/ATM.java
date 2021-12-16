@@ -94,6 +94,7 @@ public class ATM {
             if (act.getAccount_id() == accountId) {
                 Bank.db.setAccountBalance(act.getAccount_id(), act.getBalance()-amount);
                 Bank.db.createTransaction("withdraw", amount, accountId);
+                updateUserAccounts();
             }
         }
         
@@ -104,6 +105,7 @@ public class ATM {
             if (act.getAccount_id() == accountId) {
                 Bank.db.setAccountBalance(act.getAccount_id(), act.getBalance()+amount);
                 Bank.db.createTransaction("deposit", amount, accountId);
+                updateUserAccounts();
             }
         }
     }
