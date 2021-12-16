@@ -45,6 +45,7 @@ public class ATM {
         //TODO Add Manager Report UI
         System.out.println(currentManager.getUsername());
         System.out.println(currentManager.getReport());
+        createManagerUI();
     }
 
     public void createAccountUI() {
@@ -64,6 +65,12 @@ public class ATM {
         updateUserAccounts();
         createCustomerUI();
     }
+
+    public void createManagerUI() {
+        ManagerUI managerUI = new ManagerUI(this);
+        managerUI.showUI();
+    }
+
     public void createCustomerUI(){
         CustomerUI customerUI = new CustomerUI(this);
         customerUI.showUI();
@@ -228,6 +235,10 @@ public class ATM {
 
     public String[] getStringListOfStockAccounts() {
         return new String[]{"test 1", "test 2"};
+    }
+
+    public String[] getStringListOfAllUsers() {
+        return new String[]{"ex user 1", "ex user 2"};
     }
 
     public User getCurrentUser() {
