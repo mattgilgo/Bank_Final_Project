@@ -53,7 +53,6 @@ public class CustomerUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        //ATM atm = new ATM(new Customer(0, "C", "test", "test"));
         String[] accountsTypes = {"checking", "savings", "checking", "savings"};
         String[] accountsCurrencyNames = {"Dollars", "Ethereum", "Bit Coin", "Doge Coin"};
         String[] accountsCurrencySymbols = {"USD", "ETH", "BTC", "DOGE"};
