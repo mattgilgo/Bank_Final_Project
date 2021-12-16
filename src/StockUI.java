@@ -51,10 +51,10 @@ public class StockUI extends JFrame {
                 String stockTicker = (String) stockDrop.getSelectedItem();
                 Integer numShares = Integer.parseInt(shareNumberText.getText());
                 String bankAccount = (String) bankDrop.getSelectedItem();
-                int stockInstance = Bank.db.getStockInstance(account_id, stockTicker); // need account_id here
-                if (stockInstance > 0) {
-                    Bank.db.transactOwnedStock(account_id, stockInstance, cashBalance, numShares, stockInstance); // need cashBalance here
-                }
+                //int stockInstance = Bank.db.getStockInstance(account_id, stockTicker); // need account_id here
+                //if (stockInstance > 0) {
+               //     Bank.db.transactOwnedStock(account_id, stockInstance, cashBalance, numShares, stockInstance); // need cashBalance here
+                //}
             }
         });
         seeBuysSellsButton.addActionListener(new ActionListener() {

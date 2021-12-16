@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Objects;
 
 public abstract class User {
@@ -6,12 +7,14 @@ public abstract class User {
     protected String user_type;
     protected String username;
     protected String password;
+    private double fee;
     //private Database db;
 
     public User(String user_type, String username, String password){
         this.user_type = user_type;
         this.username = username;
         this.password = password;
+        this.fee = 1;
         //this.db  = new Database();
     }
 
@@ -20,6 +23,7 @@ public abstract class User {
         this.user_type = user_type;
         this.username = username;
         this.password = password;
+        this.fee = 1;
     }
 
     public abstract void createAccount(String accountType);
@@ -53,6 +57,9 @@ public abstract class User {
     public String getPassword() {
         return password;
     }
+    public double getFee() {
+        return fee;
+    }
 
     //Setters
     public void setUser_id(int user_id){
@@ -74,5 +81,10 @@ public abstract class User {
     @Override
     public String toString(){
         return user_id + " " + username + " " + user_type + " " + password;
+    }
+
+
+    public void setFee(double fee){
+        this.fee = fee;
     }
 }
