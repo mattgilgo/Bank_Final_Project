@@ -9,19 +9,20 @@ public abstract class Account {
     protected Currency currency;
 
     //Create account with zero balance
-    public Account(int account_id, String user_id,String account_type, String currency_name, String currency_symbol){
-        this.account_id=account_id;
+    public Account( String user_id,String account_type, String currency_name, String currency_symbol){
+        //this.account_id=account_id;
         this.account_type = account_type;
         this.user_id = user_id;
         this.balance = 0;
         this.currency = new Currency(currency_name, currency_symbol);
     }
 
-    public Account(int account_id, String user_id,String account_type, double balance){
+    public Account(int account_id, String user_id,String account_type, double balance, String currency_name, String currency_symbol){
         this.account_id=account_id;
         this.account_type = account_type;
         this.user_id = user_id;
         this.balance = balance;
+        this.currency = new Currency(currency_name, currency_symbol);
     }
 
     @Override

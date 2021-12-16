@@ -1,3 +1,4 @@
+import java.util.Objects;
 
 public abstract class User {
 
@@ -21,6 +22,19 @@ public abstract class User {
     }
 
     public abstract void createAccount(String accountType);
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return user_id == user.user_id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(user_id);
+    }
 
     //Getters
     public int getUser_id(){
