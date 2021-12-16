@@ -4,6 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+// TODO add account balance field
+// TODO withdraw/deposit
+
 public class CustomerUI extends JFrame {
     private JComboBox dropDown;
     private JLabel infoDisplay;
@@ -43,6 +46,7 @@ public class CustomerUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO go to create account function, open create account UI
+
                 atm.createAccountUI();
             }
         });
