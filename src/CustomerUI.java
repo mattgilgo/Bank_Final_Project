@@ -36,8 +36,15 @@ public class CustomerUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO this is an example, but need to pull balance for that account
-                infoDisplay.setText(Double.toString(atm.getAllAccounts().get(Integer.parseInt(((String) dropDown.getSelectedItem()).replaceAll("[\\D]", ""))).getBalance()));
-                //System.out.println(atm.getAllAccounts().get(Integer.parseInt(((String) dropDown.getSelectedItem()).replaceAll("[\\D]", ""))).getBalance();
+                //infoDisplay.setText()
+                       // Double.toString(
+
+                        /*atm.getAllAccounts().get(atm.getAllAccounts().indexOf(
+                                Integer.parseInt(((String) dropDown.getSelectedItem()).replaceAll("[\\D]", "")))).getBalance()));*/
+                int account_id = (Integer.parseInt(((String) dropDown.getSelectedItem()).replaceAll("[\\D]", "")));
+                Account tempAccount = new Account();
+                tempAccount.setAccount_id(account_id);
+                infoDisplay.setText(Double.toString(atm.getAllAccounts().get(atm.getAllAccounts().indexOf(tempAccount)).getBalance()));
             }
         });
 

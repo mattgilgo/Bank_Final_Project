@@ -48,6 +48,7 @@ public class ATM {
         // Use a factory for generating accounts?
         // accountFactory.createAccount(User user, )
         Bank.db.createAccount(currentUser.getUser_id(), accountType, balance, currency_name);
+        updateUserAccounts();
         createCustomerUI();
     }
     public void createCustomerUI(){
@@ -103,6 +104,9 @@ public class ATM {
         return data;
     }
 
+    public void updateUserAccounts(){
+        this.setAllAccounts(Bank.db.queryUsersAccounts(getCurrentUser().getUser_id()));
+    }
     public void generateDailyReport() {
 
     }
