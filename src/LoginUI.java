@@ -11,6 +11,7 @@ public class LoginUI extends JFrame{
     private JLabel userName;
     private JLabel password;
     private JLabel textShown;
+    private JButton mgrButton;
     private Bank bank;
 
     public LoginUI(Bank bank) {
