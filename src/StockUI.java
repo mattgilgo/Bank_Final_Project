@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class StockUI extends JFrame {
+    // TODO Supported currencies variable should be moved to where it makes sense
     public static final String[] SUPPORTED_STOCKS = new String[]{"BTC", "ETH", "AAPL", "ORCL"};
 
     private JButton seePortfolioButton;
