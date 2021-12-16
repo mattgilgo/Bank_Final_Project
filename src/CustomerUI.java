@@ -51,8 +51,8 @@ public class CustomerUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO go to create account function, open create account UI
-
                 atm.createAccountUI();
+
             }
         });
     }

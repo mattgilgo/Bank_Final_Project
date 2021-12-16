@@ -48,7 +48,8 @@ public class ATM {
         // Use a factory for generating accounts?
         // accountFactory.createAccount(User user, )
         Bank.db.createAccount(currentUser.getUser_id(), accountType, balance, currency_name);
-
+        CustomerUI customerUI = new CustomerUI(this);
+        customerUI.showUI();
     }
 
     public void closeAccount() {
@@ -71,10 +72,10 @@ public class ATM {
         // Could be overloaded for managers and customers
         ArrayList<String[]> data = new ArrayList<>();
 
-        ArrayList<Transaction> transactions = Bank.getDb().queryTransactions(userId);
+        /*ArrayList<Transaction> transactions = Bank.getDb().queryTransactions(userId);
         for (Transaction txn : transactions) {
             data.add(txn.getStringArray());
-        }
+        }*/
 
         return data.toArray();
 
