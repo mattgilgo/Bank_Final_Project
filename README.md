@@ -67,3 +67,13 @@ If we can't get the SQL database working we can use files instead
 - Button: View all customers 
 - Button: See all transactions 
 - Button: Update stock market
+
+# Todo jd
+* probably should start different UI for custoemr or manager
+* all fees should be withdrawn from customers and placed in a master manager bank account
+* manager UI
+  * see manager account balance
+  * button to see all transactions
+  * button to see all stock transactions
+  * button to see master account transactions
+  * button + dropdown to see specific user transasction
