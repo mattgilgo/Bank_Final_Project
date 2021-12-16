@@ -2,11 +2,11 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Color;
 
-public class tableUI extends JFrame {
+public class TableUICreator extends JFrame {
     private JTable table;
     private JPanel panel;
 
-    public tableUI(String[] colNames, Object[][] data) {
+    public TableUICreator(String[] colNames, Object[][] data) {
 
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(colNames);
@@ -39,7 +39,7 @@ public class tableUI extends JFrame {
                 {"Checking", "Debit", "350"},
                 {"Checking", "Debit", "50"}
         };
-        tableUI atm = new tableUI(colNames, data);
+        TableUICreator atm = new TableUICreator(colNames, data);
         atm.showTable();
     }
 

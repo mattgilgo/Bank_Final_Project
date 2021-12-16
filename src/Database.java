@@ -144,7 +144,7 @@ public class Database {
 
 
     public void createAccount(int user_id, String account_type, double balance, String currency_type) {
-        String sql = "INSERT INTO accounts(user_id,username,balance,currency) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO accounts(user_id,account_type,balance,currency_name,currency_symbol) VALUES(?,?,?,?,?)";
 
         try (
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -152,6 +152,7 @@ public class Database {
             pstmt.setString(2, account_type);
             pstmt.setDouble(3, balance); // initial balance at $0, add fee later
             pstmt.setString(4, currency_type);
+            pstmt.setString(5, currency_type);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -190,18 +191,7 @@ public class Database {
         return allAccounts;
     }
 
-    public void updateAccount(Account act){
-        String sql = "UPDATE accounts SET balance = ? WHERE account_id = ?";
-
-        try (
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setDouble(1, cashBalance);
-            pstmt.setInt(2, account_id);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
+    
 
     public void createTransaction(String transType, double transAmount, int accountId) {
         String sql = "INSERT INTO transactions(transaction_type,transaction_amount,account_id) VALUES(?,?,?)";
