@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.plaf.TableUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -40,8 +41,11 @@ public class CustomerUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO set off a table UI pass columns and data of all transactions
+//                TableUICreator table = new TableUICreator(atm.viewTransactions());
+//                table.showTable();
             }
         });
+
         createAcctButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
