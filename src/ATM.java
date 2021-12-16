@@ -43,11 +43,11 @@ public class ATM {
         accountCreationUI.showUI();
 
     }
-    public void createAccount(String accountType, String currency_name) {
+    public void createAccount(String accountType, double balance, String currency_name) {
         // Charge a fee for account creation
         // Use a factory for generating accounts?
         // accountFactory.createAccount(User user, )
-        //Bank.db.createAccount(currentUser.getUser_id(), accountType, balance, currency_name);
+        Bank.db.createAccount(currentUser.getUser_id(), accountType, balance, currency_name);
 
     }
 
@@ -69,6 +69,7 @@ public class ATM {
 
     public void viewTransactions() {
         // Could be overloaded for managers and customers
+        //return an array of array of strings for the UI, each array will represent a row
     }
 
     public void generateDailyReport() {
