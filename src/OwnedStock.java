@@ -1,6 +1,8 @@
 import java.util.*;
 
 public class OwnedStock extends Stock {
+    public static fieldNames = {""}
+    
     private int account_id;
     private int stock_id;
     private double cash_balance;
