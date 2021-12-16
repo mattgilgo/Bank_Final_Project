@@ -190,6 +190,10 @@ public class Database {
         return allAccounts;
     }
 
+    public void updateAccount(Account act){
+
+    }
+
     public void createTransaction(String transType, double transAmount, int accountId) {
         String sql = "INSERT INTO transactions(transaction_type,transaction_amount,account_id) VALUES(?,?,?)";
 
@@ -205,14 +209,14 @@ public class Database {
     }
 
     // query transaction log for bank, do by date later
-    public ArrayList<Transaction> queryTransactions() {
+    public ArrayList<Transaction> queryTransactions(int userId) {
         ArrayList<Transaction> allTransactions =  new ArrayList<Transaction>();
 
-        String sql = "SELECT * FROM transactions";
+        String sql = "SELECT * FROM transactions T, accounts A WHERE T.account_id = A.account_id AND A.user_id = ?";
 
         try (
-                PreparedStatement pstmt  = conn.prepareStatement(sql)){
-
+            PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            pstmt.setInt(1, userId);
             ResultSet rs  = pstmt.executeQuery();
 
             // loop through the result set
