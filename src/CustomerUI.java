@@ -1,8 +1,13 @@
 import javax.swing.*;
+import javax.swing.plaf.TableUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+// TODO add account balance field
+// TODO withdraw/deposit
+// TODO when you click dropdown refresh the accounts
 
 public class CustomerUI extends JFrame {
     private JComboBox dropDown;
@@ -37,13 +42,18 @@ public class CustomerUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO set off a table UI pass columns and data of all transactions
+//                TableUICreator table = new TableUICreator(atm.viewTransactions());
+//                table.showTable();
             }
         });
+
         createAcctButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO go to create account function, open create account UI
                 atm.createAccountUI();
+                dispose();
+                atm.createCustomerUI();
             }
         });
     }
