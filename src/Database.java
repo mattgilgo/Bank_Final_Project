@@ -341,7 +341,7 @@ public class Database {
                 double cashBalance = rs.getDouble("cash_balance");
                 double buyPrice = rs.getDouble("buy_price");
                 double numShares = rs.getDouble("num_shares");
-                OwnedStock ownedStock = new OwnedStock(stockId, ticker, currentPrice, account_id, cashBalance, buyPrice, numShares)
+                OwnedStock ownedStock = new OwnedStock(stockId, ticker, currentPrice, account_id, cashBalance, buyPrice, numShares);
                 allAccountsStocks.add(ownedStock);
             }
 
@@ -437,7 +437,7 @@ public class Database {
     //     }
     //     return false;
 
-    }
+    //}
 
 
     // public static void main(String[] args) {

@@ -34,13 +34,13 @@ public class CustomerUI extends JFrame {
         transactionsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // set off a table UI
+                // TODO set off a table UI pass columns and data of all transactions
             }
         });
         createAcctButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // go to create account function, open create account UI
+                // TODO go to create account function, open create account UI
             }
         });
     }

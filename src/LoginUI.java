@@ -11,6 +11,7 @@ public class LoginUI extends JFrame{
     private JLabel userName;
     private JLabel password;
     private JLabel textShown;
+    private JButton createMgrButton;
     private Bank bank;
 
     public LoginUI(Bank bank) {
@@ -25,9 +26,10 @@ public class LoginUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 String user = userTextField.getText();
-                String pass = passTextField.getText();
+                String pass = String.valueOf(passTextField.getPassword());
                 if (bank.userLogin(user, pass)) {
                     textShown.setText(String.format("Login Successful! Welcome, %s!", user));
+                    bank.launchAtm(bank.db.checkLogin(user, pass));
                 } else {
                     textShown.setText(String.format("Invalid User, %s does not exist!", user));
                 }
@@ -37,9 +39,17 @@ public class LoginUI extends JFrame{
         createAccount.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                userTextField.setText("");
-                passTextField.setText("");
-                textShown.setText("Creating account...");
+                String user = userTextField.getText();
+                String pass = String.valueOf(passTextField.getPassword());
+                // TODO create user account
+            }
+        });
+        createMgrButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String user = userTextField.getText();
+                String pass = String.valueOf(passTextField.getPassword());
+                // TODO create manager account
             }
         });
     }
