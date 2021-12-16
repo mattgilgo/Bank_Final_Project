@@ -240,7 +240,7 @@ public class Database {
     public ArrayList<Transaction> queryTransactions(int userId) {
         ArrayList<Transaction> allTransactions =  new ArrayList<Transaction>();
 
-        String sql = "SELECT * FROM transactions T, accounts A WHERE T.account_id = A.account_id AND A.user_id = ?";
+        String sql = "SELECT T.transaction_id, T.transaction_type, T.transaction_amount, T.transaction_time, T.account_id as account_id FROM transactions T, accounts A WHERE T.account_id = A.account_id AND A.user_id = ?";
 
         try (
             PreparedStatement pstmt  = conn.prepareStatement(sql)){
