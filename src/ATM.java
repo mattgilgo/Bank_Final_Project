@@ -1,4 +1,5 @@
 import java.beans.Customizer;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class ATM {
@@ -59,29 +60,48 @@ public class ATM {
 
     }
 
-    public void requestLoan() {
+    public boolean requestLoan(double loanAmount, String currency_type) {
+        // Check their total wealth - return false if not approved
+        double totalWealth = 0;
+        for (Account act: allAccounts) {
+            totalWealth += act.getBalance();
+        }
 
+        if (totalWealth > 100.00) {
+            // Grant loan
+            Bank.db.createAccount(getCurrentUser().getUser_id(), "L", loanAmount, currency_type);
+            return true;
+        }
+
+        return false;
     }
 
-    public void withdrawMoney() {
-
+    public void withdrawMoney(int accountId, double amount) {
+        for (Account act: allAccounts) {
+            if (act.getAccount_id() == accountId) {
+                Bank.db.setAccountBalance(act.getAccount_id(), act.getBalance()-amount);;
+            }
+        }
+        
     }
 
-    public void depositMoney() {
-
+    public void depositMoney(int accountId, double amount) {
+        for (Account act: allAccounts) {
+            if (act.getAccount_id() == accountId) {
+                Bank.db.setAccountBalance(act.getAccount_id(), act.getBalance()+amount);;
+            }
+        }
     }
 
-    public Object[] viewTransactions(int userId) {
+    public Object[][] viewTransactions(int userId) {
         // Could be overloaded for managers and customers
-        ArrayList<String[]> data = new ArrayList<>();
+        ArrayList<Transaction> transactions = Bank.getDb().queryTransactions(userId);
+        Object[][] data = new Object[transactions.size()][];
 
-        /*ArrayList<Transaction> transactions = Bank.getDb().queryTransactions(userId);
-        for (Transaction txn : transactions) {
-            data.add(txn.getStringArray());
-        }*/
-
-        return data.toArray();
-
+        for (int i=0; i<transactions.size(); i++) {
+            data[i] = transactions.get(i).getStringArray();
+        }
+        return data;
     }
 
     public void updateUserAccounts(){

@@ -2,6 +2,7 @@ import java.sql.Timestamp;
 
 public class Transaction { // matt removed abstract b/c it wasn't able to make an Account object when querying them in Database
 
+    public static final String[] fieldNames = {"transaction_id", "transaction_type", "transaction_amount", "transaction_time", "account_id"};
     protected int transaction_id;
     protected String transaction_type;
     protected double transaction_amount;
@@ -42,6 +43,15 @@ public class Transaction { // matt removed abstract b/c it wasn't able to make a
 
     public int getAccount_id() {
         return account_id;
+    }
+
+    public String[] getStringArray() {
+        String [] arrayString = {Integer.toString(getTransaction_id()), getTransaction_type(), Double.toString(getTransaction_amount()), getTimestamp().toString()}; 
+        return arrayString;
+    }
+
+    public String[] getFieldNames() {
+        return fieldNames;
     }
 
     //Setters
