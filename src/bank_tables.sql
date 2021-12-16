@@ -42,13 +42,14 @@ INSERT INTO stocks (stock_ticker, stock_price) VALUES (?, ?);
 -- Buy shares of new stock that a person's account hadn't had before (pass it account_id and stock_id)
 INSERT INTO stocks_owned (account_id, stock_id, cash_balance, stock_buy_price, num_shares) VALUES (?,?,?,?,?);
 
-
 -- Buy/Sell shares of already owned stock
-UPDATE stocks_owned SET cash_balance = ? WHERE account_id = ?;
+UPDATE accounts SET balance = ? WHERE account_id = ?;
 UPDATE stocks_owned SET num_shares = ? WHERE stock_instance_owned_id = ?;
 
 -- Check if stock has been owned previously by person
 SELECT stock_id from stocks_owned WHERE account_id = ? and stock_ticker = ?;
+
+
 
 
 
