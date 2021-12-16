@@ -20,10 +20,17 @@ public class ATM {
     public ATM(User user){
         this.currentUser = user;
         this.allAccounts = Bank.db.queryUsersAccounts(user.user_id);
+        System.out.println(allAccounts.size());
+        openUser();
     }
 
     public void logout() {
         // Save all information to database
+    }
+
+    public void openUser(){
+        CustomerUI customerUI = new CustomerUI(this);
+        customerUI.showUI();
     }
 
     public void createAccount(String accountType) {
@@ -72,6 +79,15 @@ public class ATM {
         return allAccounts;
     }
 
+    public String[] getStringListOfAccounts(){
+        String[] allAccountInfo = new String[allAccounts.size()+1];
+        allAccountInfo[0] = "";
+        for (int i = 0; i < allAccounts.size(); i++) {
+            Account a = allAccounts.get(i);
+            allAccountInfo[i] = a.getAccount_id() + " " + a.getAccount_type() +" "+ a.getCurrency().getCurrency_symbol();
+        }
+        return allAccountInfo;
+    }
     //Setters
 
     public void setCurrentCustomer(Customer currentCustomer) {

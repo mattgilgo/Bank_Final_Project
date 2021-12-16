@@ -61,6 +61,7 @@ public class Account {  // matt removed abstract b/c it wasn't able to make an A
         return currency;
     }
 
+
     //Setters
 
     public void setAccount_id(int account_id) {
