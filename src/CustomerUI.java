@@ -53,6 +53,7 @@ public class CustomerUI extends JFrame {
                 // TODO go to create account function, open create account UI
 
                 atm.createAccountUI();
+                dispose();
             }
         });
     }
