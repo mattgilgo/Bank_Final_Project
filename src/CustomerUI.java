@@ -10,6 +10,7 @@ public class CustomerUI extends JFrame {
     private JLabel accountLabel;
     private JPanel panel;
     private JButton transactionsButton;
+    private JButton createAcctButton;
 
 
     public CustomerUI(String[] accounts) {
@@ -25,6 +26,7 @@ public class CustomerUI extends JFrame {
         dropDown.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // TODO this is an example, but need to pull balance for that account
                 infoDisplay.setText((String) dropDown.getSelectedItem());
             }
         });
@@ -33,6 +35,12 @@ public class CustomerUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // set off a table UI
+            }
+        });
+        createAcctButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // go to create account function, open create account UI
             }
         });
     }
