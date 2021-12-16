@@ -76,31 +76,7 @@ public class Database {
         
     }
 
-    public void test(){
-        String sql = "SELECT * FROM users";
-        
-        try (
-             PreparedStatement pstmt  = conn.prepareStatement(sql)){
-            
-            // set the value
-            
-            //
-            ResultSet rs  = pstmt.executeQuery();
-            
-            // loop through the result set
-            while(rs.next()) {
-                System.out.println(rs.getString("username"));
-            }
-            
     
-        
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            
-        }
-        
-        
-    }
 
     public User checkLogin(String username, String password){
         String sql = "SELECT * FROM users WHERE username = ?";
@@ -243,8 +219,8 @@ public class Database {
             while(rs.next()) {
                 int transId = rs.getInt("transaction_id");
                 String transType = rs.getString("transaction_type");
-                double transAmount = rs.getDouble("balance");
-                Timestamp timestamp = rs.getTimestamp("timestamp");
+                double transAmount = rs.getDouble("balance"); // is this a new column? 
+                Timestamp timestamp = rs.getTimestamp("timestamp"); // not sure this one is in current db either
                 int accountId = rs.getInt("account_id");
                 Transaction trans = new Transaction(transId, transType, transAmount, timestamp, accountId);
                 allTransactions.add(trans);
@@ -402,7 +378,74 @@ public class Database {
         }
     }
 
+    // Everything below here is for testing 
+    public void printAllUsers(){
+        String sql = "SELECT * FROM users";
+        
+        try (
+            PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            ResultSet rs  = pstmt.executeQuery();
+            
+            // loop through the result set
+            while(rs.next()) {
+                System.out.println(rs.getInt("user_id") + " " + rs.getString("username") + " " + rs.getString("user_type") + " " + rs.getString("password"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            
+        }
+            
+            
+    }
 
+    public void printAllAccounts(){
+        String sql = "SELECT * FROM accounts";
+        
+        try (
+            PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            ResultSet rs  = pstmt.executeQuery();
+            
+            int accountId = rs.getInt("account_id");
+
+            // loop through the result set
+            while(rs.next()) {
+                System.out.println(rs.getString("account_type") + " " + rs.getDouble("balance") + " " + rs.getString("currency_name") + " " + rs.getString("currency_symbol"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            
+        }
+            
+            
+    }
+
+    public void printAllTransactions(){
+        String sql = "SELECT * FROM transactions";
+        
+        try (
+            PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            ResultSet rs  = pstmt.executeQuery();
+
+            // loop through the result set
+            while(rs.next()) {
+                System.out.println(rs.getInt("transaction_id") + " " + rs.getString("transaction_type") + " " + rs.getInt("account_id"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            
+        }
+            
+            
+    }
+
+    
+
+    public static void main(String[] args) {
+        Database db = new Database();
+        db.printAllUsers();
+        db.printAllAccounts();
+        db.printAllTransactions();
+    }
 }
 
 
