@@ -25,8 +25,8 @@ public class LoginUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 String user = userTextField.getText();
-                String pass = userTextField.getText();
-                if (Bank.userLogin(user, pass)) {
+                String pass = passTextField.getText();
+                if (bank.userLogin(user, pass)) {
                     textShown.setText(String.format("Login Successful! Welcome, %s!", user));
                 } else {
                     textShown.setText(String.format("Invalid User, %s does not exist!", user));
