@@ -236,15 +236,15 @@ public class Database {
         }
     }
 
-    // query transaction log for bank, do by date later
-    public ArrayList<Transaction> queryTransactions(int userId) {
+        // query transaction log for bank, do by date later
+    public ArrayList<Transaction> queryAllTransactions() {
         ArrayList<Transaction> allTransactions =  new ArrayList<Transaction>();
 
-        String sql = "SELECT T.transaction_id, T.transaction_type, T.transaction_amount, T.transaction_time, T.account_id as account_id FROM transactions T, accounts A WHERE T.account_id = A.account_id AND A.user_id = ?";
+        String sql = "SELECT * FROM transactions";
 
         try (
             PreparedStatement pstmt  = conn.prepareStatement(sql)){
-            pstmt.setInt(1, userId);
+            //pstmt.setInt(1, userId);
             ResultSet rs  = pstmt.executeQuery();
 
             // loop through the result set
@@ -264,6 +264,36 @@ public class Database {
 
         }
         return allTransactions;
+    }
+
+    // query transaction log for bank, do by date later
+    public ArrayList<Transaction> queryUserTransactions(int userId) {
+        ArrayList<Transaction> userTransactions =  new ArrayList<Transaction>();
+
+        String sql = "SELECT T.transaction_id, T.transaction_type, T.transaction_amount, T.transaction_time, T.account_id as account_id FROM transactions T, accounts A WHERE T.account_id = A.account_id AND A.user_id = ?";
+
+        try (
+            PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            pstmt.setInt(1, userId);
+            ResultSet rs  = pstmt.executeQuery();
+
+            // loop through the result set
+            while(rs.next()) {
+                int transId = rs.getInt("transaction_id");
+                String transType = rs.getString("transaction_type");
+                double transAmount = rs.getDouble("transaction_amount"); // is this a new column? 
+                Timestamp timestamp = rs.getTimestamp("transaction_time"); // not sure this one is in current db either
+                int accountId = rs.getInt("account_id");
+                Transaction trans = new Transaction(transId, transType, transAmount, timestamp, accountId);
+                userTransactions.add(trans);
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+        return userTransactions;
     }
 
     public void createStock(String ticker, double price) {
