@@ -1,5 +1,8 @@
 import java.sql.*;
 import java.util.*;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Database {
     
@@ -14,16 +17,13 @@ public class Database {
     private void getConnection(){
         try
             {
-            // String myDriver = "com.mysql.cj.jdbc.Driver";
-            // Class.forName(myDriver);
-            // String myUrl = "jdbc:mysql://localhost:3306/bank";
-            // conn = DriverManager.getConnection(myUrl, "root", "GeorgeKolliosClass660");
+            // Construct path to .db file
+            Path currentPath = Paths.get(System.getProperty("user.dir"));
+            Path filePath = Paths.get(currentPath.toString(), "Bank.db");
             
-            // String myDriver = "com.mysql.cj.jdbc.Driver";
-            // Class.forName(myDriver);
-                Class.forName("org.sqlite.JDBC");
-            String myUrl = "jdbc:sqlite:/Users/Shilpen/Documents/BU Classes/CS 611/Bank_Final_Project/Bank.db";
-            conn = DriverManager.getConnection(myUrl, "root", "GeorgeKolliosClass660");
+            Class.forName("org.sqlite.JDBC");
+            String myUrl = "jdbc:sqlite:" + filePath.toString();
+            conn = DriverManager.getConnection(myUrl, "root", "");
             
             }
         catch (Exception e)
@@ -76,31 +76,31 @@ public class Database {
         
     }
 
-    // public void test(){
-    //     String sql = "SELECT * FROM users";
+    public void test(){
+        String sql = "SELECT * FROM users";
         
-    //     try (
-    //          PreparedStatement pstmt  = conn.prepareStatement(sql)){
+        try (
+             PreparedStatement pstmt  = conn.prepareStatement(sql)){
             
-    //         // set the value
+            // set the value
             
-    //         //
-    //         ResultSet rs  = pstmt.executeQuery();
+            //
+            ResultSet rs  = pstmt.executeQuery();
             
-    //         // loop through the result set
-    //         while(rs.next()) {
-    //             System.out.println(rs.getString("username"));
-    //         }
+            // loop through the result set
+            while(rs.next()) {
+                System.out.println(rs.getString("username"));
+            }
             
     
         
-    //     } catch (SQLException e) {
-    //         System.out.println(e.getMessage());
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
             
-    //     }
+        }
         
         
-    // }
+    }
 
     public User checkLogin(String username, String password){
         String sql = "SELECT * FROM users WHERE username = ?";
@@ -354,7 +354,7 @@ public class Database {
     }
 
 
-}
+
 
     // public boolean createAccount(int user_id){
     //     String sql = "SELECT * FROM accounts WHERE user_id = ?";
@@ -387,16 +387,18 @@ public class Database {
     //}
 
 
-    // public static void main(String[] args) {
-    //     Database db = new Database();
-    //     db.test();
-    //     db.insertUser("C", "Mark Zucc", "password");
-    //     User user = db.getUser(1);
-    //     System.out.println(user);
-    //     User loginCheck = db.checkLogin("Mark Zucc", "password");
-    //     System.out.println(loginCheck);
-    // }
+    public static void main(String[] args) {
+        Database db = new Database();
+        db.test();
+        db.insertUser("C", "Mark Zucc", "password");
+        User user = db.getUser(1);
+        System.out.println(user);
+        User loginCheck = db.checkLogin("Mark Zucc", "password");
+        System.out.println(loginCheck);
+        
+    }
 
+}
     // 
 
 
