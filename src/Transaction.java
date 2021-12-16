@@ -24,6 +24,7 @@ public class Transaction { // matt removed abstract b/c it wasn't able to make a
         this.transaction_type = transaction_type;
         this.transaction_amount=transaction_amount;
         this.timestamp = new Timestamp(System.currentTimeMillis());
+        this.account_id=account_id;
     }
 
     public Transaction(int transaction_id, String transaction_type, double transaction_amount, Timestamp timestamp, int account_id) {
@@ -31,6 +32,7 @@ public class Transaction { // matt removed abstract b/c it wasn't able to make a
         this.transaction_type = transaction_type;
         this.transaction_amount=transaction_amount;
         this.timestamp = timestamp;
+        this.account_id = account_id;
     }
 
     //Getters
@@ -56,7 +58,7 @@ public class Transaction { // matt removed abstract b/c it wasn't able to make a
     }
 
     public String[] getStringArray() {
-        String [] arrayString = {Integer.toString(getTransaction_id()), getTransaction_type(), Double.toString(getTransaction_amount()), getTimestamp().toString()}; 
+        String [] arrayString = {Integer.toString(getTransaction_id()), getTransaction_type(), Double.toString(getTransaction_amount()), getTimestamp().toString(), Integer.toString(getAccount_id())};
         return arrayString;
     }
 

@@ -13,7 +13,9 @@ public class TableUICreator extends JFrame {
         table.setModel(model);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         table.setFillsViewportHeight(true);
-        table.getTableHeader().setForeground(new Color(0).white);
+        table.getTableHeader().setForeground(new Color(0).WHITE);
+        table.getTableHeader().setBackground(new Color(0).BLACK);
+        table.setForeground(new Color(0).BLACK);
         JScrollPane scroll = new JScrollPane(table);
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
@@ -23,7 +25,7 @@ public class TableUICreator extends JFrame {
 
         add(scroll);
         setSize(900, 300);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
     }
 

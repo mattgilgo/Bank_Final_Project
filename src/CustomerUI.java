@@ -70,7 +70,9 @@ public class CustomerUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO on deposit create a deposit transaction and update databse etc
+                int account_id = (Integer.parseInt(((String) dropDown.getSelectedItem()).replaceAll("[\\D]", "")));
                 Double amount = Double.parseDouble(amountField.getText());
+                atm.depositMoney(account_id, amount);
                 System.out.println(String.format("clicked deposit: %s", amount));
             }
         });
@@ -78,7 +80,9 @@ public class CustomerUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO on withdrawal create transaction and update databse etc.
+                int account_id = (Integer.parseInt(((String) dropDown.getSelectedItem()).replaceAll("[\\D]", "")));
                 Double amount = Double.parseDouble(amountField.getText());
+                atm.withdrawMoney(account_id, amount);
                 System.out.println(String.format("clicked withdrawal: %s", amount));
             }
         });
