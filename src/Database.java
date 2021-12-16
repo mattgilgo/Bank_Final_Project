@@ -14,7 +14,15 @@ public class Database {
     private void getConnection(){
         try
             {
-            String myUrl = "jdbc:sqlite:C:/Users/GeorgeE/Documents/BU/CS_611/final_project/Bank_Final_Project/Bank.db";
+            // String myDriver = "com.mysql.cj.jdbc.Driver";
+            // Class.forName(myDriver);
+            // String myUrl = "jdbc:mysql://localhost:3306/bank";
+            // conn = DriverManager.getConnection(myUrl, "root", "GeorgeKolliosClass660");
+            
+            // String myDriver = "com.mysql.cj.jdbc.Driver";
+            // Class.forName(myDriver);
+                Class.forName("org.sqlite.JDBC");
+            String myUrl = "jdbc:sqlite:/Users/Shilpen/Documents/BU Classes/CS 611/Bank_Final_Project/Bank.db";
             conn = DriverManager.getConnection(myUrl, "root", "GeorgeKolliosClass660");
             
             }
@@ -72,7 +80,11 @@ public class Database {
         String sql = "SELECT * FROM users";
         
         try (
-            PreparedStatement pstmt  = conn.prepareStatement(sql)){
+             PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            
+            // set the value
+            
+            //
             ResultSet rs  = pstmt.executeQuery();
             
             // loop through the result set
@@ -123,7 +135,35 @@ public class Database {
         return null;
         
     }
+    public boolean checkUserLogin(String username, String password){
+        String sql = "SELECT * FROM users WHERE username = ?";
 
+        try (
+                PreparedStatement pstmt  = conn.prepareStatement(sql)){
+
+            // set the value
+            pstmt.setString(1,username);
+            //
+            ResultSet rs  = pstmt.executeQuery();
+
+            // loop through the result set
+            while(rs.next()) {
+                String userType = rs.getString("user_type");
+                String passwordCheck = rs.getString("password");
+                if (password.equals(passwordCheck)){
+                    return true;
+                }
+
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+        return false;
+
+    }
 
 
     public static void main(String[] args) {
