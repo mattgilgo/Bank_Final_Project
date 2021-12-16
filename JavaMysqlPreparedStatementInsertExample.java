@@ -24,7 +24,7 @@ public class JavaMysqlPreparedStatementInsertExample
       String myDriver = "com.mysql.cj.jdbc.Driver";
       Class.forName(myDriver);
       String myUrl = "jdbc:mysql://localhost:3306/bank";
-      Connection conn = DriverManager.getConnection(myUrl, "root", "Pirates15!");
+      Connection conn = DriverManager.getConnection(myUrl, "root", "GeorgeKolliosClass660");
     
       // create a sql date object so we can use it in our INSERT statement
       //Calendar calendar = Calendar.getInstance();

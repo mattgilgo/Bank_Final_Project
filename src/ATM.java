@@ -1,4 +1,5 @@
 import java.beans.Customizer;
+import java.util.*;
 
 public class ATM {
 
@@ -8,23 +9,12 @@ public class ATM {
     // Or we can keep them both separate
     private Customer currentCustomer;
     private Manager currentManager;
+
+    //Lists of all users and accounts
+    private ArrayList<Account> allAccounts;
     
     public ATM(){
-        
-    }
-
-    public ATM(Customer customer) {
-
-    }
-
-    public ATM(Manager manager) {
-        
-    }
-
-    public void login(String username, String password){
-        // Check backend db for username and password
-        // Set the current user (can be a manager or customer) 
-        currentUser = null;
+        this.allAccounts = this.queryAllAccounts();
     }
 
     public void logout() {
@@ -61,4 +51,31 @@ public class ATM {
 
     }
 
+    public ArrayList<Account> queryAllAccounts(){
+        return new ArrayList<Account>();
+    }
+
+    //Getters
+
+    public Customer getCurrentCustomer() {
+        return currentCustomer;
+    }
+
+    public Manager getCurrentManager() {
+        return currentManager;
+    }
+
+    public ArrayList<Account> getAllAccounts() {
+        return allAccounts;
+    }
+
+    //Setters
+
+    public void setCurrentCustomer(Customer currentCustomer) {
+        this.currentCustomer = currentCustomer;
+    }
+
+    public void setCurrentManager(Manager currentManager) {
+        this.currentManager = currentManager;
+    }
 }
