@@ -55,7 +55,7 @@ public class AccountCreationUI extends JFrame {
                 //TODO Charge the appropriate account for the balance
 
                 // create account method called here
-                atm.createAccount(acctType, currency); // TODO probably need more things passed
+                atm.createAccount(acctType, amtToDeposit, currency); // TODO probably need more things passed
                 dispose(); // close window when done
             }
         });
