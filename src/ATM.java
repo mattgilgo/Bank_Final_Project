@@ -1,4 +1,5 @@
 import java.beans.Customizer;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class ATM {
@@ -38,8 +39,7 @@ public class ATM {
 
     public void openUser(){
         this.allAccounts.addAll(Bank.db.queryUsersAccounts(getCurrentUser().getUser_id()));
-        CustomerUI customerUI = new CustomerUI(this);
-        customerUI.showUI();
+        createCustomerUI();
     }
     public void openManager(){
         //TODO Add Manager Report UI
@@ -56,34 +56,70 @@ public class ATM {
         accountCreationUI.showUI();
 
     }
-    public void createAccount(String accountType, String currency_name) {
+    public void createAccount(String accountType, double balance, String currency_name) {
         // Charge a fee for account creation
         // Use a factory for generating accounts?
         // accountFactory.createAccount(User user, )
-        //Bank.db.createAccount(currentUser.getUser_id(), accountType, balance, currency_name);
-
+        Bank.db.createAccount(currentUser.getUser_id(), accountType, balance, currency_name);
+        updateUserAccounts();
+        createCustomerUI();
+    }
+    public void createCustomerUI(){
+        CustomerUI customerUI = new CustomerUI(this);
+        customerUI.showUI();
     }
 
     public void closeAccount() {
 
     }
 
-    public void requestLoan() {
+    public boolean requestLoan(double loanAmount, String currency_type) {
+        // Check their total wealth - return false if not approved
+        double totalWealth = 0;
+        for (Account act: allAccounts) {
+            totalWealth += act.getBalance();
+        }
 
+        if (totalWealth > 100.00) {
+            // Grant loan
+            Bank.db.createAccount(getCurrentUser().getUser_id(), "L", loanAmount, currency_type);
+            return true;
+        }
+
+        return false;
     }
 
-    public void withdrawMoney() {
-
+    public void withdrawMoney(int accountId, double amount) {
+        for (Account act: allAccounts) {
+            if (act.getAccount_id() == accountId) {
+                Bank.db.setAccountBalance(act.getAccount_id(), act.getBalance()-amount);;
+            }
+        }
+        
     }
 
-    public void depositMoney() {
-
+    public void depositMoney(int accountId, double amount) {
+        for (Account act: allAccounts) {
+            if (act.getAccount_id() == accountId) {
+                Bank.db.setAccountBalance(act.getAccount_id(), act.getBalance()+amount);;
+            }
+        }
     }
 
-    public void viewTransactions() {
+    public Object[][] viewTransactions(int userId) {
         // Could be overloaded for managers and customers
+        ArrayList<Transaction> transactions = Bank.getDb().queryTransactions(userId);
+        Object[][] data = new Object[transactions.size()][];
+
+        for (int i=0; i<transactions.size(); i++) {
+            data[i] = transactions.get(i).getStringArray();
+        }
+        return data;
     }
 
+    public void updateUserAccounts(){
+        this.setAllAccounts(Bank.db.queryUsersAccounts(getCurrentUser().getUser_id()));
+    }
     public void generateDailyReport() {
 
     }

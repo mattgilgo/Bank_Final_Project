@@ -19,6 +19,8 @@ public class AccountCreationUI extends JFrame {
     private JComboBox acctDrop;
     private JLabel chargeAcctLabel;
     private JPanel panel;
+    private JTextField depositAmtField;
+    private JLabel depostLabel;
     private ATM atm;
 
     public AccountCreationUI(ATM atm, double fee) {
@@ -49,10 +51,11 @@ public class AccountCreationUI extends JFrame {
                 String currency = (String) currencyDrop.getSelectedItem();
                 String acctType = (String) typeDrop.getSelectedItem();
                 String acctToCharge = (String) acctDrop.getSelectedItem();
+                Double amtToDeposit = Double.parseDouble(depositAmtField.getText());
                 //TODO Charge the appropriate account for the balance
 
                 // create account method called here
-                atm.createAccount(acctType, currency); // TODO probably need more things passed
+                atm.createAccount(acctType, amtToDeposit, currency); // TODO probably need more things passed
                 dispose(); // close window when done
             }
         });

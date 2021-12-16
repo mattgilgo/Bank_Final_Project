@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+// TODO add text signal successful acct creation
+
 public class LoginUI extends JFrame{
     private JPanel mainPanel;
     private JTextField userTextField;
@@ -29,7 +31,7 @@ public class LoginUI extends JFrame{
                 String pass = String.valueOf(passTextField.getPassword());
                 if (bank.userLogin(user, pass)) {
                     textShown.setText(String.format("Login Successful! Welcome, %s!", user));
-                    bank.launchAtm(bank.db.checkLogin(user, pass));
+                    bank.launchAtm(Bank.db.checkLogin(user, pass));
                 } else {
                     textShown.setText(String.format("Invalid User, %s does not exist!", user));
                 }
@@ -41,6 +43,7 @@ public class LoginUI extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 String user = userTextField.getText();
                 String pass = String.valueOf(passTextField.getPassword());
+                textShown.setText(String.format("Congrats, %s! Your account has been created.", user));
                 // TODO create user account
                 bank.createUserAccount("C", user, pass);
             }
@@ -50,6 +53,7 @@ public class LoginUI extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 String user = userTextField.getText();
                 String pass = String.valueOf(passTextField.getPassword());
+                textShown.setText(String.format("Congrats, %s! Your manager account has been created.", user));
                 // TODO create manager account
                 bank.createUserAccount("M", user, pass);
             }
