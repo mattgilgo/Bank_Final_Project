@@ -1,4 +1,3 @@
-
 public class Customer extends User {
     public Customer( String user_type, String username, String password){
         super(user_type, username, password);

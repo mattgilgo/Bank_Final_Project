@@ -14,6 +14,7 @@ public abstract class User {
         this.password = password;
         //this.db  = new Database();
     }
+
     public User(int user_id, String user_type, String username, String password){
         this.user_id = user_id;
         this.user_type = user_type;
@@ -68,5 +69,10 @@ public abstract class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString(){
+        return user_id + " " + username + " " + user_type + " " + password;
     }
 }
