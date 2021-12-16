@@ -42,7 +42,7 @@ public class Database {
         }
     }
 
-    public void getUser(int userId){
+    public User getUser(int userId){
         String sql = "SELECT user_type, username, password FROM users WHERE user_id = ?";
         
         try (
@@ -54,18 +54,21 @@ public class Database {
             ResultSet rs  = pstmt.executeQuery();
             
             // loop through the result set
-            String password = rs.getString("username");
-            String password = rs.getString("username");
-            String password = rs.getString("password");
-
-            while (rs.next()) {
-                System.out.println(rs.getString("user_type") +  "\t" + 
-                                   rs.getString("username") + "\t" +
-                                   rs.getString("password"));
+            rs.next();
+            String userType = rs.getString("user_type");
+            if (userType.equals("customer")){
+                return new Customer(userId, rs.getString("username"), rs.getString("username"), rs.getString("password"));
+            } else if (userType.equals("manager")) {
+                return new Manager(userId, rs.getString("username"), rs.getString("username"), rs.getString("password"));
             }
+
+        
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            
         }
+        return null;
+        
     }
 
 
@@ -73,6 +76,7 @@ public class Database {
     public static void main(String[] args) {
         Database db = new Database();
         // db.insertUser("customer", "Mark Zucc", "password");
-        db.getUser(1);
+        User user = db.getUser(1);
+        System.out.println(user);
     }
 }
