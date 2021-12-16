@@ -14,13 +14,6 @@ public class Database {
     private void getConnection(){
         try
             {
-            // String myDriver = "com.mysql.cj.jdbc.Driver";
-            // Class.forName(myDriver);
-            // String myUrl = "jdbc:mysql://localhost:3306/bank";
-            // conn = DriverManager.getConnection(myUrl, "root", "GeorgeKolliosClass660");
-            
-            // String myDriver = "com.mysql.cj.jdbc.Driver";
-            // Class.forName(myDriver);
             String myUrl = "jdbc:sqlite:C:/Users/GeorgeE/Documents/BU/CS_611/final_project/Bank_Final_Project/Bank.db";
             conn = DriverManager.getConnection(myUrl, "root", "GeorgeKolliosClass660");
             
@@ -79,11 +72,7 @@ public class Database {
         String sql = "SELECT * FROM users";
         
         try (
-             PreparedStatement pstmt  = conn.prepareStatement(sql)){
-            
-            // set the value
-            
-            //
+            PreparedStatement pstmt  = conn.prepareStatement(sql)){
             ResultSet rs  = pstmt.executeQuery();
             
             // loop through the result set
