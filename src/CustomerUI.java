@@ -17,6 +17,9 @@ public class CustomerUI extends JFrame {
     private JPanel panel;
     private JButton transactionsButton;
     private JButton createAcctButton;
+    private JTextField amountField;
+    private JButton withdrawalButton;
+    private JButton depositButton;
 
 
     public CustomerUI(ATM atm) {
@@ -54,6 +57,22 @@ public class CustomerUI extends JFrame {
                 dispose();
                 atm.createAccountUI();
 
+            }
+        });
+        depositButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO on deposit create a deposit transaction and update databse etc
+                Double amount = Double.parseDouble(amountField.getText());
+                System.out.println(String.format("clicked deposit: %s", amount));
+            }
+        });
+        withdrawalButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO on withdrawal create transaction and update databse etc.
+                Double amount = Double.parseDouble(amountField.getText());
+                System.out.println(String.format("clicked withdrawal: %s", amount));
             }
         });
     }
