@@ -183,6 +183,10 @@ public class ATM {
         return allAccountInfo;
     }
 
+    public String[] getStringListOfStockAccounts() {
+        return new String[]{"test 1", "test 2"};
+    }
+
     public User getCurrentUser() {
         return currentUser;
     }

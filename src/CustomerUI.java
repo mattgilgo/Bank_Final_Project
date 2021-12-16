@@ -20,6 +20,7 @@ public class CustomerUI extends JFrame {
     private JTextField amountField;
     private JButton withdrawalButton;
     private JButton depositButton;
+    private JButton stockPortalButton;
 
 
     public CustomerUI(ATM atm) {
@@ -30,7 +31,7 @@ public class CustomerUI extends JFrame {
         setContentPane(panel);
         setTitle("Customer Account Portal");
         setSize(450, 300);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         dropDown.addActionListener(new ActionListener() {
             @Override
@@ -41,17 +42,14 @@ public class CustomerUI extends JFrame {
 
                         /*atm.getAllAccounts().get(atm.getAllAccounts().indexOf(
                                 Integer.parseInt(((String) dropDown.getSelectedItem()).replaceAll("[\\D]", "")))).getBalance()));*/
-                int account_id = (Integer.parseInt(((String) dropDown.getSelectedItem()).replaceAll("[\\D]", "")));
-                Account tempAccount = new Account();
-                tempAccount.setAccount_id(account_id);
-                infoDisplay.setText(Double.toString(atm.getAllAccounts().get(atm.getAllAccounts().indexOf(tempAccount)).getBalance()));
+                showAmount(atm);
             }
         });
 
         transactionsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO set off a table UI pass columns and data of all transactions
+                // TODO only show transactions for that account and that user
                 TableUICreator table = new TableUICreator(Transaction.fieldNames, atm.viewTransactions(atm.getCurrentUser().getUser_id()));
                 table.showTable();
             }
@@ -69,23 +67,38 @@ public class CustomerUI extends JFrame {
         depositButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO on deposit create a deposit transaction and update databse etc
                 int account_id = (Integer.parseInt(((String) dropDown.getSelectedItem()).replaceAll("[\\D]", "")));
                 Double amount = Double.parseDouble(amountField.getText());
                 atm.depositMoney(account_id, amount);
+                showAmount(atm);
                 System.out.println(String.format("clicked deposit: %s", amount));
             }
         });
         withdrawalButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO on withdrawal create transaction and update databse etc.
                 int account_id = (Integer.parseInt(((String) dropDown.getSelectedItem()).replaceAll("[\\D]", "")));
                 Double amount = Double.parseDouble(amountField.getText());
                 atm.withdrawMoney(account_id, amount);
+                showAmount(atm);
                 System.out.println(String.format("clicked withdrawal: %s", amount));
             }
         });
+        stockPortalButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // spin up stock account UI
+                StockUI stockUI = new StockUI(atm);
+                stockUI.showUI();
+            }
+        });
+    }
+
+    public void showAmount(ATM atm) {
+        int account_id = (Integer.parseInt(((String) dropDown.getSelectedItem()).replaceAll("[\\D]", "")));
+        Account tempAccount = new Account();
+        tempAccount.setAccount_id(account_id);
+        infoDisplay.setText(Double.toString(atm.getAllAccounts().get(atm.getAllAccounts().indexOf(tempAccount)).getBalance()));
     }
 
     public void showUI() {
