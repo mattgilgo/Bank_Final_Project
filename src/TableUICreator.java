@@ -22,7 +22,7 @@ public class TableUICreator extends JFrame {
         }
 
         add(scroll);
-        setSize(400, 300);
+        setSize(900, 300);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
     }
