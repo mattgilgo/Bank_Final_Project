@@ -138,12 +138,55 @@ public class ATM {
 
     }
 
-    public void buyStock(){
-
+    public void buyStock(int accountId, String ticker, double num_shares){
+        for (Account act: allAccounts) {
+            if (act.getAccount_id() == accountId) {
+                int stockInstance = Bank.db.getStockInstance(accountId, ticker);
+                double accBal = Bank.db.getAccountBalance(accountId);
+                double stockPrice = Bank.db.getStockPrice(ticker);
+                double cost = num_shares*stockPrice;
+                double newAccBal = accBal-cost;
+                if (newAccBal > 0) {
+                    if (stockInstance > 0) {
+                        Bank.db.transactOwnedStock(accountId, ticker, num_shares, stockInstance);
+                        Bank.db.setAccountBalance(accountId, newAccBal);
+                        Bank.db.createTransaction("buy stock", cost, accountId);
+                    } else {
+                        int stockId = Bank.db.getStockId(ticker);
+                        Bank.db.createStockOwned(accountId, stockId, stockPrice, num_shares);
+                        Bank.db.setAccountBalance(accountId, newAccBal);
+                        Bank.db.createTransaction("buy stock", cost, accountId);                
+                    }
+                } else {
+                    System.out.println("You need more money to purchase!");
+                }
+            }
+        }
     }
 
-    public void sellStock(){
-
+    public void sellStock(int accountId, String ticker, double num_shares){
+        for (Account act: allAccounts) {
+            if (act.getAccount_id() == accountId) {
+                int stockInstance = Bank.db.getStockInstance(accountId, ticker);
+                double accBal = Bank.db.getAccountBalance(accountId);
+                double stockPrice = Bank.db.getStockPrice(ticker);
+                double currentShares = Bank.db.getCurrentNumShares(stockInstance);
+                double newShares = currentShares-num_shares;
+                double saleValue = num_shares*stockPrice;
+                double newAccBal = accBal+saleValue;
+                if (currentShares > 0) {
+                    if (stockInstance > 0) {
+                        Bank.db.transactOwnedStock(accountId, ticker, newShares, stockInstance);
+                        Bank.db.setAccountBalance(accountId, newAccBal);
+                        Bank.db.createTransaction("sell stock", saleValue, accountId);
+                    } 
+                } else if (newShares < 0) {
+                    System.out.println("You do not have enough shares to sell.");
+                } else {
+                    System.out.println("You do not own this stock!");
+                }
+            }
+        }
     }
 
     public void getTrades(){
