@@ -379,7 +379,7 @@ public class Database {
     }
 
     public void transactOwnedStock(int account_id, String ticker, double cashBalance, double num_shares, int stockInstance) {
-        String sql = "UPDATE stocks_owned SET cash_balance = ? WHERE account_id = ?";
+        String sql = "UPDATE accounts SET balance = ? WHERE account_id = ?";
 
         try (
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -400,6 +400,44 @@ public class Database {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public double getAccountBalance(int account_id) {
+        String sql = "SELECT balance from accounts WHERE account_id = ?";
+        double balance = 0;
+        try (
+            PreparedStatement pstmt  = conn.prepareStatement(sql)){
+
+        // set the value
+        pstmt.setInt(1,account_id);
+        //
+        ResultSet rs  = pstmt.executeQuery();
+
+        // loop through the result set
+        while(rs.next()) {
+            balance = rs.getDouble("balance");
+        }
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return balance;
+    }
+
+    public void setAccountBalance(int account_id, double newBal) {
+        String sql = "UPDATE accounts SET balance = ? WHERE account_id = ?";
+
+        try (
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setDouble(1, newBal);
+            pstmt.setInt(2, account_id);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
 
