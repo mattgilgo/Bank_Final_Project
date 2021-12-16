@@ -42,8 +42,8 @@ public class CustomerUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO set off a table UI pass columns and data of all transactions
-//                TableUICreator table = new TableUICreator(atm.viewTransactions());
-//                table.showTable();
+                TableUICreator table = new TableUICreator(, atm.viewTransactions(atm.getCurrentUser().getUser_id()));
+                table.showTable();
             }
         });
 
