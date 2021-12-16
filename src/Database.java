@@ -76,31 +76,7 @@ public class Database {
         
     }
 
-    public void test(){
-        String sql = "SELECT * FROM users";
-        
-        try (
-             PreparedStatement pstmt  = conn.prepareStatement(sql)){
-            
-            // set the value
-            
-            //
-            ResultSet rs  = pstmt.executeQuery();
-            
-            // loop through the result set
-            while(rs.next()) {
-                System.out.println(rs.getString("username"));
-            }
-            
     
-        
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            
-        }
-        
-        
-    }
 
     public User checkLogin(String username, String password){
         String sql = "SELECT * FROM users WHERE username = ?";
@@ -243,8 +219,8 @@ public class Database {
             while(rs.next()) {
                 int transId = rs.getInt("transaction_id");
                 String transType = rs.getString("transaction_type");
-                double transAmount = rs.getDouble("balance");
-                Timestamp timestamp = rs.getTimestamp("timestamp");
+                double transAmount = rs.getDouble("transaction_amount"); // is this a new column? 
+                Timestamp timestamp = rs.getTimestamp("transaction_time"); // not sure this one is in current db either
                 int accountId = rs.getInt("account_id");
                 Transaction trans = new Transaction(transId, transType, transAmount, timestamp, accountId);
                 allTransactions.add(trans);
@@ -333,7 +309,7 @@ public class Database {
                 String ticker = rs.getString("stock_ticker");
                 double currentPrice = rs.getDouble("stock_price");
                 double cashBalance = rs.getDouble("cash_balance");
-                double buyPrice = rs.getDouble("buy_price");
+                double buyPrice = rs.getDouble("stock_buy_price");
                 double numShares = rs.getDouble("num_shares");
                 OwnedStock ownedStock = new OwnedStock(stockId, ticker, currentPrice, account_id, cashBalance, buyPrice, numShares);
                 allAccountsStocks.add(ownedStock);
@@ -402,6 +378,9 @@ public class Database {
         }
     }
 
+
+    
+
     public double getAccountBalance(int account_id) {
         String sql = "SELECT balance from accounts WHERE account_id = ?";
         double balance = 0;
@@ -440,7 +419,111 @@ public class Database {
 
     }
 
+    // Everything below here is for testing 
+    public void printAllUsers(){
+        String sql = "SELECT * FROM users";
+        
+        try (
+            PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            ResultSet rs  = pstmt.executeQuery();
+            
+            // loop through the result set
+            while(rs.next()) {
+                System.out.println(rs.getInt("user_id") + " " + rs.getString("username") + " " + rs.getString("user_type") + " " + rs.getString("password"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            
+        }
+            
+            
+    }
 
+    public void printAllAccounts(){
+        String sql = "SELECT * FROM accounts";
+        
+        try (
+            PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            ResultSet rs  = pstmt.executeQuery();
+            
+            int accountId = rs.getInt("account_id");
+
+            // loop through the result set
+            while(rs.next()) {
+                System.out.println(rs.getString("account_type") + " " + rs.getDouble("balance") + " " + rs.getString("currency_name") + " " + rs.getString("currency_symbol"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            
+        }
+            
+            
+    }
+
+    public void printAllTransactions(){
+        String sql = "SELECT * FROM transactions";
+        
+        try (
+            PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            ResultSet rs  = pstmt.executeQuery();
+          
+            // loop through the result set
+            while(rs.next()) {
+                System.out.println(rs.getInt("transaction_id") + " " + rs.getString("transaction_type") + " " + rs.getInt("account_id") + " " + rs.getDouble("transaction_amount") + " " + rs.getTimestamp("transaction_time"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            
+        }
+            
+            
+    }
+
+    public void printAllStocks(){
+        String sql = "SELECT * FROM stocks";
+        
+        try (
+            PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            ResultSet rs  = pstmt.executeQuery();
+            
+            // loop through the result set
+            while(rs.next()) {
+                System.out.println(rs.getInt("stock_id") + " " + rs.getString("stock_ticker") + " " + rs.getDouble("stock_price"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            
+        }
+             
+    }
+
+    public void printAllStocksOwned(){
+        String sql = "SELECT * FROM stocks_owned";
+        
+        try (
+            PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            ResultSet rs  = pstmt.executeQuery();
+        
+            // loop through the result set
+            while(rs.next()) {
+                System.out.println(rs.getInt("account_id") + " " + rs.getInt("stock_id") + " " + rs.getDouble("cash_balance") + " " + rs.getDouble("stock_buy_price") + " " + rs.getDouble("num_shares"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            
+        }
+             
+    }
+    
+
+    public static void main(String[] args) {
+        Database db = new Database();
+        db.printAllUsers();
+        db.printAllAccounts();
+        db.printAllTransactions();
+        db.printAllStocks();
+        db.printAllStocksOwned();
+    }
 }
 
 
