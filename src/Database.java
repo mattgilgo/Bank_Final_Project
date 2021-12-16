@@ -353,35 +353,57 @@ public class Database {
         return allAccountsStocks;
     }
 
-    public void buyStock(int account_id, String ticker, int num_shares) {
+    public int getStockInstance(int account_id, String ticker) {
+        String sql = "SELECT stock_instance_owned_id FROM stocks_owned WHERE account_id = ? AND stock_ticker = ?";
+        int stockInstance = 0;
+        try (
+            PreparedStatement pstmt  = conn.prepareStatement(sql)){
+
+        // set the value
+        pstmt.setInt(1,account_id);
+        //
+        ResultSet rs  = pstmt.executeQuery();
+
+        // loop through the result set
+        while(rs.next()) {
+            stockInstance = rs.getInt("stock_instance_owned_id");
+        }
+
+
+    } catch (SQLException e) {
+        System.out.println(e.getMessage());
+    }
+    
+    if (stockInstance > 0) {
+        return stockInstance;
+    } else {
+        System.out.println("User does not own this stock!");
+        return stockInstance;
+    }
+    }
+
+    public void transactStock(int account_id, String ticker, double cashBalance, double num_shares, int stockInstance) {
         String sql = "UPDATE stocks_owned SET cash_balance = ? WHERE account_id = ?";
 
         try (
-                PreparedStatement pstmt  = conn.prepareStatement(sql)){
-
-            // set the value
-            pstmt.setInt(1,account_id);
-            //
-            ResultSet rs  = pstmt.executeQuery();
-
-            // loop through the result set
-            while(rs.next()) {
-                int stockId = rs.getInt("stock_id");
-                String ticker = rs.getString("stock_ticker");
-                double currentPrice = rs.getDouble("stock_price");
-                double cashBalance = rs.getDouble("cash_balance");
-                double buyPrice = rs.getDouble("buy_price");
-                double numShares = rs.getDouble("num_shares");
-                OwnedStock ownedStock = new OwnedStock(stockId, ticker, currentPrice, account_id, cashBalance, buyPrice, numShares)
-                allAccountsStocks.add(ownedStock);
-            }
-
-
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setDouble(1, cashBalance);
+            pstmt.setInt(2, account_id);
+            pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-
         }
-        return allAccountsStocks;
+
+        String sqltwo = "UPDATE stocks_owned SET num_shares = ? WHERE stock_instance_owned_id = ?";
+
+        try (
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setDouble(1, num_shares);
+            pstmt.setInt(2, stockInstance);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 
