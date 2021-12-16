@@ -92,7 +92,8 @@ public class ATM {
     public void withdrawMoney(int accountId, double amount) {
         for (Account act: allAccounts) {
             if (act.getAccount_id() == accountId) {
-                Bank.db.setAccountBalance(act.getAccount_id(), act.getBalance()-amount);;
+                Bank.db.setAccountBalance(act.getAccount_id(), act.getBalance()-amount);
+                Bank.db.createTransaction("withdraw", amount, accountId);
             }
         }
         
@@ -101,7 +102,8 @@ public class ATM {
     public void depositMoney(int accountId, double amount) {
         for (Account act: allAccounts) {
             if (act.getAccount_id() == accountId) {
-                Bank.db.setAccountBalance(act.getAccount_id(), act.getBalance()+amount);;
+                Bank.db.setAccountBalance(act.getAccount_id(), act.getBalance()+amount);
+                Bank.db.createTransaction("deposit", amount, accountId);
             }
         }
     }
@@ -133,6 +135,26 @@ public class ATM {
     public void generateDailyReport() {
 
     }
+
+    public void buyStock(){
+
+    }
+
+    public void sellStock(){
+
+    }
+
+    public void getTrades(){
+
+    }
+
+    public void getPortfolio(){
+
+    }
+
+    // buys and sells - like see all transactions
+    // see portfolio - each stock, how much you own 
+
 
 
 
