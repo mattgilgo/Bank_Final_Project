@@ -41,10 +41,7 @@ public class CustomerUI extends JFrame {
 
                         /*atm.getAllAccounts().get(atm.getAllAccounts().indexOf(
                                 Integer.parseInt(((String) dropDown.getSelectedItem()).replaceAll("[\\D]", "")))).getBalance()));*/
-                int account_id = (Integer.parseInt(((String) dropDown.getSelectedItem()).replaceAll("[\\D]", "")));
-                Account tempAccount = new Account();
-                tempAccount.setAccount_id(account_id);
-                infoDisplay.setText(Double.toString(atm.getAllAccounts().get(atm.getAllAccounts().indexOf(tempAccount)).getBalance()));
+                showAmount(atm);
             }
         });
 
@@ -73,6 +70,7 @@ public class CustomerUI extends JFrame {
                 int account_id = (Integer.parseInt(((String) dropDown.getSelectedItem()).replaceAll("[\\D]", "")));
                 Double amount = Double.parseDouble(amountField.getText());
                 atm.depositMoney(account_id, amount);
+                showAmount(atm);
                 System.out.println(String.format("clicked deposit: %s", amount));
             }
         });
@@ -86,6 +84,13 @@ public class CustomerUI extends JFrame {
                 System.out.println(String.format("clicked withdrawal: %s", amount));
             }
         });
+    }
+
+    public void showAmount(ATM atm) {
+        int account_id = (Integer.parseInt(((String) dropDown.getSelectedItem()).replaceAll("[\\D]", "")));
+        Account tempAccount = new Account();
+        tempAccount.setAccount_id(account_id);
+        infoDisplay.setText(Double.toString(atm.getAllAccounts().get(atm.getAllAccounts().indexOf(tempAccount)).getBalance()));
     }
 
     public void showUI() {
