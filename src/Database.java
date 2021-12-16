@@ -327,6 +327,7 @@ public class Database {
         }
         return allTransactions;
     }
+
     public void createStock(String ticker, double price) {
         String sql = "INSERT INTO stocks(stock_ticker,stock_price) VALUES(?,?)";
 
@@ -529,7 +530,6 @@ public class Database {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-
         }
         return allUsers;
     }
@@ -550,8 +550,6 @@ public class Database {
             System.out.println(e.getMessage());
             
         }
-            
-            
     }
 
     public void printAllAccounts(){
