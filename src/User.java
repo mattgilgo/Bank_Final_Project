@@ -1,3 +1,4 @@
+import java.util.Objects;
 
 public abstract class User {
 
@@ -5,6 +6,14 @@ public abstract class User {
     protected String user_type;
     protected String username;
     protected String password;
+    //private Database db;
+
+    public User(String user_type, String username, String password){
+        this.user_type = user_type;
+        this.username = username;
+        this.password = password;
+        //this.db  = new Database();
+    }
 
     public User(int user_id, String user_type, String username, String password){
         this.user_id = user_id;
@@ -14,6 +23,19 @@ public abstract class User {
     }
 
     public abstract void createAccount(String accountType);
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return user_id == user.user_id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(user_id);
+    }
 
     //Getters
     public int getUser_id(){
