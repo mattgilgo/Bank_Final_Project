@@ -1,4 +1,5 @@
 import java.beans.Customizer;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class ATM {
@@ -47,6 +48,7 @@ public class ATM {
         // Use a factory for generating accounts?
         // accountFactory.createAccount(User user, )
         Bank.db.createAccount(currentUser.getUser_id(), accountType, balance, currency_name);
+        createCustomerUI();
     }
     public void createCustomerUI(){
         CustomerUI customerUI = new CustomerUI(this);
@@ -90,17 +92,15 @@ public class ATM {
         }
     }
 
-    public Object[] viewTransactions(int userId) {
+    public Object[][] viewTransactions(int userId) {
         // Could be overloaded for managers and customers
-        ArrayList<String[]> data = new ArrayList<>();
+        ArrayList<Transaction> transactions = Bank.getDb().queryTransactions(userId);
+        Object[][] data = new Object[transactions.size()][];
 
-        /*ArrayList<Transaction> transactions = Bank.getDb().queryTransactions(userId);
-        for (Transaction txn : transactions) {
-            data.add(txn.getStringArray());
-        }*/
-
-        return data.toArray();
-
+        for (int i=0; i<transactions.size(); i++) {
+            data[i] = transactions.get(i).getStringArray();
+        }
+        return data;
     }
 
     public void generateDailyReport() {
