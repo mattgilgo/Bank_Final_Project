@@ -10,15 +10,20 @@ public class OwnedStock extends Stock {
     private double current_price;
     
     
-    public OwnedStock(int id, String ticker, double current_price, int accountId, double cashBalance, double buyPrice, double numShares) {
+    public OwnedStock(int id, String ticker, double current_price, int accountId, double buyPrice, double numShares) {
         super(id, ticker, current_price);
         this.account_id = accountId;
-        this.cash_balance = cashBalance;
         this.stock_buy_price = buyPrice;
         this.num_shares = numShares;
     }
     
+    public double getBuyPrice() {
+        return this.stock_buy_price;
+    }
     
+    public double getNumShares() {
+        return this.num_shares;
+    }
     
     
 }

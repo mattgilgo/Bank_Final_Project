@@ -27,4 +27,5 @@ public class Stock {
         return this.stock_price;
     }
     
+    
 }

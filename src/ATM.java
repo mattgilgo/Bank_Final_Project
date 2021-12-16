@@ -60,6 +60,7 @@ public class ATM {
         // Charge a fee for account creation
         // Use a factory for generating accounts?
         // accountFactory.createAccount(User user, )
+        // TODO: Add check for "stock" account 
         Bank.db.createAccount(currentUser.getUser_id(), accountType, balance, currency_name);
         updateUserAccounts();
         createCustomerUI();
@@ -150,12 +151,26 @@ public class ATM {
 
     }
 
-    public void getPortfolio(){
+    public String[][] getPortfolio(){
+        // groupby on stock_id sum num_shares - return array of strings
+        ArrayList<OwnedStock> currentPortfolio = new ArrayList<OwnedStock>();
+        for (Account act: allAccounts) {
+            if (act.getAccount_type().equals("ST")) {
+                currentPortfolio = Bank.db.getPortfolio(act.getAccount_id());
+            }
+        }
 
+        // Unpack stocks into GUI readable string 
+        String[][] portfolio = new String[currentPortfolio.size()][4];
+        for (int i=0; i<currentPortfolio.size(); i++) {
+            String[] stockArray = {currentPortfolio.get(i).getTicker(), Double.toString(currentPortfolio.get(i).getPrice()), Double.toString(currentPortfolio.get(i).getBuyPrice()), Double.toString(currentPortfolio.get(i).getNumShares())};
+            portfolio[i] = stockArray;
+        }
+
+        return portfolio;
     }
 
-    // buys and sells - like see all transactions
-    // see portfolio - each stock, how much you own 
+    
 
 
 
