@@ -3,7 +3,6 @@ import java.sql.*;
 
 public class Database {
     
-    private String myDriver = "com.mysql.cj.jdbc.Driver";
     Connection conn;
     
     public Database(){
@@ -60,6 +59,40 @@ public class Database {
                 return new Customer(userId, rs.getString("username"), rs.getString("username"), rs.getString("password"));
             } else if (userType.equals("manager")) {
                 return new Manager(userId, rs.getString("username"), rs.getString("username"), rs.getString("password"));
+            }
+
+        
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            
+        }
+        return null;
+        
+    }
+
+    public User checkLogin(String username, String password){
+        String sql = "SELECT * FROM users WHERE username = ?";
+        
+        try (
+             PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            
+            // set the value
+            pstmt.setString(1,username);
+            //
+            ResultSet rs  = pstmt.executeQuery();
+            
+            // loop through the result set
+            while(rs.next()) {
+                String userType = rs.getString("user_type");
+                String passwordCheck = rs.getString("password");
+                if (password.equals(passwordCheck)){
+                    if (userType.equals("customer")){
+                        return new Customer(rs.getInt("user_id"), rs.getString("username"), rs.getString("username"), rs.getString("password"));
+                    } else if (userType.equals("manager")) {
+                        return new Manager(rs.getInt("user_id"), rs.getString("username"), rs.getString("username"), rs.getString("password"));
+                    }
+                }
+                
             }
 
         
