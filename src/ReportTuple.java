@@ -1,7 +1,7 @@
 import java.util.Objects;
 
 public class ReportTuple {
-    private static final String[] fieldNames = {"user_id", "user_type", "username", "password", "account_id", "account_type", "balance", "currency_name"};
+    public static final String[] fieldNames = {"user_id", "user_type", "username", "password", "account_id", "account_type", "balance", "currency_name"};
     private int user_id;
     private String user_type;
     private String username;

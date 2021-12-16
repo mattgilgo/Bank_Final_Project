@@ -20,9 +20,14 @@ public class Manager extends User {
         this.report = Bank.db.getAllAccountsReport();
     }
 
+    public Report createUserReport(int user_id){
+        return  Bank.db.getUserReport(user_id);
+    }
+
     public Report getReport() {
         return report;
     }
+
 
     public void setReport(Report report) {
         this.report = report;
