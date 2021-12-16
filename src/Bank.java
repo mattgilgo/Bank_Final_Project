@@ -1,7 +1,7 @@
 public class Bank {
     private ATM atm;
     private LoginUI userLoginAndCreateUserGui;
-    private Database db;
+    public static Database db;
 
     public Bank(){
         this.db = new Database();

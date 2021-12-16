@@ -1,23 +1,30 @@
 import java.sql.Timestamp;
 
-public abstract class Transaction {
+public class Transaction { // matt removed abstract b/c it wasn't able to make an Account object when querying them in Database
 
-    protected String transaction_id;
+    protected int transaction_id;
     protected String transaction_type;
     protected double transaction_amount;
     protected Timestamp timestamp;
-    protected String account_id;
+    protected int account_id;
 
-    public Transaction(String transaction_id, String transaction_type, double transaction_amount, String account_id) {
+    public Transaction(int transaction_id, String transaction_type, double transaction_amount, int account_id) {
         this.transaction_id = transaction_id;
         this.transaction_type = transaction_type;
         this.transaction_amount=transaction_amount;
         this.timestamp = new Timestamp(System.currentTimeMillis());
     }
 
+    public Transaction(int transaction_id, String transaction_type, double transaction_amount, Timestamp timestamp, int account_id) {
+        this.transaction_id = transaction_id;
+        this.transaction_type = transaction_type;
+        this.transaction_amount=transaction_amount;
+        this.timestamp = timestamp;
+    }
+
     //Getters
 
-    public String getTransaction_id() {
+    public int getTransaction_id() {
         return transaction_id;
     }
 
@@ -33,13 +40,13 @@ public abstract class Transaction {
         return timestamp;
     }
 
-    public String getAccount_id() {
+    public int getAccount_id() {
         return account_id;
     }
 
     //Setters
 
-    public void setTransaction_id(String transaction_id) {
+    public void setTransaction_id(int transaction_id) {
         this.transaction_id = transaction_id;
     }
 
@@ -55,7 +62,7 @@ public abstract class Transaction {
         this.timestamp = timestamp;
     }
 
-    public void setAccount_id(String account_id) {
+    public void setAccount_id(int account_id) {
         this.account_id = account_id;
     }
 }
