@@ -191,9 +191,7 @@ public class Database {
         return allAccounts;
     }
 
-    public void updateAccount(Account act){
-
-    }
+    
 
     public void createTransaction(String transType, double transAmount, int accountId) {
         String sql = "INSERT INTO transactions(transaction_type,transaction_amount,account_id) VALUES(?,?,?)";

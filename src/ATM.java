@@ -59,16 +59,37 @@ public class ATM {
 
     }
 
-    public void requestLoan() {
+    public boolean requestLoan(double loanAmount, String currency_type) {
+        // Check their total wealth - return false if not approved
+        double totalWealth = 0;
+        for (Account act: allAccounts) {
+            totalWealth += act.getBalance();
+        }
 
+        if (totalWealth > 100.00) {
+            // Grant loan
+            Bank.db.createAccount(getCurrentUser().getUser_id(), "L", loanAmount, currency_type);
+            return true;
+        }
+
+        return false;
     }
 
-    public void withdrawMoney() {
-
+    public void withdrawMoney(int accountId, double amount) {
+        for (Account act: allAccounts) {
+            if (act.getAccount_id() == accountId) {
+                Bank.db.setAccountBalance(act.getAccount_id(), act.getBalance()-amount);;
+            }
+        }
+        
     }
 
-    public void depositMoney() {
-
+    public void depositMoney(int accountId, double amount) {
+        for (Account act: allAccounts) {
+            if (act.getAccount_id() == accountId) {
+                Bank.db.setAccountBalance(act.getAccount_id(), act.getBalance()+amount);;
+            }
+        }
     }
 
     public Object[][] viewTransactions(int userId) {
