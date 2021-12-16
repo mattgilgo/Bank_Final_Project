@@ -31,8 +31,7 @@ public class ATM {
 
     public void openUser(){
         this.allAccounts.addAll(Bank.db.queryUsersAccounts(getCurrentUser().getUser_id()));
-        CustomerUI customerUI = new CustomerUI(this);
-        customerUI.showUI();
+        createCustomerUI();
     }
 
     public void createAccountUI() {
@@ -49,6 +48,9 @@ public class ATM {
         // Use a factory for generating accounts?
         // accountFactory.createAccount(User user, )
         Bank.db.createAccount(currentUser.getUser_id(), accountType, balance, currency_name);
+        createCustomerUI();
+    }
+    public void createCustomerUI(){
         CustomerUI customerUI = new CustomerUI(this);
         customerUI.showUI();
     }
