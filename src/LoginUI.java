@@ -26,7 +26,7 @@ public class LoginUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 String user = userTextField.getText();
-                String pass = passTextField.getText();
+                String pass = String.valueOf(passTextField.getPassword());
                 if (bank.userLogin(user, pass)) {
                     textShown.setText(String.format("Login Successful! Welcome, %s!", user));
                 } else {
@@ -39,7 +39,7 @@ public class LoginUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 String user = userTextField.getText();
-                String pass = passTextField.getText();
+                String pass = String.valueOf(passTextField.getPassword());
                 // TODO create user account
             }
         });
@@ -47,7 +47,7 @@ public class LoginUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 String user = userTextField.getText();
-                String pass = passTextField.getText();
+                String pass = String.valueOf(passTextField.getPassword());
                 // TODO create manager account
             }
         });
