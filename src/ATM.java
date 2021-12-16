@@ -95,7 +95,7 @@ public class ATM {
 
     public Object[][] viewTransactions(int userId) {
         // Could be overloaded for managers and customers
-        ArrayList<Transaction> transactions = Bank.getDb().queryTransactions(userId);
+        ArrayList<Transaction> transactions = Bank.db.queryTransactions(userId);
         Object[][] data = new Object[transactions.size()][];
 
         for (int i=0; i<transactions.size(); i++) {
