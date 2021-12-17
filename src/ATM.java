@@ -167,24 +167,24 @@ public class ATM {
 
     }
 
-    public void buyStock(int accountId, String ticker, double num_shares){
+    public void buyStock(String ticker, double num_shares){
         for (Account act: allAccounts) {
-            if (act.getAccount_id() == accountId) {
-                int stockInstance = Bank.db.getStockInstance(accountId, ticker);
-                double accBal = Bank.db.getAccountBalance(accountId);
+            if (act.getAccount_type().equals(Account.stockCode)) {
+                int stockInstance = Bank.db.getStockInstance(act.getAccount_id(), ticker);
+                double accBal = Bank.db.getAccountBalance(act.getAccount_id());
                 double stockPrice = Bank.db.getStockPrice(ticker);
                 double cost = num_shares*stockPrice;
                 double newAccBal = accBal-cost;
                 if (newAccBal > 0) {
                     if (stockInstance > 0) {
-                        Bank.db.transactOwnedStock(accountId, ticker, num_shares, stockInstance);
-                        Bank.db.setAccountBalance(accountId, newAccBal);
-                        Bank.db.createTransaction("buy stock", cost, accountId);
+                        Bank.db.transactOwnedStock(act.getAccount_id(), ticker, num_shares, stockInstance);
+                        Bank.db.setAccountBalance(act.getAccount_id(), newAccBal);
+                        Bank.db.createTransaction("buy stock", cost, act.getAccount_id());
                     } else {
                         int stockId = Bank.db.getStockId(ticker);
-                        Bank.db.createStockOwned(accountId, stockId, stockPrice, num_shares);
-                        Bank.db.setAccountBalance(accountId, newAccBal);
-                        Bank.db.createTransaction("buy stock", cost, accountId);                
+                        Bank.db.createStockOwned(act.getAccount_id(), stockId, stockPrice, num_shares);
+                        Bank.db.setAccountBalance(act.getAccount_id(), newAccBal);
+                        Bank.db.createTransaction("buy stock", cost, act.getAccount_id());                
                     }
                 } else {
                     System.out.println("You need more money to purchase!");
@@ -228,16 +228,16 @@ public class ATM {
         }
 
         // Unpack stocks into GUI readable string 
-        String[][] portfolio = new String[currentTrades.size()][4];
+        String[][] trades = new String[currentTrades.size()][4];
         for (int i=0; i<currentTrades.size(); i++) {
             String[] stockArray = {currentTrades.get(i).getTicker(),
                                  Double.toString(currentTrades.get(i).getPrice()),
                                  Double.toString(currentTrades.get(i).getBuyPrice()),
                                  Double.toString(currentTrades.get(i).getNumShares())};
-            portfolio[i] = stockArray;
+                trades[i] = stockArray;
         }
 
-        return portfolio;
+        return trades;
     }
 
     public String[][] getPortfolio(){
@@ -245,14 +245,16 @@ public class ATM {
         ArrayList<OwnedStock> currentPortfolio = new ArrayList<OwnedStock>();
         for (Account act: allAccounts) {
             if (act.getAccount_type().equals(Account.stockCode)) {
+                System.out.println(act.getAccount_id());
                 currentPortfolio = Bank.db.getPortfolio(act.getAccount_id());
             }
         }
 
         // Unpack stocks into GUI readable string 
-        String[][] portfolio = new String[currentPortfolio.size()][4];
+        String[][] portfolio = new String[currentPortfolio.size()][5];
         for (int i=0; i<currentPortfolio.size(); i++) {
-            String[] stockArray = {currentPortfolio.get(i).getTicker(), Double.toString(currentPortfolio.get(i).getPrice()), Double.toString(currentPortfolio.get(i).getBuyPrice()), Double.toString(currentPortfolio.get(i).getNumShares())};
+            double gains = currentPortfolio.get(i).getNumShares()*(currentPortfolio.get(i).getBuyPrice()-currentPortfolio.get(i).getPrice());
+            String[] stockArray = {currentPortfolio.get(i).getTicker(), Double.toString(currentPortfolio.get(i).getPrice()), Double.toString(currentPortfolio.get(i).getBuyPrice()), Double.toString(currentPortfolio.get(i).getNumShares()), Double.toString(gains)};
             portfolio[i] = stockArray;
         }
 

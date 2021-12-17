@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class OwnedStock extends Stock {
-    public static String[] fieldNames = {"stock_ticker", "current_price", "buy_price", "number_of_shares"};
+    public static String[] fieldNames = {"stock_ticker", "current_price", "buy_price", "number_of_shares", "gains"};
     
     private int account_id;
     private int stock_id;
