@@ -25,6 +25,7 @@ public class Database {
             
             Class.forName("org.sqlite.JDBC");
             String myUrl = "jdbc:sqlite:" + filePath.toString();
+            System.out.println(myUrl);
             conn = DriverManager.getConnection(myUrl, "root", "");
             
             }

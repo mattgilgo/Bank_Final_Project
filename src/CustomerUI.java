@@ -21,6 +21,7 @@ public class CustomerUI extends JFrame {
     private JButton withdrawalButton;
     private JButton depositButton;
     private JButton stockPortalButton;
+    private JButton resquestLoanButton;
 
 
     public CustomerUI(ATM atm) {
@@ -102,6 +103,12 @@ public class CustomerUI extends JFrame {
                 // spin up stock account UI
                 StockUI stockUI = new StockUI(atm);
                 stockUI.showUI();
+            }
+        });
+        resquestLoanButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO loan logic
             }
         });
     }
