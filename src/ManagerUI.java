@@ -14,7 +14,6 @@ public class ManagerUI extends JFrame {
     private JButton seeUserInformationButton;
     private JButton seeAllUsersInformationButton;
 
-
     private ATM atm;
 
     public ManagerUI(ATM atm) {

@@ -218,16 +218,33 @@ public class ATM {
         }
     }
 
-    public void getTrades(){
+    public String[][] getTrades(){
+        // Get array of all previous trades by user
+        ArrayList<OwnedStock> currentTrades = new ArrayList<OwnedStock>();
+        for (Account act: allAccounts) {
+            if (act.getAccount_type().equals("ST")) {
+                currentTrades = Bank.db.queryAccountsStocks(act.getAccount_id());
+            }
+        }
 
+        // Unpack stocks into GUI readable string 
+        String[][] portfolio = new String[currentTrades.size()][4];
+        for (int i=0; i<currentTrades.size(); i++) {
+            String[] stockArray = {currentTrades.get(i).getTicker(),
+                                 Double.toString(currentTrades.get(i).getPrice()),
+                                 Double.toString(currentTrades.get(i).getBuyPrice()),
+                                 Double.toString(currentTrades.get(i).getNumShares())};
+            portfolio[i] = stockArray;
+        }
+
+        return portfolio;
     }
 
     public String[][] getPortfolio(){
         // groupby on stock_id sum num_shares - return array of strings
         ArrayList<OwnedStock> currentPortfolio = new ArrayList<OwnedStock>();
         for (Account act: allAccounts) {
-            if (act.getAccount_type().equals("ST")) {
-                System.out.println(act);
+            if (act.getAccount_type().equals(Account.stockCode)) {
                 currentPortfolio = Bank.db.getPortfolio(act.getAccount_id());
             }
         }

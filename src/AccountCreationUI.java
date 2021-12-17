@@ -28,7 +28,7 @@ public class AccountCreationUI extends JFrame {
         this.atm = atm;
 
         DefaultComboBoxModel<String> modelCurrency = new DefaultComboBoxModel<String>(SUPPORTED_CURRENCIES);
-        DefaultComboBoxModel<String> modelTypes = new DefaultComboBoxModel<String>();
+        DefaultComboBoxModel<String> modelTypes = new DefaultComboBoxModel<String>(Account.accountTypes);
         DefaultComboBoxModel<String> modelAccounts = new DefaultComboBoxModel<String>(atm.getStringListOfAccounts());
         currencyDrop.setModel(modelCurrency);
         currencyDrop.setForeground(new Color(0).BLACK);
@@ -51,7 +51,13 @@ public class AccountCreationUI extends JFrame {
                 String currency = (String) currencyDrop.getSelectedItem();
                 String acctType = (String) typeDrop.getSelectedItem();
                 String acctToCharge = (String) acctDrop.getSelectedItem();
-                Double amtToDeposit = Double.parseDouble(depositAmtField.getText());
+                Double amtToDeposit = 0.0;
+                try{
+                    amtToDeposit = Double.parseDouble(depositAmtField.getText());
+                }
+                catch (NumberFormatException ignore){
+                    System.out.println("Invalid Input!");
+                }
                 //TODO Charge the appropriate account for the balance
 
                 // create account method called here
