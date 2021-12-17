@@ -237,7 +237,7 @@ public class ATM {
             portfolio[i] = stockArray;
         }
 
-
+        return portfolio;
     }
 
     public String[][] getPortfolio(){
