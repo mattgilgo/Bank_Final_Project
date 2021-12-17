@@ -481,8 +481,8 @@ public class Database {
     public ArrayList<OwnedStock> getStockTrades(int account_id) {
         ArrayList<OwnedStock> allAccountsStocks =  new ArrayList<OwnedStock>();
 
-        String sql = "SELECT s.stock_id, s.stock_ticker, s.stock_price, so.stock_buy_price, so.num_shares" +
-        "FROM stocks_owned so" +
+        String sql = "SELECT s.stock_id, s.stock_ticker, s.stock_price, so.stock_buy_price, so.num_shares " +
+        "FROM stocks s, stocks_owned so " +
         "WHERE s.stock_id = so.stock_id AND so.account_id=?";  
 
         try (
@@ -739,11 +739,11 @@ public class Database {
 
     public static void main(String[] args) {
         Database db = new Database();
-        db.printAllUsers();
-        db.printAllAccounts();
-        db.printAllTransactions();
-        db.printAllStocks();
-        db.printAllStocksOwned();
+        // db.printAllUsers();
+        // db.printAllAccounts();
+        // db.printAllTransactions();
+        // db.printAllStocks();
+        // db.printAllStocksOwned();
         ArrayList<Transaction> user_transactions = db.queryUserTransactions(1);
         ArrayList<OwnedStock> stocks = db.getPortfolio(1);
         for (OwnedStock stock: stocks) {
