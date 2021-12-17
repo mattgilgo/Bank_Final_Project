@@ -222,8 +222,8 @@ public class ATM {
         // Get array of all previous trades by user
         ArrayList<OwnedStock> currentTrades = new ArrayList<OwnedStock>();
         for (Account act: allAccounts) {
-            if (act.getAccount_type().equals("ST")) {
-                currentTrades = Bank.db.queryAccountsStocks(act.getAccount_id());
+            if (act.getAccount_type().equals(Account.stockCode)) {
+                currentTrades = Bank.db.getStockTrades(act.getAccount_id());
             }
         }
 
