@@ -43,7 +43,7 @@
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Bank Balance"/>
+          <text value="Bank Balance: $"/>
         </properties>
       </component>
       <component id="599e3" class="javax.swing.JLabel" binding="bankBalanceText">
@@ -51,7 +51,7 @@
           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value=""/>
+          <text value="12544"/>
         </properties>
       </component>
       <component id="9b562" class="javax.swing.JLabel">
@@ -101,7 +101,6 @@
           <text value="See All Users Information"/>
         </properties>
       </component>
->>>>>>> 04bc6d5bddb9059c5baadc9414fae982a6f1f1ec
     </children>
   </grid>
 </form>
