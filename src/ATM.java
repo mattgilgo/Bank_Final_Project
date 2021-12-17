@@ -228,16 +228,16 @@ public class ATM {
         }
 
         // Unpack stocks into GUI readable string 
-        String[][] portfolio = new String[currentTrades.size()][4];
+        String[][] trades = new String[currentTrades.size()][4];
         for (int i=0; i<currentTrades.size(); i++) {
             String[] stockArray = {currentTrades.get(i).getTicker(),
                                  Double.toString(currentTrades.get(i).getPrice()),
                                  Double.toString(currentTrades.get(i).getBuyPrice()),
                                  Double.toString(currentTrades.get(i).getNumShares())};
-            portfolio[i] = stockArray;
+                trades[i] = stockArray;
         }
 
-        return portfolio;
+        return trades;
     }
 
     public String[][] getPortfolio(){
@@ -251,9 +251,10 @@ public class ATM {
         }
 
         // Unpack stocks into GUI readable string 
-        String[][] portfolio = new String[currentPortfolio.size()][4];
+        String[][] portfolio = new String[currentPortfolio.size()][5];
         for (int i=0; i<currentPortfolio.size(); i++) {
-            String[] stockArray = {currentPortfolio.get(i).getTicker(), Double.toString(currentPortfolio.get(i).getPrice()), Double.toString(currentPortfolio.get(i).getBuyPrice()), Double.toString(currentPortfolio.get(i).getNumShares())};
+            double gains = currentPortfolio.get(i).getNumShares()*(currentPortfolio.get(i).getBuyPrice()-currentPortfolio.get(i).getPrice());
+            String[] stockArray = {currentPortfolio.get(i).getTicker(), Double.toString(currentPortfolio.get(i).getPrice()), Double.toString(currentPortfolio.get(i).getBuyPrice()), Double.toString(currentPortfolio.get(i).getNumShares()), Double.toString(gains)};
             portfolio[i] = stockArray;
         }
 
