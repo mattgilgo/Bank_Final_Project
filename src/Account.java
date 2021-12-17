@@ -2,6 +2,8 @@ import java.util.Objects;
 
 public class Account {  // matt removed abstract b/c it wasn't able to make an Account object when querying them in Database
 
+    public final static String stockCode = "ST";
+    public static String[] accountTypes = {"C", "S", stockCode}; 
     protected int account_id;
     protected int user_id;
     protected String account_type;

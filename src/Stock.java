@@ -11,5 +11,21 @@ public class Stock {
         this.stock_ticker = ticker;
         this.stock_price = price;
     }
+
+    // Add a toString()
+
+    @Override 
+    public String toString(){
+        return getTicker() + " " + Double.toString(getPrice());
+    }
+
+    public String getTicker(){
+        return this.stock_ticker;
+    }
+
+    public double getPrice(){
+        return this.stock_price;
+    }
+    
     
 }

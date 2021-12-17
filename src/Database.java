@@ -412,7 +412,8 @@ public class Database {
     public ArrayList<OwnedStock> queryAccountsStocks(int account_id) {
         ArrayList<OwnedStock> allAccountsStocks =  new ArrayList<OwnedStock>();
 
-        String sql = "SELECT * FROM stocks s LEFT JOIN stocks_owned so on s.stock_id=so.stock_id WHERE account_id=?";
+        String sql = "SELECT s.stock_id, s.stock_ticker, s.stock_price, so.stock_buy_price, so.num_shares" + 
+            "FROM stocks s LEFT JOIN stocks_owned so on s.stock_id=so.stock_id WHERE account_id=?";
 
         try (
                 PreparedStatement pstmt  = conn.prepareStatement(sql)){
@@ -427,10 +428,76 @@ public class Database {
                 int stockId = rs.getInt("stock_id");
                 String ticker = rs.getString("stock_ticker");
                 double currentPrice = rs.getDouble("stock_price");
-                double cashBalance = rs.getDouble("cash_balance");
                 double buyPrice = rs.getDouble("stock_buy_price");
                 double numShares = rs.getDouble("num_shares");
-                OwnedStock ownedStock = new OwnedStock(stockId, ticker, currentPrice, account_id, cashBalance, buyPrice, numShares);
+                OwnedStock ownedStock = new OwnedStock(stockId, ticker, currentPrice, account_id, buyPrice, numShares);
+                allAccountsStocks.add(ownedStock);
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+        return allAccountsStocks;
+    }
+
+    public ArrayList<OwnedStock> getPortfolio(int account_id) {
+        ArrayList<OwnedStock> allAccountsStocks =  new ArrayList<OwnedStock>();
+
+        String sql = "SELECT s.stock_id, s.stock_ticker, s.stock_price, so.stock_buy_price, SUM(so.num_shares)" +
+        "FROM stocks s, stocks_owned so" +
+        "WHERE s.stock_id=so.stock_id AND so.account_id=1" +
+        "GROUP BY s.stock_id";  
+
+        try (
+                PreparedStatement pstmt  = conn.prepareStatement(sql)){
+
+            // set the value
+            pstmt.setInt(1,account_id);
+            //
+            ResultSet rs  = pstmt.executeQuery();
+
+            // loop through the result set
+            while(rs.next()) {
+                int stockId = rs.getInt("stock_id");
+                String ticker = rs.getString("stock_ticker");
+                double currentPrice = rs.getDouble("stock_price");
+                double buyPrice = rs.getDouble("stock_buy_price");
+                double numShares = rs.getDouble("num_shares");
+                OwnedStock ownedStock = new OwnedStock(stockId, ticker, currentPrice, account_id, buyPrice, numShares);
+                allAccountsStocks.add(ownedStock);
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+        return allAccountsStocks;
+    }
+
+    public ArrayList<OwnedStock> getStockTrades(int account_id) {
+        ArrayList<OwnedStock> allAccountsStocks =  new ArrayList<OwnedStock>();
+
+        String sql = "SELECT * FROM stocks_owned so WHERE so.account_id=?";  
+
+        try (
+            PreparedStatement pstmt  = conn.prepareStatement(sql)){
+
+            // set the value
+            pstmt.setInt(1,account_id);
+            //
+            ResultSet rs  = pstmt.executeQuery();
+
+            // loop through the result set
+            while(rs.next()) {
+                int stockId = rs.getInt("stock_id");
+                String ticker = rs.getString("stock_ticker");
+                double currentPrice = rs.getDouble("stock_price");
+                double buyPrice = rs.getDouble("stock_buy_price");
+                double numShares = rs.getDouble("num_shares");
+                OwnedStock ownedStock = new OwnedStock(stockId, ticker, currentPrice, account_id, buyPrice, numShares);
                 allAccountsStocks.add(ownedStock);
             }
 
