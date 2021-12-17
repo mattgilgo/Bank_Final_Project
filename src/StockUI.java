@@ -17,8 +17,6 @@ public class StockUI extends JFrame {
     private JButton sellButton;
     private JComboBox bankDrop;
     private JLabel stockLabel;
-    private JLabel equityValue;
-    private JLabel equityLabel;
     private JPanel panel;
 
     private ATM atm;
@@ -32,10 +30,10 @@ public class StockUI extends JFrame {
         stockDrop.setForeground(new Color(0).BLACK);
         stockDrop.setBackground(new Color(0).LIGHT_GRAY);
 
-        DefaultComboBoxModel<String> modelBankDrop = new DefaultComboBoxModel<String>(atm.getStringListOfStockAccounts());
-        bankDrop.setModel(modelBankDrop);
-        bankDrop.setForeground(new Color(0).BLACK);
-        bankDrop.setBackground(new Color(0).LIGHT_GRAY);
+//        DefaultComboBoxModel<String> modelBankDrop = new DefaultComboBoxModel<String>(atm.getStringListOfStockAccounts());
+//        bankDrop.setModel(modelBankDrop);
+//        bankDrop.setForeground(new Color(0).BLACK);
+//        bankDrop.setBackground(new Color(0).LIGHT_GRAY);
 
         setContentPane(panel);
         setTitle("Stock Market Interface");
@@ -55,36 +53,36 @@ public class StockUI extends JFrame {
                 catch (NumberFormatException ignore){
                     System.out.println("Invalid Input!");
                 }
-                String bankAccount = (String) bankDrop.getSelectedItem();
+//                String bankAccount = (String) bankDrop.getSelectedItem();
                 // TODO use provided info to make purchase
                 atm.buyStock(ticker, numShares);
                 atm.updateUserAccounts();
             }
         });
-        sellButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String stockTicker = (String) stockDrop.getSelectedItem();
-                Integer numShares = 0;
-                try{
-                    numShares = Integer.parseInt(shareNumberText.getText());;
-                }
-                catch (NumberFormatException ignore){
-                    System.out.println("Invalid Input!");
-                }
-                String bankAccount = (String) bankDrop.getSelectedItem();
-//                int stockInstance = Bank.db.getStockInstance(account_id, stockTicker); // need account_id here
-//                if (stockInstance > 0) {
-////                    Bank.db.transactOwnedStock(account_id, stockInstance, cashBalance, numShares, stockInstance); // need cashBalance here
+//        sellButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                String stockTicker = (String) stockDrop.getSelectedItem();
+//                Integer numShares = 0;
+//                try{
+//                    numShares = Integer.parseInt(shareNumberText.getText());;
 //                }
-            }
-        });
-        seeBuysSellsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO produce tableUI and pass columns, data for stock transactions
-            }
-        });
+//                catch (NumberFormatException ignore){
+//                    System.out.println("Invalid Input!");
+//                }
+//                String bankAccount = (String) bankDrop.getSelectedItem();
+////                int stockInstance = Bank.db.getStockInstance(account_id, stockTicker); // need account_id here
+////                if (stockInstance > 0) {
+//////                    Bank.db.transactOwnedStock(account_id, stockInstance, cashBalance, numShares, stockInstance); // need cashBalance here
+////                }
+//            }
+//        });
+//        seeBuysSellsButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                // TODO produce tableUI and pass columns, data for stock transactions
+//            }
+//        });
         seePortfolioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
