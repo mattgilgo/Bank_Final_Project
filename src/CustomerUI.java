@@ -32,7 +32,7 @@ public class CustomerUI extends JFrame {
         dropDown.setBackground(new Color(0).LIGHT_GRAY);
         setContentPane(panel);
         setTitle("Customer Account Portal");
-        setSize(450, 300);
+        setSize(550, 300);
 //        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         dropDown.addActionListener(new ActionListener() {
@@ -111,6 +111,10 @@ public class CustomerUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // TODO loan logic
                 double loanAmt = Double.parseDouble(loanAmountField.getText());
+                atm.requestLoan(loanAmt, "USD");
+                atm.updateUserAccounts();
+                DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(atm.getStringListOfAccounts());
+                dropDown.setModel(model);
             }
         });
     }
