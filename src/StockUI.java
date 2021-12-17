@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class StockUI extends JFrame {
     // TODO Supported currencies variable should be moved to where it makes sense
@@ -83,6 +85,9 @@ public class StockUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO produce tableUI and pass columns, data for stocks owned, amt, price, value
+                System.out.println(Arrays.toString(atm.getPortfolio()));
+                TableUICreator tableUICreator = new TableUICreator(OwnedStock.fieldNames, atm.getPortfolio());
+                tableUICreator.showTable();
             }
         });
     }
