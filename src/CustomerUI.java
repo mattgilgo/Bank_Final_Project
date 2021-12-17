@@ -22,6 +22,7 @@ public class CustomerUI extends JFrame {
     private JButton depositButton;
     private JButton stockPortalButton;
     private JButton resquestLoanButton;
+    private JTextField loanAmountField;
 
 
     public CustomerUI(ATM atm) {
@@ -109,6 +110,7 @@ public class CustomerUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO loan logic
+                double loanAmt = Double.parseDouble(loanAmountField.getText());
             }
         });
     }
