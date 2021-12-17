@@ -169,15 +169,19 @@ public class ATM {
 
     public void buyStock(String ticker, double num_shares){
         for (Account act: allAccounts) {
+            System.out.println(act.getAccount_id());
             if (act.getAccount_type().equals(Account.stockCode)) {
                 int stockInstance = Bank.db.getStockInstance(act.getAccount_id(), ticker);
                 double accBal = Bank.db.getAccountBalance(act.getAccount_id());
                 double stockPrice = Bank.db.getStockPrice(ticker);
+                double currNumShares = Bank.db.getCurrentNumShares(stockInstance);
+                System.out.printf("Current numshares: %s\n", currNumShares);
+                System.out.printf("numshares to buy: %s\n", num_shares);
                 double cost = num_shares*stockPrice;
                 double newAccBal = accBal-cost;
                 if (newAccBal > 0) {
                     if (stockInstance > 0) {
-                        Bank.db.transactOwnedStock(act.getAccount_id(), ticker, num_shares, stockInstance);
+                        Bank.db.transactOwnedStock(act.getAccount_id(), ticker, num_shares+currNumShares, stockInstance);
                         Bank.db.setAccountBalance(act.getAccount_id(), newAccBal);
                         Bank.db.createTransaction("buy stock", cost, act.getAccount_id());
                     } else {

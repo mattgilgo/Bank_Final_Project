@@ -380,6 +380,7 @@ public class Database {
             // loop through the result set
             while(rs.next()) {
                 stockPrice = rs.getDouble("stock_price");
+//                System.out.printf("Stock price in iterator: %s\n", stockPrice);
             }
 
         } catch (SQLException e) {
@@ -556,16 +557,22 @@ public class Database {
     }
 
     public double getCurrentNumShares(int stockInstance) {
-        String sql = "SELECT num_shares from stocks_owned where stock_instance_owned_id = ?"; 
+//        String sql = "SELECT num_shares from stocks_owned where stock_instance_owned_id = ?";
+        String sql = "SELECT num_shares from stocks_owned where stock_instance_owned_id = ?";
+        double numShares = 0;
 
         try (
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, stockInstance);
-            pstmt.executeUpdate();
+            ResultSet rs = pstmt.executeQuery();
+
+            while(rs.next()) {
+                numShares = rs.getDouble("num_shares");
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return 0.0;
+        return numShares;
     }
 
     public void transactOwnedStock(int accountId, String ticker, double num_shares, int stockInstance) {
@@ -764,9 +771,9 @@ public class Database {
         }
     }
 
-    public int getCurrentNumShares(int stockInstance) {
-        return 1;
-    }
+//    public int getCurrentNumShares(int stockInstance) {
+//        return 1;
+//    }
 }
 
 

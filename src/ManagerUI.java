@@ -20,7 +20,6 @@ public class ManagerUI extends JFrame {
         this.atm = atm;
 
         // TODO set bank balance to appropriate value
-        bankBalanceText.setText("$");
 
         // TODO implement method to get all users
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(atm.getStringListOfAllUsers());
