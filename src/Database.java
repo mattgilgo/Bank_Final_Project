@@ -475,6 +475,38 @@ public class Database {
         return allAccountsStocks;
     }
 
+    public ArrayList<OwnedStock> getStockTrades(int account_id) {
+        ArrayList<OwnedStock> allAccountsStocks =  new ArrayList<OwnedStock>();
+
+        String sql = "SELECT * FROM stocks_owned so WHERE so.account_id=?";  
+
+        try (
+            PreparedStatement pstmt  = conn.prepareStatement(sql)){
+
+            // set the value
+            pstmt.setInt(1,account_id);
+            //
+            ResultSet rs  = pstmt.executeQuery();
+
+            // loop through the result set
+            while(rs.next()) {
+                int stockId = rs.getInt("stock_id");
+                String ticker = rs.getString("stock_ticker");
+                double currentPrice = rs.getDouble("stock_price");
+                double buyPrice = rs.getDouble("stock_buy_price");
+                double numShares = rs.getDouble("num_shares");
+                OwnedStock ownedStock = new OwnedStock(stockId, ticker, currentPrice, account_id, buyPrice, numShares);
+                allAccountsStocks.add(ownedStock);
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+        return allAccountsStocks;
+    }
+
     public int getStockInstance(int account_id, String ticker) {
         String sql = "SELECT stock_instance_owned_id FROM stocks_owned WHERE account_id = ? AND stock_ticker = ?";
         int stockInstance = 0;
