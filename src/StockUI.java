@@ -57,7 +57,7 @@ public class StockUI extends JFrame {
                 }
                 String bankAccount = (String) bankDrop.getSelectedItem();
                 // TODO use provided info to make purchase
-                atm.buyStock(atm.getCurrentUser().user_id, ticker, numShares);
+                atm.buyStock(ticker, numShares);
             }
         });
         sellButton.addActionListener(new ActionListener() {
