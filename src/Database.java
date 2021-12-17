@@ -532,6 +532,7 @@ public class Database {
             stockInstance = rs.getInt("stock_instance_owned_id");
         }
 
+        
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
