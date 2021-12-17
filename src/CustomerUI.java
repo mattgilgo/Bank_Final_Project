@@ -68,7 +68,13 @@ public class CustomerUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int account_id = (Integer.parseInt(((String) dropDown.getSelectedItem()).replaceAll("[\\D]", "")));
-                Double amount = Double.parseDouble(amountField.getText());
+                Double amount = 0.0;
+                try{
+                    amount = Double.parseDouble(amountField.getText());
+                }
+                catch (NumberFormatException ignore){
+                    System.out.println("Invalid Input!");
+                }
                 atm.depositMoney(account_id, amount);
                 showAmount(atm);
                 System.out.println(String.format("clicked deposit: %s", amount));
@@ -78,7 +84,13 @@ public class CustomerUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int account_id = (Integer.parseInt(((String) dropDown.getSelectedItem()).replaceAll("[\\D]", "")));
-                Double amount = Double.parseDouble(amountField.getText());
+                Double amount = 0.0;
+                try{
+                    amount = Double.parseDouble(amountField.getText());
+                }
+                catch (NumberFormatException ignore){
+                    System.out.println("Invalid Input!");
+                }
                 atm.withdrawMoney(account_id, amount);
                 showAmount(atm);
                 System.out.println(String.format("clicked withdrawal: %s", amount));

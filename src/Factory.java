@@ -22,4 +22,17 @@ public class Factory {
         }
         return account;
     }
+    public User createUser(int user_id, String user_type,String username, String password) {
+        User user;
+        if(user_type.equalsIgnoreCase("C")){
+            user = new Customer(user_id, user_type, username, password);
+        }
+        else if (user_type.equalsIgnoreCase("M")){
+            user = new Manager(user_id, user_type, username, password);
+        }
+        else{
+            user=null;
+        }
+        return user;
+    }
 }

@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class StockUI extends JFrame {
     // TODO Supported currencies variable should be moved to where it makes sense
@@ -25,7 +27,7 @@ public class StockUI extends JFrame {
 
         this.atm = atm;
 
-        DefaultComboBoxModel<String> modelStockDrop = new DefaultComboBoxModel<String>(SUPPORTED_STOCKS);
+        DefaultComboBoxModel<String> modelStockDrop = new DefaultComboBoxModel<String>(stocksString());
         stockDrop.setModel(modelStockDrop);
         stockDrop.setForeground(new Color(0).BLACK);
         stockDrop.setBackground(new Color(0).LIGHT_GRAY);
@@ -38,22 +40,37 @@ public class StockUI extends JFrame {
         setContentPane(panel);
         setTitle("Stock Market Interface");
         setSize(600, 300);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         buyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String stockTicker = (String) stockDrop.getSelectedItem();
-                Integer numShares = Integer.parseInt(shareNumberText.getText());
+                String ticker = stockTicker.split(" ")[0];
+                System.out.println(ticker);
+                Integer numShares = 0;
+                try{
+                    numShares = Integer.parseInt(shareNumberText.getText());
+                }
+                catch (NumberFormatException ignore){
+                    System.out.println("Invalid Input!");
+                }
                 String bankAccount = (String) bankDrop.getSelectedItem();
                 // TODO use provided info to make purchase
+                atm.buyStock(atm.getCurrentUser().user_id, ticker, numShares);
             }
         });
         sellButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String stockTicker = (String) stockDrop.getSelectedItem();
-                Integer numShares = Integer.parseInt(shareNumberText.getText());
+                Integer numShares = 0;
+                try{
+                    numShares = Integer.parseInt(shareNumberText.getText());;
+                }
+                catch (NumberFormatException ignore){
+                    System.out.println("Invalid Input!");
+                }
                 String bankAccount = (String) bankDrop.getSelectedItem();
 //                int stockInstance = Bank.db.getStockInstance(account_id, stockTicker); // need account_id here
 //                if (stockInstance > 0) {
@@ -71,8 +88,20 @@ public class StockUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO produce tableUI and pass columns, data for stocks owned, amt, price, value
+                System.out.println(Arrays.toString(atm.getPortfolio()));
+                TableUICreator tableUICreator = new TableUICreator(OwnedStock.fieldNames, atm.getPortfolio());
+                tableUICreator.showTable();
             }
         });
+    }
+
+    public String[] stocksString() {
+        ArrayList<Stock> stocks = Bank.db.queryStocks();
+        String[] strings = new String[stocks.size()];
+        for (int i=0; i < stocks.size(); i++) {
+            strings[i] = stocks.get(i).toString();
+        }
+        return strings;
     }
 
     public void showUI(){

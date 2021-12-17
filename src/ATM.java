@@ -22,6 +22,7 @@ public class ATM {
     public ATM(User user){
         this.currentUser = user;
         this.allAccounts = new ArrayList<Account>();
+        this.factory = new Factory();
 
         if(user.getUser_type().equalsIgnoreCase("C")){
             currentCustomer = new Customer(user.getUser_id(), user.getUser_type(), user.getUsername(), user.getPassword());
@@ -43,8 +44,8 @@ public class ATM {
     }
     public void openManager(){
         //TODO Add Manager Report UI
-        System.out.println(currentManager.getUsername());
-        System.out.println(currentManager.getReport());
+        //System.out.println(currentManager.getUsername());
+        //System.out.println(currentManager.getReport());
         createManagerUI();
     }
 
@@ -61,6 +62,7 @@ public class ATM {
         // Charge a fee for account creation
         // Use a factory for generating accounts?
         // accountFactory.createAccount(User user, )
+        // TODO: Add check for "stock" account 
         Bank.db.createAccount(currentUser.getUser_id(), accountType, balance, currency_name);
         updateUserAccounts();
         createCustomerUI();
@@ -119,11 +121,31 @@ public class ATM {
 
     public Object[][] viewTransactions(int userId) {
         // Could be overloaded for managers and customers
-        ArrayList<Transaction> transactions = Bank.db.queryTransactions(userId);
+        ArrayList<Transaction> transactions = Bank.db.queryUserTransactions(userId);
         Object[][] data = new Object[transactions.size()][];
 
         for (int i=0; i<transactions.size(); i++) {
             data[i] = transactions.get(i).getStringArray();
+        }
+        return data;
+    }
+    public Object[][] viewAllTransactions() {
+        // Could be overloaded for managers and customers
+        ArrayList<Transaction> transactions = Bank.db.queryAllTransactions();
+        Object[][] data = new Object[transactions.size()][];
+
+        for (int i=0; i<transactions.size(); i++) {
+            data[i] = transactions.get(i).getStringArray();
+        }
+        return data;
+    }
+    public Object[][] viewUserReport(int user_id) {
+        // Could be overloaded for managers and customers
+        ArrayList<ReportTuple> reportTuples = currentManager.createUserReport(user_id).getReportTuples();
+        Object[][] data = new Object[reportTuples.size()][];
+
+        for (int i=0; i<reportTuples.size(); i++) {
+            data[i] = reportTuples.get(i).getStringArray();
         }
         return data;
     }
@@ -145,24 +167,24 @@ public class ATM {
 
     }
 
-    public void buyStock(int accountId, String ticker, double num_shares){
+    public void buyStock(String ticker, double num_shares){
         for (Account act: allAccounts) {
-            if (act.getAccount_id() == accountId) {
-                int stockInstance = Bank.db.getStockInstance(accountId, ticker);
-                double accBal = Bank.db.getAccountBalance(accountId);
+            if (act.getAccount_type().equals(Account.stockCode)) {
+                int stockInstance = Bank.db.getStockInstance(act.getAccount_id(), ticker);
+                double accBal = Bank.db.getAccountBalance(act.getAccount_id());
                 double stockPrice = Bank.db.getStockPrice(ticker);
                 double cost = num_shares*stockPrice;
                 double newAccBal = accBal-cost;
                 if (newAccBal > 0) {
                     if (stockInstance > 0) {
-                        Bank.db.transactOwnedStock(accountId, ticker, num_shares, stockInstance);
-                        Bank.db.setAccountBalance(accountId, newAccBal);
-                        Bank.db.createTransaction("buy stock", cost, accountId);
+                        Bank.db.transactOwnedStock(act.getAccount_id(), ticker, num_shares, stockInstance);
+                        Bank.db.setAccountBalance(act.getAccount_id(), newAccBal);
+                        Bank.db.createTransaction("buy stock", cost, act.getAccount_id());
                     } else {
                         int stockId = Bank.db.getStockId(ticker);
-                        Bank.db.createStockOwned(accountId, stockId, stockPrice, num_shares);
-                        Bank.db.setAccountBalance(accountId, newAccBal);
-                        Bank.db.createTransaction("buy stock", cost, accountId);                
+                        Bank.db.createStockOwned(act.getAccount_id(), stockId, stockPrice, num_shares);
+                        Bank.db.setAccountBalance(act.getAccount_id(), newAccBal);
+                        Bank.db.createTransaction("buy stock", cost, act.getAccount_id());                
                     }
                 } else {
                     System.out.println("You need more money to purchase!");
@@ -196,16 +218,50 @@ public class ATM {
         }
     }
 
-    public void getTrades(){
+    public String[][] getTrades(){
+        // Get array of all previous trades by user
+        ArrayList<OwnedStock> currentTrades = new ArrayList<OwnedStock>();
+        for (Account act: allAccounts) {
+            if (act.getAccount_type().equals(Account.stockCode)) {
+                currentTrades = Bank.db.getStockTrades(act.getAccount_id());
+            }
+        }
 
+        // Unpack stocks into GUI readable string 
+        String[][] trades = new String[currentTrades.size()][4];
+        for (int i=0; i<currentTrades.size(); i++) {
+            String[] stockArray = {currentTrades.get(i).getTicker(),
+                                 Double.toString(currentTrades.get(i).getPrice()),
+                                 Double.toString(currentTrades.get(i).getBuyPrice()),
+                                 Double.toString(currentTrades.get(i).getNumShares())};
+                trades[i] = stockArray;
+        }
+
+        return trades;
     }
 
-    public void getPortfolio(){
+    public String[][] getPortfolio(){
+        // groupby on stock_id sum num_shares - return array of strings
+        ArrayList<OwnedStock> currentPortfolio = new ArrayList<OwnedStock>();
+        for (Account act: allAccounts) {
+            if (act.getAccount_type().equals(Account.stockCode)) {
+                System.out.println(act.getAccount_id());
+                currentPortfolio = Bank.db.getPortfolio(act.getAccount_id());
+            }
+        }
 
+        // Unpack stocks into GUI readable string 
+        String[][] portfolio = new String[currentPortfolio.size()][5];
+        for (int i=0; i<currentPortfolio.size(); i++) {
+            double gains = currentPortfolio.get(i).getNumShares()*(currentPortfolio.get(i).getBuyPrice()-currentPortfolio.get(i).getPrice());
+            String[] stockArray = {currentPortfolio.get(i).getTicker(), Double.toString(currentPortfolio.get(i).getPrice()), Double.toString(currentPortfolio.get(i).getBuyPrice()), Double.toString(currentPortfolio.get(i).getNumShares()), Double.toString(gains)};
+            portfolio[i] = stockArray;
+        }
+
+        return portfolio;
     }
 
-    // buys and sells - like see all transactions
-    // see portfolio - each stock, how much you own 
+    
 
 
 
@@ -232,18 +288,29 @@ public class ATM {
         }
         return allAccountInfo;
     }
-
     public String[] getStringListOfStockAccounts() {
-        return new String[]{"test 1", "test 2"};
+        return new String[]{"ex user 1", "ex user 2"};
     }
 
     public String[] getStringListOfAllUsers() {
-        return new String[]{"ex user 1", "ex user 2"};
+        ArrayList<User> allUsers =Bank.db.getAllUsers();
+        String[] allUserInfo = new String[allUsers.size()];
+        for (int i = 0; i < allUsers.size(); i++) {
+            User a = allUsers.get(i);
+            allUserInfo[i] = a.getUser_id() + " " + a.getUser_type() +" "+ a.getUsername();
+        }
+        return allUserInfo;
     }
+
 
     public User getCurrentUser() {
         return currentUser;
     }
+
+    public Factory getFactory() {
+        return factory;
+    }
+
     //Setters
 
     public void setCurrentCustomer(Customer currentCustomer) {

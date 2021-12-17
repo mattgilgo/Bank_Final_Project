@@ -7,8 +7,10 @@ import java.nio.file.Paths;
 public class Database {
     
     Connection conn;
-    
+    private Factory factory;
+
     public Database(){
+        this.factory = new Factory();
         getConnection();
         
         
@@ -221,6 +223,38 @@ public class Database {
         }
         return report;
     }
+    public Report getUserReport(int user_id) {
+        Report report =  new Report();
+        String sql = "SELECT u.user_id as user_id, u.user_type, u.username, u.password, a.user_id as acc_user_id, a.account_id, a.account_type, a.balance, a.currency_name, a.currency_symbol FROM accounts as a, users as u WHERE u.user_id = a.user_id AND u.user_id = ?";
+        try (
+                PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            //Set user_id
+            pstmt.setInt(1,user_id);
+            ResultSet rs  = pstmt.executeQuery();
+
+            // loop through the result set
+            while(rs.next()) {
+                int query_user_id= rs.getInt("user_id");
+                String user_type = rs.getString("user_type");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                int acc_user_id = rs.getInt("acc_user_id");
+                int accountId = rs.getInt("account_id");
+                String accountType = rs.getString("account_type");
+                double balanceCheck = rs.getDouble("balance");
+                String currency_name = rs.getString("currency_name");
+                String currency_symbol = rs.getString("currency_symbol");
+                ReportTuple reportTuple = new ReportTuple( query_user_id, user_type, username, password, accountId, accountType, balanceCheck, currency_name, currency_symbol);
+                report.getReportTuples().add(reportTuple);
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+        return report;
+    }
 
     public void createTransaction(String transType, double transAmount, int accountId) {
         String sql = "INSERT INTO transactions(transaction_type,transaction_amount,account_id) VALUES(?,?,?)";
@@ -234,36 +268,6 @@ public class Database {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-    }
-
-        // query transaction log for bank, do by date later
-    public ArrayList<Transaction> queryAllTransactions() {
-        ArrayList<Transaction> allTransactions =  new ArrayList<Transaction>();
-
-        String sql = "SELECT * FROM transactions";
-
-        try (
-            PreparedStatement pstmt  = conn.prepareStatement(sql)){
-            //pstmt.setInt(1, userId);
-            ResultSet rs  = pstmt.executeQuery();
-
-            // loop through the result set
-            while(rs.next()) {
-                int transId = rs.getInt("transaction_id");
-                String transType = rs.getString("transaction_type");
-                double transAmount = rs.getDouble("transaction_amount"); // is this a new column? 
-                Timestamp timestamp = rs.getTimestamp("transaction_time"); // not sure this one is in current db either
-                int accountId = rs.getInt("account_id");
-                Transaction trans = new Transaction(transId, transType, transAmount, timestamp, accountId);
-                allTransactions.add(trans);
-            }
-
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-
-        }
-        return allTransactions;
     }
 
     // query transaction log for bank, do by date later
@@ -294,6 +298,34 @@ public class Database {
 
         }
         return userTransactions;
+    }
+    // query transaction log for bank, do by date later
+    public ArrayList<Transaction> queryAllTransactions() {
+        ArrayList<Transaction> allTransactions =  new ArrayList<Transaction>();
+
+        String sql = "SELECT T.transaction_id, T.transaction_type, T.transaction_amount, T.transaction_time, T.account_id as account_id FROM transactions T, accounts A WHERE T.account_id = A.account_id";
+
+        try (
+                PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            ResultSet rs  = pstmt.executeQuery();
+
+            // loop through the result set
+            while(rs.next()) {
+                int transId = rs.getInt("transaction_id");
+                String transType = rs.getString("transaction_type");
+                double transAmount = rs.getDouble("transaction_amount"); // is this a new column?
+                Timestamp timestamp = rs.getTimestamp("transaction_time"); // not sure this one is in current db either
+                int accountId = rs.getInt("account_id");
+                Transaction trans = new Transaction(transId, transType, transAmount, timestamp, accountId);
+                allTransactions.add(trans);
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+        return allTransactions;
     }
 
     public void createStock(String ticker, double price) {
@@ -337,9 +369,7 @@ public class Database {
     }
 
     public double getStockPrice(String ticker) {
-
         double stockPrice = 0;
-
         String sql = "SELECT stock_price from stocks where stock_ticker = ?"; 
 
         try (
@@ -355,9 +385,7 @@ public class Database {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
         return stockPrice;
-
     }
 
     public int getStockId(String ticker) {
@@ -370,10 +398,12 @@ public class Database {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return 1;
     }
 
     public void createStockOwned(int accountId, int stockId, double buyPrice, double numShares) {
         String sql = "INSERT INTO stocks_owned(account_id, stock_id, stock_buy_price,num_shares) VALUES(?,?,?,?)";
+        System.out.println("creating stock owned");
 
         try (
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -390,7 +420,8 @@ public class Database {
     public ArrayList<OwnedStock> queryAccountsStocks(int account_id) {
         ArrayList<OwnedStock> allAccountsStocks =  new ArrayList<OwnedStock>();
 
-        String sql = "SELECT * FROM stocks s LEFT JOIN stocks_owned so on s.stock_id=so.stock_id WHERE account_id=?";
+        String sql = "SELECT s.stock_id, s.stock_ticker, s.stock_price, so.stock_buy_price, so.num_shares" + 
+            "FROM stocks s LEFT JOIN stocks_owned so on s.stock_id=so.stock_id WHERE account_id=?";
 
         try (
                 PreparedStatement pstmt  = conn.prepareStatement(sql)){
@@ -405,10 +436,80 @@ public class Database {
                 int stockId = rs.getInt("stock_id");
                 String ticker = rs.getString("stock_ticker");
                 double currentPrice = rs.getDouble("stock_price");
-                double cashBalance = rs.getDouble("cash_balance");
                 double buyPrice = rs.getDouble("stock_buy_price");
                 double numShares = rs.getDouble("num_shares");
-                OwnedStock ownedStock = new OwnedStock(stockId, ticker, currentPrice, account_id, cashBalance, buyPrice, numShares);
+                OwnedStock ownedStock = new OwnedStock(stockId, ticker, currentPrice, account_id, buyPrice, numShares);
+                allAccountsStocks.add(ownedStock);
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+        return allAccountsStocks;
+    }
+
+    public ArrayList<OwnedStock> getPortfolio(int account_id) {
+        ArrayList<OwnedStock> allAccountsStocks =  new ArrayList<OwnedStock>();
+
+        String sql = "SELECT s.stock_id, s.stock_ticker, s.stock_price, so.stock_buy_price, SUM(so.num_shares) AS num_shares " +
+        "FROM stocks s, stocks_owned so " + 
+        "WHERE s.stock_id=so.stock_id AND so.account_id=? " + 
+        "GROUP BY s.stock_id"; 
+        
+      
+        try (
+            PreparedStatement pstmt  = conn.prepareStatement(sql)){
+
+            // set the value
+            pstmt.setInt(1,account_id);
+            //
+            ResultSet rs  = pstmt.executeQuery();
+
+            // loop through the result set
+            while(rs.next()) {
+                int stockId = rs.getInt("stock_id");
+                String ticker = rs.getString("stock_ticker");
+                double currentPrice = rs.getDouble("stock_price");
+                double buyPrice = rs.getDouble("stock_buy_price");
+                double numShares = rs.getDouble("num_shares");
+                OwnedStock ownedStock = new OwnedStock(stockId, ticker, currentPrice, account_id, buyPrice, numShares);
+                System.out.println(ownedStock);
+                allAccountsStocks.add(ownedStock);
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+        return allAccountsStocks;
+    }
+
+    public ArrayList<OwnedStock> getStockTrades(int account_id) {
+        ArrayList<OwnedStock> allAccountsStocks =  new ArrayList<OwnedStock>();
+
+        String sql = "SELECT s.stock_id, s.stock_ticker, s.stock_price, so.stock_buy_price, so.num_shares " +
+        "FROM stocks s, stocks_owned so " +
+        "WHERE s.stock_id = so.stock_id AND so.account_id=?";  
+
+        try (
+            PreparedStatement pstmt  = conn.prepareStatement(sql)){
+
+            // set the value
+            pstmt.setInt(1,account_id);
+            //
+            ResultSet rs  = pstmt.executeQuery();
+
+            // loop through the result set
+            while(rs.next()) {
+                int stockId = rs.getInt("stock_id");
+                String ticker = rs.getString("stock_ticker");
+                double currentPrice = rs.getDouble("stock_price");
+                double buyPrice = rs.getDouble("stock_buy_price");
+                double numShares = rs.getDouble("num_shares");
+                OwnedStock ownedStock = new OwnedStock(stockId, ticker, currentPrice, account_id, buyPrice, numShares);
                 allAccountsStocks.add(ownedStock);
             }
 
@@ -421,7 +522,8 @@ public class Database {
     }
 
     public int getStockInstance(int account_id, String ticker) {
-        String sql = "SELECT stock_instance_owned_id FROM stocks_owned WHERE account_id = ? AND stock_ticker = ?";
+//        String sql = "SELECT stock_instance_owned_id FROM stocks_owned WHERE account_id = ? AND stock_ticker = ?";
+        String sql = "SELECT so.stock_instance_owned_id FROM stocks_owned so, stocks s WHERE s.stock_id = so.stock_id AND account_id = ? AND stock_ticker = ?";
         int stockInstance = 0;
         try (
             PreparedStatement pstmt  = conn.prepareStatement(sql)){
@@ -437,12 +539,14 @@ public class Database {
             stockInstance = rs.getInt("stock_instance_owned_id");
         }
 
+        
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         
         if (stockInstance > 0) {
+            System.out.printf("User owns stock %s\n", stockInstance);
             return stockInstance;
         } else {
             System.out.println("User does not own this stock!");
@@ -461,6 +565,7 @@ public class Database {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return 0.0;
     }
 
     public void transactOwnedStock(int accountId, String ticker, double num_shares, int stockInstance) {
@@ -476,6 +581,7 @@ public class Database {
         // }
 
         String sqltwo = "UPDATE stocks_owned SET num_shares = ? WHERE stock_instance_owned_id = ?";
+        System.out.println("updating owned stock");
 
         try (
             PreparedStatement pstmt = conn.prepareStatement(sqltwo)) {
@@ -527,6 +633,27 @@ public class Database {
         }
 
     }
+    public ArrayList<User> getAllUsers(){
+        String sql = "SELECT * FROM users";
+        ArrayList<User> allUsers = new ArrayList<>();
+        try (
+                PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            ResultSet rs  = pstmt.executeQuery();
+
+            // loop through the result set
+            while(rs.next()) {
+                int user_id = rs.getInt("user_id");
+                String user_type = rs.getString("user_type");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                User tempUser = factory.createUser(user_id, user_type, username, password);
+                allUsers.add(tempUser);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allUsers;
+    }
 
     // Everything below here is for testing 
     public void printAllUsers(){
@@ -544,8 +671,6 @@ public class Database {
             System.out.println(e.getMessage());
             
         }
-            
-            
     }
 
     public void printAllAccounts(){
@@ -627,13 +752,20 @@ public class Database {
 
     public static void main(String[] args) {
         Database db = new Database();
-        db.printAllUsers();
-        db.printAllAccounts();
-        db.printAllTransactions();
-        db.printAllStocks();
-        db.printAllStocksOwned();
-        ArrayList<Transaction> user_transactions = db.queryTransactions(1);
+        // db.printAllUsers();
+        // db.printAllAccounts();
+        // db.printAllTransactions();
+        // db.printAllStocks();
+        // db.printAllStocksOwned();
+        ArrayList<Transaction> user_transactions = db.queryUserTransactions(1);
+        ArrayList<OwnedStock> stocks = db.getPortfolio(1);
+        for (OwnedStock stock: stocks) {
+            System.out.println(stock);
+        }
+    }
 
+    public int getCurrentNumShares(int stockInstance) {
+        return 1;
     }
 }
 
