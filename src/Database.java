@@ -396,6 +396,7 @@ public class Database {
 
     public void createStockOwned(int accountId, int stockId, double buyPrice, double numShares) {
         String sql = "INSERT INTO stocks_owned(account_id, stock_id, stock_buy_price,num_shares) VALUES(?,?,?,?)";
+        System.out.println("creating stock owned");
 
         try (
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -467,6 +468,7 @@ public class Database {
                 double buyPrice = rs.getDouble("stock_buy_price");
                 double numShares = rs.getDouble("num_shares");
                 OwnedStock ownedStock = new OwnedStock(stockId, ticker, currentPrice, account_id, buyPrice, numShares);
+                System.out.println(ownedStock);
                 allAccountsStocks.add(ownedStock);
             }
 
@@ -513,7 +515,8 @@ public class Database {
     }
 
     public int getStockInstance(int account_id, String ticker) {
-        String sql = "SELECT stock_instance_owned_id FROM stocks_owned WHERE account_id = ? AND stock_ticker = ?";
+//        String sql = "SELECT stock_instance_owned_id FROM stocks_owned WHERE account_id = ? AND stock_ticker = ?";
+        String sql = "SELECT so.stock_instance_owned_id FROM stocks_owned so, stocks s WHERE s.stock_id = so.stock_id AND account_id = ? AND stock_ticker = ?";
         int stockInstance = 0;
         try (
             PreparedStatement pstmt  = conn.prepareStatement(sql)){
@@ -535,6 +538,7 @@ public class Database {
         }
         
         if (stockInstance > 0) {
+            System.out.printf("User owns stock %s\n", stockInstance);
             return stockInstance;
         } else {
             System.out.println("User does not own this stock!");
@@ -569,6 +573,7 @@ public class Database {
         // }
 
         String sqltwo = "UPDATE stocks_owned SET num_shares = ? WHERE stock_instance_owned_id = ?";
+        System.out.println("updating owned stock");
 
         try (
             PreparedStatement pstmt = conn.prepareStatement(sqltwo)) {
@@ -739,12 +744,12 @@ public class Database {
 
     public static void main(String[] args) {
         Database db = new Database();
-        db.printAllUsers();
-        db.printAllAccounts();
-        db.printAllTransactions();
-        db.printAllStocks();
-        db.printAllStocksOwned();
-        ArrayList<Transaction> user_transactions = db.queryUserTransactions(1);
+//        db.printAllUsers();
+//        db.printAllAccounts();
+//        db.printAllTransactions();
+//        db.printAllStocks();
+//        db.printAllStocksOwned();
+//        ArrayList<Transaction> user_transactions = db.queryUserTransactions(1);
         ArrayList<OwnedStock> stocks = db.getPortfolio(1);
         for (OwnedStock stock: stocks) {
             System.out.println(stock);

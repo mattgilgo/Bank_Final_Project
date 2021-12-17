@@ -27,7 +27,7 @@ public class StockUI extends JFrame {
 
         this.atm = atm;
 
-        DefaultComboBoxModel<String> modelStockDrop = new DefaultComboBoxModel<String>(SUPPORTED_STOCKS);
+        DefaultComboBoxModel<String> modelStockDrop = new DefaultComboBoxModel<String>(stocksString());
         stockDrop.setModel(modelStockDrop);
         stockDrop.setForeground(new Color(0).BLACK);
         stockDrop.setBackground(new Color(0).LIGHT_GRAY);
@@ -46,15 +46,18 @@ public class StockUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String stockTicker = (String) stockDrop.getSelectedItem();
+                String ticker = stockTicker.split(" ")[0];
+                System.out.println(ticker);
                 Integer numShares = 0;
                 try{
-                    numShares = Integer.parseInt(shareNumberText.getText());;
+                    numShares = Integer.parseInt(shareNumberText.getText());
                 }
                 catch (NumberFormatException ignore){
                     System.out.println("Invalid Input!");
                 }
                 String bankAccount = (String) bankDrop.getSelectedItem();
                 // TODO use provided info to make purchase
+                atm.buyStock(atm.getCurrentUser().user_id, ticker, numShares);
             }
         });
         sellButton.addActionListener(new ActionListener() {
@@ -90,6 +93,15 @@ public class StockUI extends JFrame {
                 tableUICreator.showTable();
             }
         });
+    }
+
+    public String[] stocksString() {
+        ArrayList<Stock> stocks = Bank.db.queryStocks();
+        String[] strings = new String[stocks.size()];
+        for (int i=0; i < stocks.size(); i++) {
+            strings[i] = stocks.get(i).toString();
+        }
+        return strings;
     }
 
     public void showUI(){
