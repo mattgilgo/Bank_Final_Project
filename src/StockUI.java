@@ -44,7 +44,13 @@ public class StockUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String stockTicker = (String) stockDrop.getSelectedItem();
-                Integer numShares = Integer.parseInt(shareNumberText.getText());
+                Integer numShares = 0;
+                try{
+                    numShares = Integer.parseInt(shareNumberText.getText());;
+                }
+                catch (NumberFormatException ignore){
+                    System.out.println("Invalid Input!");
+                }
                 String bankAccount = (String) bankDrop.getSelectedItem();
                 // TODO use provided info to make purchase
             }
@@ -53,7 +59,13 @@ public class StockUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String stockTicker = (String) stockDrop.getSelectedItem();
-                Integer numShares = Integer.parseInt(shareNumberText.getText());
+                Integer numShares = 0;
+                try{
+                    numShares = Integer.parseInt(shareNumberText.getText());;
+                }
+                catch (NumberFormatException ignore){
+                    System.out.println("Invalid Input!");
+                }
                 String bankAccount = (String) bankDrop.getSelectedItem();
 //                int stockInstance = Bank.db.getStockInstance(account_id, stockTicker); // need account_id here
 //                if (stockInstance > 0) {
