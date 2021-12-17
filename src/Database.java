@@ -445,13 +445,14 @@ public class Database {
     public ArrayList<OwnedStock> getPortfolio(int account_id) {
         ArrayList<OwnedStock> allAccountsStocks =  new ArrayList<OwnedStock>();
 
-        String sql = "SELECT s.stock_id, s.stock_ticker, s.stock_price, so.stock_buy_price, SUM(so.num_shares)" +
-        "FROM stocks s, stocks_owned so" +
-        "WHERE s.stock_id=so.stock_id AND so.account_id=?" +
-        "GROUP BY s.stock_id";  
-
+        String sql = "SELECT s.stock_id, s.stock_ticker, s.stock_price, so.stock_buy_price, SUM(so.num_shares) AS num_shares " +
+        "FROM stocks s, stocks_owned so " + 
+        "WHERE s.stock_id=so.stock_id AND so.account_id=? " + 
+        "GROUP BY s.stock_id"; 
+        
+      
         try (
-                PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            PreparedStatement pstmt  = conn.prepareStatement(sql)){
 
             // set the value
             pstmt.setInt(1,account_id);
@@ -744,7 +745,10 @@ public class Database {
         db.printAllStocks();
         db.printAllStocksOwned();
         ArrayList<Transaction> user_transactions = db.queryUserTransactions(1);
-
+        ArrayList<OwnedStock> stocks = db.getPortfolio(1);
+        for (OwnedStock stock: stocks) {
+            System.out.println(stock);
+        }
     }
 
     public int getCurrentNumShares(int stockInstance) {
