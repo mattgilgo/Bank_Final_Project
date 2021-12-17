@@ -227,6 +227,7 @@ public class ATM {
         ArrayList<OwnedStock> currentPortfolio = new ArrayList<OwnedStock>();
         for (Account act: allAccounts) {
             if (act.getAccount_type().equals("ST")) {
+                System.out.println(act);
                 currentPortfolio = Bank.db.getPortfolio(act.getAccount_id());
             }
         }

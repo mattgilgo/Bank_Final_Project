@@ -28,7 +28,7 @@ public class AccountCreationUI extends JFrame {
         this.atm = atm;
 
         DefaultComboBoxModel<String> modelCurrency = new DefaultComboBoxModel<String>(SUPPORTED_CURRENCIES);
-        DefaultComboBoxModel<String> modelTypes = new DefaultComboBoxModel<String>(SUPPORTED_TYPES);
+        DefaultComboBoxModel<String> modelTypes = new DefaultComboBoxModel<String>();
         DefaultComboBoxModel<String> modelAccounts = new DefaultComboBoxModel<String>(atm.getStringListOfAccounts());
         currencyDrop.setModel(modelCurrency);
         currencyDrop.setForeground(new Color(0).BLACK);
