@@ -369,16 +369,23 @@ public class Database {
     }
 
     public double getStockPrice(String ticker) {
+        double stockPrice = 0;
         String sql = "SELECT stock_price from stocks where stock_ticker = ?"; 
 
         try (
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, ticker);
-            pstmt.executeUpdate();
+                PreparedStatement pstmt  = conn.prepareStatement(sql)){
+                    pstmt.setString(1, ticker);
+            ResultSet rs  = pstmt.executeQuery();
+
+            // loop through the result set
+            while(rs.next()) {
+                stockPrice = rs.getDouble("stock_price");
+            }
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return 0.0;
+        return stockPrice;
     }
 
     public int getStockId(String ticker) {
@@ -548,7 +555,7 @@ public class Database {
     
     }
 
-    public double getNumShares(int stockInstance) {
+    public double getCurrentNumShares(int stockInstance) {
         String sql = "SELECT num_shares from stocks_owned where stock_instance_owned_id = ?"; 
 
         try (
