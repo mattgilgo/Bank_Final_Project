@@ -447,7 +447,7 @@ public class Database {
 
         String sql = "SELECT s.stock_id, s.stock_ticker, s.stock_price, so.stock_buy_price, SUM(so.num_shares)" +
         "FROM stocks s, stocks_owned so" +
-        "WHERE s.stock_id=so.stock_id AND so.account_id=1" +
+        "WHERE s.stock_id=so.stock_id AND so.account_id=?" +
         "GROUP BY s.stock_id";  
 
         try (
